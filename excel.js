@@ -12,7 +12,7 @@
    open the Google Sheet -> File -> Download -> Microsoft Excel (.xlsx).
    ========================================================================= */
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyR-UPtjd7C_KpLkbUpEqmrINnZUKLJX8Uy6uCWTKs5txQfj7ZRDK__BlvBFx32Xeo/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPM9vOuQ23GSCCLG-hIWE_3AszMFM2JoivGY-1ctIjLZn2f2_KJvVPHxNrAOQUOVcK/exec";
 
 /* ---------------- send the entry to the central Google Sheet ------------ */
 async function saveToGoogleSheet(data) {

@@ -68,7 +68,7 @@ function doPost(e) {
           'Training Selected: ' + data.training + '\n' +
           'Enrollment Date: ' + data.enrollDate + '\n\n' +
           'This is an official email from TECHO Institute.\n\n' +
-          'Regards,\nTECHO Institute Team\n7841814377 / ayareomkar199@gmail.com'
+          'Regards,\nTECHO Institute Team\n7841814377 / techoautomation199@gmail.com'
       });
     }
   } catch (mailErr) {
