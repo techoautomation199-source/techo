@@ -1,0 +1,49 @@
+.terms-section{padding:40px 24px 60px;max-width:850px;}
+.terms-heading{font-size:26px;font-weight:800;text-align:center;}
+.terms-sub{text-align:center;color:var(--gray-text);font-size:14px;margin-top:6px;margin-bottom:24px;}
+
+/* ---- policy selector (8 buttons) ---- */
+.policy-tabs{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:30px;
+}
+.policy-tab{
+  padding:9px 18px;border-radius:22px;border:1.5px solid var(--border);
+  font-size:12.5px;font-weight:700;color:var(--gray-text);background:#fff;
+}
+.policy-tab.active{background:var(--blue);color:#fff;border-color:var(--blue);}
+
+.policy-content{display:none;}
+.policy-content.active{display:block;}
+.policy-heading{font-size:20px;font-weight:800;margin-bottom:16px;color:var(--dark);}
+
+/* ---- language selector (inside Terms & Conditions only) ---- */
+.lang-tabs{
+  display:flex;justify-content:center;gap:10px;margin-bottom:28px;flex-wrap:wrap;
+}
+.lang-tab{
+  padding:9px 22px;border-radius:22px;border:1.5px solid var(--border);
+  font-size:13px;font-weight:700;color:var(--gray-text);background:#fff;
+}
+.lang-tab.active{background:var(--green);color:#fff;border-color:var(--green);}
+
+.lang-block{display:none;}
+.lang-block.active{display:block;}
+
+.intro{background:var(--light-bg);border-radius:10px;padding:16px 18px;font-size:13.5px;margin-bottom:20px;}
+.lang-block h3{font-size:15.5px;font-weight:800;margin:22px 0 10px;color:var(--blue);}
+.lang-block p{font-size:13.5px;color:var(--gray-text);margin-bottom:8px;line-height:1.7;}
+.lang-block ul{margin:0 0 8px;padding-left:0;}
+.lang-block li{
+  font-size:13.5px;color:var(--gray-text);line-height:1.7;
+  padding-left:18px;position:relative;margin-bottom:4px;
+}
+.lang-block li::before{content:"•";position:absolute;left:0;color:var(--blue);font-weight:700;}
+.terms-footer-note{
+  margin-top:26px;padding-top:16px;border-top:1px solid var(--border);
+  font-size:12px;color:var(--gray-text);
+}
+
+@media (max-width:640px){
+  .terms-heading{font-size:20px;}
+  .lang-tab{padding:8px 16px;font-size:12px;}
+}

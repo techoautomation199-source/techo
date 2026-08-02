@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ffffff">
+<title>Enroll Now | TECHO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="common.css">
+<link rel="stylesheet" href="enroll.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo">
+      <span class="logo-word"><span>T</span><span>E</span><span>C</span><span>H</span><span>O</span><sup style="font-size:10px;">™</sup></span>
+      <span class="logo-sub">TECHO MEANS TECHNOLOGY</span>
+      <span class="logo-tag">INDUSTRIAL AUTOMATION</span>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    <nav class="main-nav" id="mainNav">
+      <a href="index.html">HOME</a>
+      <a href="about.html">ABOUT US</a>
+      <a href="services.html">SERVICES</a>
+      <a href="contact.html">CONTACT US</a>
+    </nav>
+    <div class="header-actions">
+      <span class="only-online">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/></svg>
+        <span>ONLY ONLINE</span>
+      </span>
+      <a href="enroll.html" class="btn-enroll active-enroll">ENROLL NOW</a>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== ENROLLMENT FORM (shown directly, no hero above) ===================== -->
+<section class="container enroll-section">
+  <form id="enrollForm" class="enroll-card" novalidate>
+    <div class="enroll-head">
+      <div class="clip-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+      <div>
+        <h2>ENROLLMENT <span class="c-blue">FORM</span></h2>
+        <p>Begin Your Journey in Industrial Automation</p>
+      </div>
+    </div>
+    <div class="gradient-line full"></div>
+
+    <div class="form-grid">
+      <label class="field">
+        <span class="f-label"><i class="fa-solid fa-user field-ico blue-bg"></i> Full Name *</span>
+        <input type="text" name="fullName" id="fullName" placeholder="Enter your full name" required>
+      </label>
+
+      <label class="field">
+        <span class="f-label"><i class="fa-solid fa-location-dot field-ico purple-bg"></i> Address *</span>
+        <input type="text" name="address" id="address" placeholder="Enter your complete address" required>
+      </label>
+
+      <label class="field">
+        <span class="f-label"><i class="fa-solid fa-envelope field-ico green-bg"></i> Email Address *</span>
+        <input type="email" name="email" id="email" placeholder="Enter your email address" required>
+      </label>
+
+      <label class="field">
+        <span class="f-label"><i class="fa-solid fa-phone field-ico red-bg"></i> Mobile Number *</span>
+        <input type="tel" name="mobile" id="mobile" placeholder="Enter your mobile number" pattern="[0-9]{10}" required>
+      </label>
+
+      <label class="field">
+        <span class="f-label"><i class="fa-brands fa-whatsapp field-ico green-bg"></i> WhatsApp Number *</span>
+        <input type="tel" name="whatsapp" id="whatsapp" placeholder="Enter your WhatsApp number" pattern="[0-9]{10}" required>
+      </label>
+
+      <label class="field">
+        <span class="f-label"><i class="fa-solid fa-graduation-cap field-ico blue-bg"></i> College Name *</span>
+        <input type="text" name="college" id="college" placeholder="Enter your college / institute name" required>
+      </label>
+
+      <label class="field">
+        <span class="f-label"><i class="fa-solid fa-book field-ico purple-bg"></i> Current Education / Qualification *</span>
+        <select name="qualification" id="qualification" required>
+          <option value="" disabled selected>Select your qualification</option>
+          <option>10th</option><option>12th</option><option>ITI</option>
+          <option>Diploma</option><option>B.E. / B.Tech.</option>
+          <option>Graduate</option><option>Other</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span class="f-label"><i class="fa-solid fa-calendar-days field-ico orange-bg"></i> Enrollment Date *</span>
+        <input type="date" name="enrollDate" id="enrollDate" required>
+      </label>
+    </div>
+
+    <!-- ===================== TRAINING SELECTION (multi-select, nested) ===================== -->
+    <div class="field training-field">
+      <span class="f-label"><i class="fa-solid fa-layer-group field-ico blue-bg"></i> Select Training (choose one or more) *</span>
+
+      <div class="training-groups" id="trainingGroups">
+
+        <div class="training-group">
+          <label class="main-check"><input type="checkbox" class="main-training" data-target="opt-plc" value="PLC"> PLC</label>
+          <div class="sub-options" id="opt-plc">
+            <label><input type="checkbox" value="Delta"> Delta</label>
+            <label><input type="checkbox" value="Siemens"> Siemens</label>
+            <label><input type="checkbox" value="GX Developer"> GX Developer</label>
+            <label><input type="checkbox" value="Allen Bradley"> Allen Bradley</label>
+            <label class="select-all-label"><input type="checkbox" class="select-all"> Select All</label>
+          </div>
+        </div>
+
+        <div class="training-group">
+          <label class="main-check"><input type="checkbox" class="main-training" data-target="opt-scada" value="SCADA"> SCADA</label>
+          <div class="sub-options" id="opt-scada">
+            <label><input type="checkbox" value="Wonderware InTouch"> Wonderware InTouch</label>
+            <label><input type="checkbox" value="Open SCADA Software"> Open SCADA Software</label>
+            <label class="select-all-label"><input type="checkbox" class="select-all"> Select All</label>
+          </div>
+        </div>
+
+        <div class="training-group">
+          <label class="main-check"><input type="checkbox" class="main-training" data-target="opt-hmi" value="HMI"> HMI</label>
+          <div class="sub-options" id="opt-hmi">
+            <label><input type="checkbox" value="INVT"> INVT</label>
+            <label><input type="checkbox" value="Delta"> Delta</label>
+            <label><input type="checkbox" value="Siemens"> Siemens</label>
+            <label class="select-all-label"><input type="checkbox" class="select-all"> Select All</label>
+          </div>
+        </div>
+
+        <div class="training-group">
+          <label class="main-check"><input type="checkbox" class="main-training" value="AUTO CAD"> AUTO CAD</label>
+        </div>
+
+        <div class="training-group">
+          <label class="main-check"><input type="checkbox" class="main-training" data-target="opt-lang" value="LANGUAGES"> LANGUAGES</label>
+          <div class="sub-options" id="opt-lang">
+            <label><input type="checkbox" value="HTML"> HTML</label>
+            <label><input type="checkbox" value="JAVA"> JAVA</label>
+            <label><input type="checkbox" value="CSS"> CSS</label>
+            <label><input type="checkbox" value="JavaScript"> JavaScript</label>
+            <label class="select-all-label"><input type="checkbox" class="select-all"> Select All</label>
+          </div>
+        </div>
+
+      </div>
+      <p class="training-hint" id="trainingHint">Please select at least one training option.</p>
+    </div>
+
+    <button type="submit" class="submit-btn" id="submitBtn">
+      <i class="fa-solid fa-paper-plane"></i> SUBMIT ENROLLMENT
+    </button>
+    <p class="save-note" id="saveNote">Your entry is saved directly to the central TECHO Google Sheet — no file dialog needed.</p>
+  </form>
+</section>
+
+<!-- ===================== THANK YOU POPUP ===================== -->
+<div class="popup-overlay" id="popupOverlay">
+  <div class="popup-box" id="popupBox">
+    <i class="fa-solid fa-circle-check popup-icon" id="popupIcon"></i>
+    <h3 id="popupTitle">Thank You!</h3>
+    <p id="popupMessage">Thank you for submitting the form. You will receive a phone call from TECHO Institute shortly.</p>
+  </div>
+</div>
+
+<footer class="site-footer">
+  © 2026 TECHO. All Rights Reserved.
+  <div class="footer-links"><a href="terms.html">Policies</a></div>
+</footer>
+
+<script src="script.js"></script>
+<script src="excel.js"></script>
+</body>
+</html>
