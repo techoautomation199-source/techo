@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ffffff">
+<title>Installment Payment Agreement | TECHO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="common.css">
+<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="forms.css">
+</head>
+<body>
+
+<div class="admin-topbar">
+  <span class="logo-word" style="font-size:20px;"><span>T</span><span>E</span><span>C</span><span>H</span><span>O</span></span>
+  <span class="admin-topbar-tag">INSTALLMENT AGREEMENT</span>
+  <a href="admin.html" class="topbar-back"><i class="fa-solid fa-arrow-left"></i> Back to Admin</a>
+</div>
+
+<main class="admin-main wide-main">
+
+  <div class="form-header-row">
+    <div>
+      <h2 class="reg-title">हप्ता भरणा करार (Installment Payment Agreement)</h2>
+      <p class="reg-sub">Fill all the details to create installment agreement</p>
+    </div>
+    <div class="form-header-actions">
+      <button type="button" class="fbtn-outline" id="btnReset">Reset</button>
+      <button type="submit" form="formInstallment" class="fbtn-solid purple"><i class="fa-solid fa-floppy-disk"></i> Save Agreement</button>
+    </div>
+  </div>
+
+  <form id="formInstallment" class="reg-card">
+
+    <fieldset class="section-fieldset" style="margin-bottom:18px;">
+      <legend><i class="fa-solid fa-user"></i> विद्यार्थ्याची माहिती (Student Information)</legend>
+      <div class="mini-grid">
+        <label>Student ID (lookup) *<input type="text" id="instStudentId" placeholder="e.g. STU0001" required></label>
+        <label>विद्यार्थ्याचे नाव<input type="text" id="instName" readonly></label>
+      </div>
+      <div class="mini-grid">
+        <label>Course<input type="text" id="instCourse" readonly></label>
+        <label>मोबाईल क्रमांक<input type="text" id="instMobile" readonly></label>
+      </div>
+      <button type="button" id="btnLookupInst" class="fbtn-outline" style="margin-top:4px;">Fetch Student</button>
+    </fieldset>
+
+    <fieldset class="section-fieldset" style="margin-bottom:18px;">
+      <legend><i class="fa-solid fa-indian-rupee-sign"></i> फीची माहिती (Fee Information)</legend>
+      <div class="mini-grid">
+        <label>एकूण कोर्स फी *<input type="number" id="instTotal" readonly></label>
+        <label>प्रवेशावेळी भरलेली फी<input type="number" id="instPaid" readonly></label>
+      </div>
+      <label>शिल्लक फी <input type="number" id="instBalance" readonly></label>
+    </fieldset>
+
+    <fieldset class="section-fieldset" style="margin-bottom:18px;">
+      <legend><i class="fa-solid fa-calendar-days"></i> हप्त्यांचे वेळापत्रक (Installment Schedule)</legend>
+      <table class="inst-table">
+        <thead><tr><th>हप्ता</th><th>रक्कम (₹)</th><th>अंतिम दिनांक</th></tr></thead>
+        <tbody>
+          <tr><td>पहिला</td><td><input type="number" id="i1amt" placeholder="Amount"></td><td><input type="date" id="i1date"></td></tr>
+          <tr><td>दुसरा</td><td><input type="number" id="i2amt" placeholder="Amount"></td><td><input type="date" id="i2date"></td></tr>
+          <tr><td>तिसरा</td><td><input type="number" id="i3amt" placeholder="Amount"></td><td><input type="date" id="i3date"></td></tr>
+          <tr><td>चौथा</td><td><input type="number" id="i4amt" placeholder="Amount"></td><td><input type="date" id="i4date"></td></tr>
+        </tbody>
+      </table>
+    </fieldset>
+
+    <fieldset class="declare-box">
+      <legend>विद्यार्थ्याची घोषणा (Student Declaration)</legend>
+      <label><input type="checkbox" required> मी वरील वेळापत्रकानुसार सर्व हप्ते वेळेत भरण्याचे मान्य करतो/करते.</label>
+      <label><input type="checkbox" required> कोणताही हप्ता उशिरा भरल्यास संस्थेला प्रशिक्षण/लॉगिन/Study Material तात्पुरते थांबवण्याचा अधिकार राहील.</label>
+      <label><input type="checkbox" required> सर्व हप्ते पूर्ण भरल्याशिवाय अंतिम Certificate दिले जाणार नाही.</label>
+      <label><input type="checkbox" required> मी संस्थेच्या Terms &amp; Conditions आणि Refund &amp; Cancellation Policy चे पालन करण्यास बांधील आहे.</label>
+    </fieldset>
+
+    <div class="form-grid-3">
+      <fieldset class="sign-fieldset">
+        <legend>विद्यार्थ्याची स्वाक्षरी (Student Digital Signature)</legend>
+        <label>Digital Signature — Type Full Name to Sign *<input type="text" id="signStudentDigital" placeholder="Type your full name to sign"></label>
+        <label>नाव *<input type="text" id="signStudentName" placeholder="Enter student name"></label>
+        <label>दिनांक *<input type="date" id="signDate"></label>
+        <div class="sign-pad"><i class="fa-solid fa-signature"></i> This typed name is your official digital signature</div>
+      </fieldset>
+
+      <fieldset class="sign-fieldset">
+        <legend>पालक / संरक्षक (For students below 18 years)</legend>
+        <label>नाव<input type="text" id="signParentName" placeholder="Enter parent/guardian name"></label>
+        <label>मोबाईल क्रमांक<input type="tel" id="signParentMobile" placeholder="Enter mobile number"></label>
+      </fieldset>
+
+      <fieldset class="sign-fieldset">
+        <legend>संस्थेची अधिकृत स्वाक्षरी (Institute Digital Signature)</legend>
+        <label>अधिकृत प्रतिनिधी *<input type="text" id="signRep" placeholder="Enter authorized representative name"></label>
+        <label>Digital Signature — Type Name to Sign *<input type="text" id="signRepDigital" placeholder="Type name to sign & seal"></label>
+        <div class="sign-pad"><i class="fa-solid fa-stamp"></i> This typed name acts as the official digital signature &amp; seal</div>
+      </fieldset>
+    </div>
+
+    <p class="form-error" id="instError"></p>
+  </form>
+
+  <div class="popup-overlay" id="popupOverlay">
+    <div class="popup-box">
+      <i class="fa-solid fa-circle-check popup-icon"></i>
+      <h3>Installment Agreement Saved!</h3>
+      <p id="popupMsg"></p>
+      <p class="popup-next">Enrollment complete for this student.</p>
+      <a href="admin.html" class="popup-done-btn">Done</a>
+    </div>
+  </div>
+
+  <div class="policies-footer-link"><a href="terms.html"><i class="fa-solid fa-file-shield"></i> Policies</a></div>
+</main>
+
+<script src="installment.js"></script>
+</body>
+</html>

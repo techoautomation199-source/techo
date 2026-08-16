@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ffffff">
+<title>Documents | TECHO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="common.css">
+<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="documents.css">
+</head>
+<body>
+
+<div class="admin-topbar no-print">
+  <span class="logo-word" style="font-size:20px;"><span>T</span><span>E</span><span>C</span><span>H</span><span>O</span></span>
+  <span class="admin-topbar-tag">DOCUMENTS</span>
+  <a href="admin.html" class="topbar-back"><i class="fa-solid fa-arrow-left"></i> Admin</a>
+</div>
+
+<main class="admin-main">
+
+  <section class="no-print">
+    <h2 class="screen-title">Generate Document</h2>
+    <div class="admin-form">
+      <label>Document Type
+        <select id="docType">
+          <option value="admission">Student Admission Form</option>
+          <option value="installment">Installment Payment Agreement</option>
+          <option value="receipt">Fee Receipt</option>
+          <option value="bonafide">Bonafide Certificate</option>
+          <option value="declaration">Student Declaration Form</option>
+          <option value="undertaking">Student Undertaking</option>
+        </select>
+      </label>
+      <label>Student ID (leave blank for an empty printable form)
+        <input type="text" id="lookupId" placeholder="e.g. STU0001">
+      </label>
+      <button id="btnFetch" class="admin-submit">Load</button>
+      <p class="form-error" id="docError"></p>
+    </div>
+    <button id="btnPrint" class="admin-submit" style="margin-top:14px;"><i class="fa-solid fa-print"></i> Print / Save as PDF</button>
+  </section>
+
+  <section id="docPreview" class="doc-preview"></section>
+
+  <div class="policies-footer-link"><a href="terms.html"><i class="fa-solid fa-file-shield"></i> Policies</a></div>
+</main>
+
+<script src="documents.js"></script>
+</body>
+</html>

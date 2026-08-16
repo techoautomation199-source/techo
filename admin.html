@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ffffff">
+<title>Admin | TECHO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="common.css">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<div class="admin-topbar">
+  <span class="logo-word" style="font-size:20px;"><span>T</span><span>E</span><span>C</span><span>H</span><span>O</span></span>
+  <span class="admin-topbar-tag">ADMIN</span>
+  <a href="portal.html" class="topbar-back"><i class="fa-solid fa-arrow-left"></i> Portal</a>
+</div>
+
+<main class="admin-main">
+
+  <!-- ============ SCREEN 1: Admin entry ============ -->
+  <section id="screen-entry" class="admin-screen active">
+    <h2 class="screen-title">Admin</h2>
+    <div class="landing-buttons">
+      <button class="landing-btn" id="btnNewAdmin"><i class="fa-solid fa-user-plus"></i> New Admin</button>
+      <button class="landing-btn green-btn" id="btnAdminList"><i class="fa-solid fa-users"></i> Admin List</button>
+    </div>
+  </section>
+
+  <!-- ============ SCREEN 2: New Admin registration form ============ -->
+  <section id="screen-createadmin" class="admin-screen">
+    <h2 class="reg-title">Admin Registration Form</h2>
+    <p class="reg-sub">This information will be used for admin login and management.</p>
+
+    <form id="formCreateAdmin" class="reg-card">
+      <input type="hidden" id="gateBossId">
+      <input type="hidden" id="gateBossPassword">
+
+      <h3 class="reg-section"><i class="fa-solid fa-user"></i> ADMIN INFORMATION</h3>
+
+      <div class="reg-grid">
+        <label>Full Name *<input type="text" id="caName" placeholder="Enter full name" required></label>
+        <label>Role *
+          <select id="caRole" required>
+            <option value="" disabled selected>Select Role</option>
+            <option value="Boss">Boss</option>
+            <option value="Supervisor">Supervisor</option>
+          </select>
+        </label>
+
+        <label>Mobile Number *<input type="tel" id="caPhone" placeholder="Enter mobile number" required></label>
+        <label>WhatsApp Number <input type="tel" id="caWhatsapp" placeholder="Enter WhatsApp number"></label>
+
+        <label>Email Address *<input type="email" id="caEmail" placeholder="Enter email address" required></label>
+        <label>Aadhar ID <input type="text" id="caAadhaar" placeholder="Enter Aadhar ID"></label>
+
+        <label>PAN ID <input type="text" id="caPan" placeholder="Enter PAN ID"></label>
+        <label>Date of Birth <input type="date" id="caDob"></label>
+
+        <label>Gender
+          <select id="caGender"><option value="" disabled selected>Select Gender</option><option>Male</option><option>Female</option><option>Other</option></select>
+        </label>
+        <label>Profile Photo URL (Google Drive link) <input type="url" id="caPhoto" placeholder="https://drive.google.com/..."></label>
+      </div>
+
+      <label class="reg-full">Address <textarea id="caAddress" rows="2" placeholder="Enter complete address"></textarea></label>
+
+      <div class="reg-grid three">
+        <label>City <input type="text" id="caCity" placeholder="Enter city"></label>
+        <label>State <input type="text" id="caState" placeholder="Enter state"></label>
+        <label>PIN Code <input type="text" id="caPin" placeholder="Enter PIN code"></label>
+      </div>
+
+      <hr class="reg-hr">
+      <h3 class="reg-section purple"><i class="fa-solid fa-shield-halved"></i> ACCOUNT STATUS &amp; INFORMATION</h3>
+
+      <div class="status-row">
+        <span>Status</span>
+        <label class="radio-inline"><input type="radio" name="caStatus" value="Active" checked> Active</label>
+        <label class="radio-inline"><input type="radio" name="caStatus" value="Inactive"> Inactive</label>
+      </div>
+
+      <div class="reg-grid">
+        <label>Created Date <input type="text" id="caCreatedDate" readonly></label>
+        <label>Created By <input type="text" id="caCreatedBy" placeholder="Enter your name"></label>
+      </div>
+
+      <p class="form-error" id="createError"></p>
+      <button type="submit" class="reg-submit"><i class="fa-solid fa-paper-plane"></i> SUBMIT ADMIN</button>
+      <p class="reg-note">All fields marked with * are required</p>
+      <button type="button" class="admin-cancel" data-back="screen-entry">Cancel</button>
+    </form>
+  </section>
+
+  <!-- ============ SCREEN 3: generated credentials ============ -->
+  <section id="screen-created" class="admin-screen">
+    <h2 class="screen-title"><i class="fa-solid fa-circle-check" style="color:var(--green)"></i> Admin Created</h2>
+    <div class="credentials-box">
+      <p>Save these credentials now — they will not be shown again here.</p>
+      <div class="cred-line"><span>ID</span><strong id="createdId"></strong></div>
+      <div class="cred-line"><span>Password</span><strong id="createdPassword"></strong></div>
+      <div class="cred-line"><span>Role</span><strong id="createdRole"></strong></div>
+    </div>
+    <button class="admin-submit" data-back="screen-adminlist" id="btnCreatedDone">Done</button>
+  </section>
+
+  <!-- ============ SCREEN 4: Admin List ============ -->
+  <section id="screen-adminlist" class="admin-screen">
+    <div class="list-header-row">
+      <h2 class="screen-title">Admin</h2>
+    </div>
+    <h3 class="list-subheading">Admin Profiles</h3>
+    <div id="adminListWrap" class="profile-list"></div>
+    <button class="admin-cancel" data-back="screen-entry">Back</button>
+  </section>
+
+  <!-- ============ SCREEN 4.5: View Profile verification gate ============ -->
+  <section id="screen-viewgate" class="admin-screen">
+    <button class="back-link-btn" data-back="screen-adminlist"><i class="fa-solid fa-arrow-left"></i> Back to Admin List</button>
+    <h2 class="screen-title">Verify to View Profile — <span id="gateTargetName"></span></h2>
+    <p class="screen-sub">Enter the Boss ID &amp; Password, or this admin's own ID &amp; Password, to view this profile.</p>
+    <form id="formViewGate" class="admin-form">
+      <label>Admin ID <input type="text" id="viewGateId" required></label>
+      <label>Password <input type="password" id="viewGatePassword" required></label>
+      <p class="form-error" id="viewGateError"></p>
+      <button type="submit" class="admin-submit">View Profile</button>
+      <button type="button" class="admin-cancel" data-back="screen-adminlist">Cancel</button>
+    </form>
+  </section>
+
+  <!-- ============ SCREEN 5: Admin Profile Detail ============ -->
+  <section id="screen-profile" class="admin-screen">
+    <button class="back-link-btn" data-back="screen-adminlist"><i class="fa-solid fa-arrow-left"></i> Back to Admin List</button>
+
+    <div class="profile-detail-card">
+      <div class="pd-top">
+        <div id="pdPhotoWrap"></div>
+        <div class="pd-info">
+          <h2 id="pdName"></h2>
+          <p id="pdRole" class="pd-role"></p>
+        </div>
+      </div>
+
+      <div class="pd-status-block">
+        <span class="pd-label">Status</span>
+        <span id="pdStatusLive" class="pd-status-live"></span>
+        <label class="radio-inline"><input type="radio" name="pdStatus" value="Active" id="pdStatusActive"> Active</label>
+        <label class="radio-inline"><input type="radio" name="pdStatus" value="Inactive" id="pdStatusInactive"> Inactive</label>
+        <button type="button" class="update-status-btn" id="btnUpdateStatus">Update Status</button>
+      </div>
+      <p class="form-error" id="statusError"></p>
+
+      <div class="pd-rows" id="pdRows"></div>
+    </div>
+
+    <div class="admin-section-head">
+      <h3>ADMIN SECTION</h3>
+      <p>Manage all institute operations from here</p>
+    </div>
+
+    <div class="section-grid">
+      <a href="student-admission.html" class="section-card blue-card">
+        <div class="sc-icon" style="background:var(--blue)"><i class="fa-solid fa-address-card"></i></div>
+        <h4>Student Admission Form</h4>
+        <p>Manage new student admissions, personal details, course selection and enrollment.</p>
+        <span class="sc-btn blue-btn">Manage Admissions <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
+
+      <a href="fee-receipt.html" class="section-card green-card">
+        <div class="sc-icon" style="background:var(--green)"><i class="fa-solid fa-receipt"></i></div>
+        <h4>Fee Receipt</h4>
+        <p>Generate fee receipts, manage payments and maintain financial records.</p>
+        <span class="sc-btn green-btn2">Manage Fee Receipts <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
+
+      <a href="installment.html" class="section-card purple-card">
+        <div class="sc-icon" style="background:var(--purple)"><i class="fa-solid fa-calendar-days"></i></div>
+        <h4>Installment Form</h4>
+        <p>Manage installment plans, payment schedules and installment collections.</p>
+        <span class="sc-btn purple-btn">Manage Installments <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
+    </div>
+  </section>
+
+  <div class="policies-footer-link"><a href="terms.html"><i class="fa-solid fa-file-shield"></i> Policies</a></div>
+</main>
+
+<script src="admin.js"></script>
+</body>
+</html>

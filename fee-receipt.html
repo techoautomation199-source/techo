@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ffffff">
+<title>Fee Receipt | TECHO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="common.css">
+<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="forms.css">
+</head>
+<body>
+
+<div class="admin-topbar">
+  <span class="logo-word" style="font-size:20px;"><span>T</span><span>E</span><span>C</span><span>H</span><span>O</span></span>
+  <span class="admin-topbar-tag">FEE RECEIPT</span>
+  <a href="admin.html" class="topbar-back"><i class="fa-solid fa-arrow-left"></i> Back to Admin</a>
+</div>
+
+<main class="admin-main wide-main">
+
+  <div class="form-header-row">
+    <div>
+      <h2 class="reg-title">Fee Receipt Entry</h2>
+      <p class="reg-sub">Fill all the details to generate fee receipt</p>
+    </div>
+    <div class="form-header-actions">
+      <button type="button" class="fbtn-outline" id="btnReset">Reset</button>
+      <button type="submit" form="formReceipt" class="fbtn-solid green"><i class="fa-solid fa-print"></i> Generate Receipt</button>
+    </div>
+  </div>
+
+  <form id="formReceipt" class="reg-card">
+    <div class="form-grid-2">
+      <label>Receipt No. *<input type="text" id="rcptNo" placeholder="AUTO-GENERATE" readonly></label>
+      <label>Date *<input type="date" id="rcptDate" required></label>
+    </div>
+
+    <fieldset class="section-fieldset" style="margin-bottom:18px;">
+      <legend><i class="fa-solid fa-user"></i> विद्यार्थ्याची माहिती (Student Information)</legend>
+      <div class="mini-grid">
+        <label>Student ID (lookup) *<input type="text" id="rcptStudentId" placeholder="e.g. STU0001" required></label>
+        <label>विद्यार्थ्याचे नाव<input type="text" id="rcptName" readonly></label>
+      </div>
+      <div class="mini-grid">
+        <label>Course<input type="text" id="rcptCourse" readonly></label>
+        <label>बॅच<input type="text" id="rcptBatch" readonly></label>
+      </div>
+      <button type="button" id="btnLookup" class="fbtn-outline" style="margin-top:4px;">Fetch Student</button>
+      <button type="button" id="btnViewReceipts" class="fbtn-outline" style="margin-top:4px;">View Past Receipts</button>
+      <button type="button" id="btnDeleteStudent" class="fbtn-outline" style="margin-top:4px;color:var(--red);border-color:var(--red);">Delete Student</button>
+    </fieldset>
+
+    <div id="pastReceiptsWrap" class="detail-box" style="display:none;"></div>
+
+    <div class="form-grid-2">
+      <fieldset class="section-fieldset">
+        <legend><i class="fa-solid fa-indian-rupee-sign"></i> फीची माहिती (Fee Information)</legend>
+        <div class="mini-grid">
+          <label>एकूण कोर्स फी<input type="number" id="rcptTotal" readonly></label>
+          <label>या पावतीनुसार भरलेली रक्कम *<input type="number" id="rcptAmount" required></label>
+        </div>
+        <div class="mini-grid">
+          <label>यापूर्वी भरलेली रक्कम<input type="number" id="rcptPrevPaid" readonly></label>
+          <label>शिल्लक फी<input type="number" id="rcptBalance" readonly></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="radio-fieldset">
+        <legend><i class="fa-solid fa-credit-card"></i> पेमेंटची माहिती (Payment Information)</legend>
+        <label><input type="radio" name="rcptMethod" value="Cash" checked> Cash</label>
+        <label><input type="radio" name="rcptMethod" value="UPI"> UPI</label>
+        <label><input type="radio" name="rcptMethod" value="Bank Transfer"> Bank Transfer</label>
+        <label><input type="radio" name="rcptMethod" value="Card"> Debit/Credit Card</label>
+        <label class="branch-field">Transaction / UTR / Reference No.<input type="text" id="rcptTxn" placeholder="Enter reference number"></label>
+      </fieldset>
+    </div>
+
+    <label class="reg-full">नोंद (Remarks) <textarea id="rcptRemarks" rows="2" placeholder="Enter remarks here..."></textarea></label>
+
+    <div class="declare-box">
+      <legend>महत्त्वाच्या सूचना (Important Notes)</legend>
+      <p style="font-size:12px;color:var(--gray-text);margin:0;">
+        1. ही पावती काळजीपूर्वक जतन करावी.<br>
+        2. प्रत्येक पेमेंटनंतर नवीन पावती दिली जाईल.<br>
+        3. पावतीशिवाय पेमेंटचा दावा ग्राह्य धरला जाणार नाही.<br>
+        4. फी संबंधित सर्व अटी Refund &amp; Cancellation Policy आणि Terms &amp; Conditions नुसार लागू राहतील.
+      </p>
+    </div>
+
+    <p class="form-error" id="rcptError"></p>
+    <p class="reg-note">Submitting will record this payment and generate a receipt number.</p>
+  </form>
+
+  <div class="popup-overlay" id="popupOverlay">
+    <div class="popup-box">
+      <i class="fa-solid fa-circle-check popup-icon"></i>
+      <h3>Fee Receipt Generated!</h3>
+      <p id="popupMsg"></p>
+      <p class="popup-next">Opening Installment Form next...</p>
+    </div>
+  </div>
+
+  <div class="policies-footer-link"><a href="terms.html"><i class="fa-solid fa-file-shield"></i> Policies</a></div>
+</main>
+
+<script src="fee-receipt.js"></script>
+</body>
+</html>

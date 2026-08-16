@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ffffff">
+<title>Student Login | TECHO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="common.css">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<div class="admin-topbar">
+  <span class="logo-word" style="font-size:20px;"><span>T</span><span>E</span><span>C</span><span>H</span><span>O</span></span>
+  <span class="admin-topbar-tag">STUDENT PORTAL</span>
+  <a href="portal.html" class="topbar-back"><i class="fa-solid fa-arrow-left"></i> Portal</a>
+</div>
+
+<main class="admin-main">
+
+  <!-- ============ LOGIN ============ -->
+  <section id="screen-student-login" class="admin-screen active">
+    <h2 class="screen-title">Student Login</h2>
+    <form id="formStudentLogin" class="admin-form">
+      <label>Student ID <input type="text" id="sId" required></label>
+      <label>Password <input type="password" id="sPassword" required></label>
+      <p class="form-error" id="sLoginError"></p>
+      <button type="submit" class="admin-submit">Login</button>
+    </form>
+  </section>
+
+  <!-- ============ DASHBOARD (view only) ============ -->
+  <section id="screen-student-dash" class="admin-screen">
+    <h2 class="screen-title">Welcome, <span id="sName"></span></h2>
+    <p class="screen-sub">This is a view-only profile — for any corrections, please contact the institute.</p>
+    <div id="sDetailWrap" class="detail-box"></div>
+
+    <h3 class="sub-heading">Fee Payment History</h3>
+    <div id="sFeeWrap" class="detail-box"></div>
+
+    <h3 class="sub-heading">Installment Schedule</h3>
+    <div id="sInstWrap" class="detail-box"></div>
+
+    <button class="admin-cancel" id="btnStudentLogout">Logout</button>
+  </section>
+
+  <div class="policies-footer-link"><a href="terms.html"><i class="fa-solid fa-file-shield"></i> Policies</a></div>
+</main>
+
+<script src="student.js"></script>
+</body>
+</html>

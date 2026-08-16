@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ffffff">
+<title>Student Admission Form | TECHO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="common.css">
+<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="forms.css">
+</head>
+<body>
+
+<div class="admin-topbar">
+  <span class="logo-word" style="font-size:20px;"><span>T</span><span>E</span><span>C</span><span>H</span><span>O</span></span>
+  <span class="admin-topbar-tag">Admin Section &gt; Student Admission Form</span>
+  <a href="admin.html" class="topbar-back"><i class="fa-solid fa-arrow-left"></i> Admin</a>
+</div>
+
+<main class="admin-main wide-main">
+
+  <div class="form-header-row">
+    <div>
+      <h2 class="reg-title">STUDENT ADMISSION FORM</h2>
+      <p class="reg-sub">Please fill all the details carefully. All fields marked with * are required.</p>
+    </div>
+    <div class="form-header-actions">
+      <button type="button" class="fbtn-outline" id="btnReset">Reset</button>
+      <button type="submit" form="formAdmission" class="fbtn-solid">Submit</button>
+    </div>
+  </div>
+
+  <form id="formAdmission" class="reg-card">
+
+    <label class="reg-full">प्रवेश दिनांक (Admission Date) *<input type="date" id="admDate" required></label>
+
+    <div class="form-grid-3">
+      <fieldset class="check-fieldset">
+        <legend><i class="fa-solid fa-graduation-cap"></i> कोर्सचे नाव (Course Name) *</legend>
+        <label><input type="checkbox" name="course" value="PLC Programming"> PLC Programming</label>
+        <label><input type="checkbox" name="course" value="SCADA"> SCADA</label>
+        <label><input type="checkbox" name="course" value="HMI Programming"> HMI Programming</label>
+        <label><input type="checkbox" name="course" value="VFD Programming"> VFD Programming</label>
+        <label><input type="checkbox" name="course" value="Servo Programming"> Servo Programming</label>
+        <label><input type="checkbox" name="course" value="Industrial Automation"> Industrial Automation</label>
+        <label><input type="checkbox" name="course" value="Panel Wiring"> Panel Wiring</label>
+        <label><input type="checkbox" name="course" value="Electrical Design"> Electrical Design</label>
+        <label><input type="checkbox" name="course" value="AutoCAD Electrical"> AutoCAD Electrical</label>
+      </fieldset>
+
+      <fieldset class="radio-fieldset">
+        <legend><i class="fa-solid fa-laptop"></i> प्रशिक्षण प्रकार (Training Mode) *</legend>
+        <label><input type="radio" name="mode" value="Online" checked> Online</label>
+        <label><input type="radio" name="mode" value="Offline"> Offline</label>
+      </fieldset>
+
+      <fieldset class="radio-fieldset">
+        <legend><i class="fa-solid fa-calendar-week"></i> बॅच (Batch) *</legend>
+        <label><input type="radio" name="batch" value="Weekday" checked> Weekday</label>
+        <label><input type="radio" name="batch" value="Weekend"> Weekend</label>
+      </fieldset>
+    </div>
+
+    <div class="form-grid-2">
+      <fieldset class="section-fieldset">
+        <legend><i class="fa-solid fa-user"></i> वैयक्तिक माहिती (Personal Information)</legend>
+        <label>विद्यार्थ्याचे पूर्ण नाव *<input type="text" id="stName" placeholder="Enter full name" required></label>
+        <div class="mini-grid">
+          <label>जन्मतारीख *<input type="date" id="stDob" required></label>
+          <label>वय *<input type="number" id="stAge" placeholder="Enter age" required></label>
+        </div>
+        <div class="mini-grid">
+          <label>मोबाईल क्रमांक *<input type="tel" id="stMobile" placeholder="Enter mobile number" required></label>
+          <label>WhatsApp क्रमांक <input type="tel" id="stWhatsapp" placeholder="Enter WhatsApp number"></label>
+        </div>
+        <div class="mini-grid">
+          <label>ई-मेल *<input type="email" id="stEmail" placeholder="Enter email address" required></label>
+          <label>आधार क्रमांक *<input type="text" id="stAadhaar" placeholder="Enter Aadhar number" required></label>
+        </div>
+        <label>PAN क्रमांक (असल्यास) <input type="text" id="stPan" placeholder="Enter PAN number"></label>
+      </fieldset>
+
+      <fieldset class="section-fieldset">
+        <legend><i class="fa-solid fa-location-dot"></i> कायमचा पत्ता (Permanent Address)</legend>
+        <label>घर क्रमांक *<input type="text" id="addHouse" placeholder="Enter house no." required></label>
+        <label>गाव / शहर *<input type="text" id="addCity" placeholder="Enter village / city" required></label>
+        <label>तालुका *<input type="text" id="addTaluka" placeholder="Enter taluka" required></label>
+        <label>जिल्हा *<input type="text" id="addDistrict" placeholder="Enter district" required></label>
+        <div class="mini-grid">
+          <label>राज्य *<input type="text" id="addState" placeholder="Enter state" required></label>
+          <label>पिनकोड *<input type="text" id="addPin" placeholder="Enter pincode" required></label>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="form-grid-3">
+      <fieldset class="check-fieldset">
+        <legend><i class="fa-solid fa-book"></i> शैक्षणिक माहिती (Qualification) *</legend>
+        <label><input type="checkbox" name="qualification" value="10th"> 10 वी</label>
+        <label><input type="checkbox" name="qualification" value="12th"> 12 वी</label>
+        <label><input type="checkbox" name="qualification" value="ITI"> ITI</label>
+        <label><input type="checkbox" name="qualification" value="Diploma"> Diploma</label>
+        <label><input type="checkbox" name="qualification" value="B.E."> B.E.</label>
+        <label><input type="checkbox" name="qualification" value="B.Tech"> B.Tech</label>
+        <label><input type="checkbox" name="qualification" value="Graduate"> Graduate</label>
+        <label class="branch-field">शाखा (Branch) *<input type="text" id="qualBranch" placeholder="Enter branch"></label>
+        <label class="branch-field">कॉलेज / संस्था *<input type="text" id="qualCollege" placeholder="Enter college / institute"></label>
+        <label class="branch-field">उत्तीर्ण वर्ष *<input type="text" id="qualYear" placeholder="Enter passing year"></label>
+      </fieldset>
+
+      <fieldset class="radio-fieldset">
+        <legend><i class="fa-solid fa-briefcase"></i> नोकरीची माहिती (Employment)</legend>
+        <label><input type="radio" name="employment" value="Student" checked> विद्यार्थी</label>
+        <label><input type="radio" name="employment" value="Job"> नोकरी</label>
+        <label><input type="radio" name="employment" value="Business"> व्यवसाय</label>
+        <label><input type="radio" name="employment" value="Fresher"> Fresher</label>
+        <label class="branch-field">कंपनीचे नाव <input type="text" id="empCompany" placeholder="Enter company name"></label>
+        <label class="branch-field">पद (Designation) <input type="text" id="empDesignation" placeholder="Enter designation"></label>
+      </fieldset>
+
+      <fieldset class="check-fieldset">
+        <legend><i class="fa-solid fa-file-lines"></i> ओळखपत्रे (Documents) *</legend>
+        <label><input type="checkbox" name="documents" value="Aadhaar Card"> आधार कार्ड</label>
+        <label><input type="checkbox" name="documents" value="PAN Card"> PAN कार्ड</label>
+        <label><input type="checkbox" name="documents" value="Photo"> पासपोर्ट साईज फोटो</label>
+        <label><input type="checkbox" name="documents" value="Educational Certificate"> शैक्षणिक प्रमाणपत्र</label>
+        <label><input type="checkbox" name="documents" value="Resume"> Resume</label>
+      </fieldset>
+    </div>
+
+    <div class="form-grid-2">
+      <fieldset class="section-fieldset">
+        <legend><i class="fa-solid fa-indian-rupee-sign"></i> फीची माहिती (Fee Details) *</legend>
+        <div class="mini-grid">
+          <label>एकूण फी *<input type="number" id="feeTotal" placeholder="Enter total fee" required></label>
+          <label>भरलेली फी *<input type="number" id="feePaid" placeholder="Enter paid fee" required></label>
+        </div>
+        <label>शिल्लक फी <input type="number" id="feeBalance" placeholder="Auto-calculated" readonly></label>
+        <label class="radio-fieldset-inline">
+          पेमेंट पद्धत *
+          <span><label><input type="radio" name="payMethod" value="Cash" checked> Cash</label>
+          <label><input type="radio" name="payMethod" value="UPI"> UPI</label>
+          <label><input type="radio" name="payMethod" value="Bank Transfer"> Bank Transfer</label>
+          <label><input type="radio" name="payMethod" value="Card"> Card</label></span>
+        </label>
+        <label>Transaction ID <input type="text" id="feeTxn" placeholder="Enter transaction ID"></label>
+      </fieldset>
+
+      <fieldset class="section-fieldset">
+        <legend><i class="fa-solid fa-phone-volume"></i> आपत्कालीन संपर्क (Emergency Contact)</legend>
+        <label>नाव *<input type="text" id="emName" placeholder="Enter contact name" required></label>
+        <label>नाते *<input type="text" id="emRelation" placeholder="Enter relation" required></label>
+        <label>मोबाईल क्रमांक *<input type="tel" id="emMobile" placeholder="Enter mobile number" required></label>
+      </fieldset>
+    </div>
+
+    <p class="form-error" id="admError"></p>
+    <p class="reg-note">Submitting this form will generate a Student ID and Password, and email them to the student.</p>
+  </form>
+
+  <div class="popup-overlay" id="popupOverlay">
+    <div class="popup-box">
+      <i class="fa-solid fa-circle-check popup-icon"></i>
+      <h3>Admission Form Submitted!</h3>
+      <p id="popupMsg"></p>
+      <p class="popup-next">Opening Fee Receipt next...</p>
+    </div>
+  </div>
+
+  <div class="policies-footer-link"><a href="terms.html"><i class="fa-solid fa-file-shield"></i> Policies</a></div>
+</main>
+
+<script src="student-admission.js"></script>
+</body>
+</html>
