@@ -23,12 +23,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('sName').textContent = result.FullName;
     document.getElementById('sDetailWrap').innerHTML =
-      row('Student ID', result.StudentID) + row('Course', result.Course) + row('Batch', result.Batch) +
-      row('Mobile', result.Mobile) + row('Admission Date', result.AdmissionDate) +
-      row('Total Fee', '₹' + result.TotalFee) + row('Paid Fee', '₹' + result.PaidFee) +
-      row('Pending Fee', '₹' + result.PendingFee) + row('Course Status', result.CourseStatus);
+      row('Student ID', result.StudentID) + irow('course_name', 'Course', result.Course) + irow('batch', 'Batch', result.Batch) +
+      irow('mobile', 'Mobile', result.Mobile) + irow('admission_date', 'Admission Date', result.AdmissionDate) +
+      irow('total_fee', 'Total Fee', '₹' + result.TotalFee) + irow('paid_fee', 'Paid Fee', '₹' + result.PaidFee) +
+      irow('balance_fee', 'Pending Fee', '₹' + result.PendingFee) + irow('course_status', 'Course Status', result.CourseStatus);
 
     loadFeeAndInstallment(result.StudentID);
+    if (window.techoApplyLang) techoApplyLang(localStorage.getItem('techoLang') || 'en');
 
     document.getElementById('screen-student-login').classList.remove('active');
     document.getElementById('screen-student-dash').classList.add('active');
@@ -66,5 +67,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function row(label, val) {
     return '<div class="d-row"><span>' + label + '</span><span>' + val + '</span></div>';
+  }
+  function irow(key, fallbackLabel, val) {
+    return '<div class="d-row"><span data-i18n="' + key + '">' + fallbackLabel + '</span><span>' + val + '</span></div>';
   }
 });

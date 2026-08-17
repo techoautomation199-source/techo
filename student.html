@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="common.css">
 <link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="forms.css">
 </head>
 <body>
 
@@ -36,6 +37,11 @@
   <!-- ============ DASHBOARD (view only) ============ -->
   <section id="screen-student-dash" class="admin-screen">
     <h2 class="screen-title">Welcome, <span id="sName"></span></h2>
+    <div class="lang-toggle-bar" id="langToggleBar" style="margin-bottom:16px;">
+      <button type="button" class="lang-toggle-btn" data-lang="en">English</button>
+      <button type="button" class="lang-toggle-btn" data-lang="mr">मराठी</button>
+      <button type="button" class="lang-toggle-btn" data-lang="hi">हिंदी</button>
+    </div>
     <p class="screen-sub">This is a view-only profile — for any corrections, please contact the institute.</p>
     <div id="sDetailWrap" class="detail-box"></div>
 
@@ -51,6 +57,7 @@
   <div class="policies-footer-link"><a href="terms.html"><i class="fa-solid fa-file-shield"></i> Policies</a></div>
 </main>
 
+<script src="i18n.js"></script>
 <script src="student.js"></script>
 </body>
 </html>

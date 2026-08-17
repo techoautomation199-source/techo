@@ -27,10 +27,15 @@
     <div>
       <h2 class="reg-title">STUDENT ADMISSION FORM</h2>
       <p class="reg-sub">Please fill all the details carefully. All fields marked with * are required.</p>
+      <div class="lang-toggle-bar" id="langToggleBar">
+        <button type="button" class="lang-toggle-btn" data-lang="en">English</button>
+        <button type="button" class="lang-toggle-btn" data-lang="mr">मराठी</button>
+        <button type="button" class="lang-toggle-btn" data-lang="hi">हिंदी</button>
+      </div>
     </div>
     <div class="form-header-actions">
-      <button type="button" class="fbtn-outline" id="btnReset">Reset</button>
-      <button type="submit" form="formAdmission" class="fbtn-solid">Submit</button>
+      <button type="button" class="fbtn-outline" id="btnReset" data-i18n="reset">Reset</button>
+      <button type="submit" form="formAdmission" class="fbtn-solid" data-i18n="submit">Submit</button>
     </div>
   </div>
 
@@ -40,7 +45,7 @@
 
     <div class="form-grid-3">
       <fieldset class="check-fieldset">
-        <legend><i class="fa-solid fa-graduation-cap"></i> कोर्सचे नाव (Course Name) *</legend>
+        <legend><i class="fa-solid fa-graduation-cap"></i> <span data-i18n="course_name">कोर्सचे नाव (Course Name) *</span></legend>
         <label><input type="checkbox" name="course" value="PLC Programming"> PLC Programming</label>
         <label><input type="checkbox" name="course" value="SCADA"> SCADA</label>
         <label><input type="checkbox" name="course" value="HMI Programming"> HMI Programming</label>
@@ -53,13 +58,13 @@
       </fieldset>
 
       <fieldset class="radio-fieldset">
-        <legend><i class="fa-solid fa-laptop"></i> प्रशिक्षण प्रकार (Training Mode) *</legend>
+        <legend><i class="fa-solid fa-laptop"></i> <span data-i18n="training_mode">प्रशिक्षण प्रकार (Training Mode) *</span></legend>
         <label><input type="radio" name="mode" value="Online" checked> Online</label>
         <label><input type="radio" name="mode" value="Offline"> Offline</label>
       </fieldset>
 
       <fieldset class="radio-fieldset">
-        <legend><i class="fa-solid fa-calendar-week"></i> बॅच (Batch) *</legend>
+        <legend><i class="fa-solid fa-calendar-week"></i> <span data-i18n="batch">बॅच (Batch) *</span></legend>
         <label><input type="radio" name="batch" value="Weekday" checked> Weekday</label>
         <label><input type="radio" name="batch" value="Weekend"> Weekend</label>
       </fieldset>
@@ -67,7 +72,7 @@
 
     <div class="form-grid-2">
       <fieldset class="section-fieldset">
-        <legend><i class="fa-solid fa-user"></i> वैयक्तिक माहिती (Personal Information)</legend>
+        <legend><i class="fa-solid fa-user"></i> <span data-i18n="personal_info">वैयक्तिक माहिती (Personal Information)</span></legend>
         <label>विद्यार्थ्याचे पूर्ण नाव *<input type="text" id="stName" placeholder="Enter full name" required></label>
         <div class="mini-grid">
           <label>जन्मतारीख *<input type="date" id="stDob" required></label>
@@ -85,7 +90,7 @@
       </fieldset>
 
       <fieldset class="section-fieldset">
-        <legend><i class="fa-solid fa-location-dot"></i> कायमचा पत्ता (Permanent Address)</legend>
+        <legend><i class="fa-solid fa-location-dot"></i> <span data-i18n="permanent_address">कायमचा पत्ता (Permanent Address)</span></legend>
         <label>घर क्रमांक *<input type="text" id="addHouse" placeholder="Enter house no." required></label>
         <label>गाव / शहर *<input type="text" id="addCity" placeholder="Enter village / city" required></label>
         <label>तालुका *<input type="text" id="addTaluka" placeholder="Enter taluka" required></label>
@@ -99,7 +104,7 @@
 
     <div class="form-grid-3">
       <fieldset class="check-fieldset">
-        <legend><i class="fa-solid fa-book"></i> शैक्षणिक माहिती (Qualification) *</legend>
+        <legend><i class="fa-solid fa-book"></i> <span data-i18n="qualification">शैक्षणिक माहिती (Qualification) *</span></legend>
         <label><input type="checkbox" name="qualification" value="10th"> 10 वी</label>
         <label><input type="checkbox" name="qualification" value="12th"> 12 वी</label>
         <label><input type="checkbox" name="qualification" value="ITI"> ITI</label>
@@ -113,7 +118,7 @@
       </fieldset>
 
       <fieldset class="radio-fieldset">
-        <legend><i class="fa-solid fa-briefcase"></i> नोकरीची माहिती (Employment)</legend>
+        <legend><i class="fa-solid fa-briefcase"></i> <span data-i18n="employment">नोकरीची माहिती (Employment)</span></legend>
         <label><input type="radio" name="employment" value="Student" checked> विद्यार्थी</label>
         <label><input type="radio" name="employment" value="Job"> नोकरी</label>
         <label><input type="radio" name="employment" value="Business"> व्यवसाय</label>
@@ -123,7 +128,7 @@
       </fieldset>
 
       <fieldset class="check-fieldset">
-        <legend><i class="fa-solid fa-file-lines"></i> ओळखपत्रे (Documents) *</legend>
+        <legend><i class="fa-solid fa-file-lines"></i> <span data-i18n="documents">ओळखपत्रे (Documents) *</span></legend>
         <label><input type="checkbox" name="documents" value="Aadhaar Card"> आधार कार्ड</label>
         <label><input type="checkbox" name="documents" value="PAN Card"> PAN कार्ड</label>
         <label><input type="checkbox" name="documents" value="Photo"> पासपोर्ट साईज फोटो</label>
@@ -134,7 +139,7 @@
 
     <div class="form-grid-2">
       <fieldset class="section-fieldset">
-        <legend><i class="fa-solid fa-indian-rupee-sign"></i> फीची माहिती (Fee Details) *</legend>
+        <legend><i class="fa-solid fa-indian-rupee-sign"></i> <span data-i18n="fee_details">फीची माहिती (Fee Details) *</span></legend>
         <div class="mini-grid">
           <label>एकूण फी *<input type="number" id="feeTotal" placeholder="Enter total fee" required></label>
           <label>भरलेली फी *<input type="number" id="feePaid" placeholder="Enter paid fee" required></label>
@@ -151,7 +156,7 @@
       </fieldset>
 
       <fieldset class="section-fieldset">
-        <legend><i class="fa-solid fa-phone-volume"></i> आपत्कालीन संपर्क (Emergency Contact)</legend>
+        <legend><i class="fa-solid fa-phone-volume"></i> <span data-i18n="emergency_contact">आपत्कालीन संपर्क (Emergency Contact)</span></legend>
         <label>नाव *<input type="text" id="emName" placeholder="Enter contact name" required></label>
         <label>नाते *<input type="text" id="emRelation" placeholder="Enter relation" required></label>
         <label>मोबाईल क्रमांक *<input type="tel" id="emMobile" placeholder="Enter mobile number" required></label>
@@ -174,6 +179,7 @@
   <div class="policies-footer-link"><a href="terms.html"><i class="fa-solid fa-file-shield"></i> Policies</a></div>
 </main>
 
+<script src="i18n.js"></script>
 <script src="student-admission.js"></script>
 </body>
 </html>

@@ -27,10 +27,15 @@
     <div>
       <h2 class="reg-title">Fee Receipt Entry</h2>
       <p class="reg-sub">Fill all the details to generate fee receipt</p>
+      <div class="lang-toggle-bar" id="langToggleBar">
+        <button type="button" class="lang-toggle-btn" data-lang="en">English</button>
+        <button type="button" class="lang-toggle-btn" data-lang="mr">मराठी</button>
+        <button type="button" class="lang-toggle-btn" data-lang="hi">हिंदी</button>
+      </div>
     </div>
     <div class="form-header-actions">
-      <button type="button" class="fbtn-outline" id="btnReset">Reset</button>
-      <button type="submit" form="formReceipt" class="fbtn-solid green"><i class="fa-solid fa-print"></i> Generate Receipt</button>
+      <button type="button" class="fbtn-outline" id="btnReset" data-i18n="reset">Reset</button>
+      <button type="submit" form="formReceipt" class="fbtn-solid green"><i class="fa-solid fa-print"></i> <span data-i18n="submit">Generate Receipt</span></button>
     </div>
   </div>
 
@@ -41,7 +46,7 @@
     </div>
 
     <fieldset class="section-fieldset" style="margin-bottom:18px;">
-      <legend><i class="fa-solid fa-user"></i> विद्यार्थ्याची माहिती (Student Information)</legend>
+      <legend><i class="fa-solid fa-user"></i> <span data-i18n="student_info">विद्यार्थ्याची माहिती (Student Information)</span></legend>
       <div class="mini-grid">
         <label>Student ID (lookup) *<input type="text" id="rcptStudentId" placeholder="e.g. STU0001" required></label>
         <label>विद्यार्थ्याचे नाव<input type="text" id="rcptName" readonly></label>
@@ -59,7 +64,7 @@
 
     <div class="form-grid-2">
       <fieldset class="section-fieldset">
-        <legend><i class="fa-solid fa-indian-rupee-sign"></i> फीची माहिती (Fee Information)</legend>
+        <legend><i class="fa-solid fa-indian-rupee-sign"></i> <span data-i18n="fee_info">फीची माहिती (Fee Information)</span></legend>
         <div class="mini-grid">
           <label>एकूण कोर्स फी<input type="number" id="rcptTotal" readonly></label>
           <label>या पावतीनुसार भरलेली रक्कम *<input type="number" id="rcptAmount" required></label>
@@ -71,7 +76,7 @@
       </fieldset>
 
       <fieldset class="radio-fieldset">
-        <legend><i class="fa-solid fa-credit-card"></i> पेमेंटची माहिती (Payment Information)</legend>
+        <legend><i class="fa-solid fa-credit-card"></i> <span data-i18n="payment_info">पेमेंटची माहिती (Payment Information)</span></legend>
         <label><input type="radio" name="rcptMethod" value="Cash" checked> Cash</label>
         <label><input type="radio" name="rcptMethod" value="UPI"> UPI</label>
         <label><input type="radio" name="rcptMethod" value="Bank Transfer"> Bank Transfer</label>
@@ -108,6 +113,7 @@
   <div class="policies-footer-link"><a href="terms.html"><i class="fa-solid fa-file-shield"></i> Policies</a></div>
 </main>
 
+<script src="i18n.js"></script>
 <script src="fee-receipt.js"></script>
 </body>
 </html>

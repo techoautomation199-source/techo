@@ -55,6 +55,19 @@ function sheetRows(name) {
   return values.slice(1).map(function (row) {
     const obj = {};
     headers.forEach(function (h, i) { obj[h] = row[i]; });
+
+    // also expose canonical alias keys (e.g. obj.Phone works even if the
+    // actual header was "Mobile") so downstream code never breaks on
+    // header-name variations.
+    headers.forEach(function (h, i) {
+      const key = h.toLowerCase().replace(/\s+/g, '');
+      for (const canonical in HEADER_ALIASES) {
+        if (HEADER_ALIASES[canonical].indexOf(key) !== -1) {
+          const capitalized = canonical.charAt(0).toUpperCase() + canonical.slice(1);
+          if (!(capitalized in obj)) obj[capitalized] = row[i];
+        }
+      }
+    });
     return obj;
   });
 }
@@ -64,14 +77,40 @@ function sheetRows(name) {
    works correctly no matter what order the columns are in on the sheet,
    and is tolerant of extra spaces or different capitalization in the
    header text, instead of assuming an exact fixed A,B,C... order. */
+/* Appends a row built from a {header: value} object, placing each value
+   into the column that actually has that header text in Row 1 — this
+   works correctly no matter what order the columns are in on the sheet,
+   and is tolerant of extra spaces, different capitalization, or a few
+   common alternate names, instead of assuming an exact fixed A,B,C...
+   order or exact header spelling. */
+const HEADER_ALIASES = {
+  'phone': ['phone', 'mobile', 'phonenumber', 'mobilenumber'],
+  'role': ['role', 'designation'],
+  'whatsapp': ['whatsapp', 'whatsappnumber'],
+  'aadhaar': ['aadhaar', 'aadhar', 'aadharnumber', 'aadhaarnumber'],
+  'pan': ['pan', 'pannumber'],
+  'address': ['address', 'permanentaddress'],
+  'createdby': ['createdby', 'created by'],
+  'createddate': ['createddate', 'created date']
+};
+
 function appendRowByHeaders(sheetName, dataObj) {
   const sheet = getSheet(sheetName);
   const rawHeaders = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
   const lookup = {};
   Object.keys(dataObj).forEach(function (k) { lookup[k.toLowerCase().trim()] = dataObj[k]; });
+
   const row = rawHeaders.map(function (h) {
-    const key = String(h).toLowerCase().trim();
-    return Object.prototype.hasOwnProperty.call(lookup, key) ? lookup[key] : '';
+    const key = String(h).toLowerCase().replace(/\s+/g, '').trim();
+    if (Object.prototype.hasOwnProperty.call(lookup, key)) return lookup[key];
+
+    // try alias matching (e.g. sheet says "Mobile" but data key is "phone")
+    for (const canonical in HEADER_ALIASES) {
+      if (HEADER_ALIASES[canonical].indexOf(key) !== -1 && Object.prototype.hasOwnProperty.call(lookup, canonical)) {
+        return lookup[canonical];
+      }
+    }
+    return '';
   });
   sheet.appendRow(row);
 }

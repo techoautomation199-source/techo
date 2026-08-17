@@ -87,3 +87,11 @@
   display:inline-block;margin-top:16px;background:var(--blue);color:#fff;
   padding:11px 26px;border-radius:9px;font-weight:700;font-size:13px;
 }
+
+/* ---------------- language toggle (English/Marathi/Hindi) ---------------- */
+.lang-toggle-bar{display:flex;gap:8px;margin-top:12px;}
+.lang-toggle-btn{
+  padding:6px 14px;border-radius:16px;border:1.5px solid var(--border);
+  background:#fff;font-size:11.5px;font-weight:700;color:var(--gray-text);
+}
+.lang-toggle-btn.active{background:var(--blue);color:#fff;border-color:var(--blue);}
