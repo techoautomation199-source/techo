@@ -3,18 +3,19 @@
    -------------------------------------------------------------------------
    This is a SEPARATE Google Apps Script from the enrollment one
    (google-apps-script.gs). Deploy this under ayareomkar199@gmail.com
-   (as decided), against a NEW Google Sheet with 4 tabs:
+   (as decided), against a NEW Google Sheet with 6 tabs:
 
      1. "Admins"     — Boss & Supervisor accounts
      2. "Students"   — student records
      3. "Attendance" — daily present/logout log for Admins
      4. "FeeHistory" — every fee payment / receipt generated
      5. "Installments" — installment payment agreements
+     6. "Agreements" — student-submitted Undertaking & Declaration forms
 
    ONE-TIME SETUP:
    1. Create a new Google Sheet, name it "TECHO Admin System".
-   2. Create 4 tabs (bottom of the sheet) named EXACTLY:
-      Admins, Students, Attendance, FeeHistory
+   2. Create 6 tabs (bottom of the sheet) named EXACTLY:
+      Admins, Students, Attendance, FeeHistory, Installments, Agreements
    3. In "Admins" tab, Row 1 headers (A to N):
       AdminID | Password | FullName | PhotoURL | Phone | WhatsApp | Email |
       Aadhaar | PAN | Address | Role | CreatedBy | Status | CreatedDate
@@ -30,6 +31,9 @@
       StudentID | StudentName | Installment1Amount | Installment1Date |
       Installment2Amount | Installment2Date | Installment3Amount | Installment3Date |
       Installment4Amount | Installment4Date | AuthorizedBy | Date
+   8. In "Agreements" tab, Row 1 headers (A to I):
+      StudentID | FormType | FullName | Course | Address | Place |
+      Signature | ParentName | ParentSignature | Date
    7. Extensions -> Apps Script -> paste this whole file -> Save.
    8. Deploy -> New deployment -> Web app -> Execute as: Me,
       Who has access: Anyone -> Deploy -> copy the URL.
@@ -41,7 +45,8 @@ const SHEET_NAMES = {
   STUDENTS: 'Students',
   ATTENDANCE: 'Attendance',
   FEE: 'FeeHistory',
-  INSTALLMENTS: 'Installments'
+  INSTALLMENTS: 'Installments',
+  AGREEMENTS: 'Agreements'
 };
 
 function getSheet(name) {
@@ -175,6 +180,8 @@ function doPost(e) {
       case 'getFeeHistory': result = { history: getFeeHistory(data.studentId) }; break;
       case 'getInstallment': result = { installment: getInstallment(data.studentId) }; break;
       case 'deleteStudent': result = deleteStudent(data); break;
+      case 'saveAgreementForm': result = saveAgreementForm(data); break;
+      case 'getAgreementForm': result = { form: getAgreementForm(data.studentId, data.formType) }; break;
       default: result = { error: 'Unknown action' };
     }
   } catch (err) {
@@ -510,6 +517,24 @@ function getFeeHistory(studentId) {
 function getInstallment(studentId) {
   const rows = sheetRows(SHEET_NAMES.INSTALLMENTS).filter(function (r) {
     return String(r.StudentID) === String(studentId);
+  });
+  return rows.length ? rows[rows.length - 1] : null;
+}
+
+/* ---------------- STUDENT UNDERTAKING / DECLARATION AGREEMENTS ---------------- */
+function saveAgreementForm(data) {
+  appendRowByHeaders(SHEET_NAMES.AGREEMENTS, {
+    StudentID: data.studentId, FormType: data.formType, FullName: data.fullName,
+    Course: data.course, Address: data.address || '', Place: data.place || '',
+    Signature: data.signature, ParentName: data.parentName || '',
+    ParentSignature: data.parentSignature || '', Date: new Date().toLocaleString()
+  });
+  return { success: true };
+}
+
+function getAgreementForm(studentId, formType) {
+  const rows = sheetRows(SHEET_NAMES.AGREEMENTS).filter(function (r) {
+    return String(r.StudentID) === String(studentId) && String(r.FormType) === String(formType);
   });
   return rows.length ? rows[rows.length - 1] : null;
 }

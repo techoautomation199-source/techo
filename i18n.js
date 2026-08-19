@@ -134,6 +134,8 @@ const TECHO_I18N = {
   no_fee_payments: { en: 'No fee payments recorded yet.', mr: 'अद्याप कोणतीही फी नोंदवलेली नाही.', hi: 'अभी तक कोई फीस भुगतान दर्ज नहीं है.' },
   no_installment_agreement: { en: 'No installment agreement on file.', mr: 'कोणताही हप्ता करार नोंदवलेला नाही.', hi: 'कोई किस्त समझौता दर्ज नहीं है.' },
   receipt_label: { en: 'Receipt', mr: 'पावती', hi: 'रसीद' },
+  student_undertaking_heading: { en: 'Student Undertaking', mr: 'विद्यार्थी हमीपत्र', hi: 'छात्र वचन पत्र' },
+  student_declaration_heading: { en: 'Student Declaration Form', mr: 'विद्यार्थी घोषणा पत्र', hi: 'छात्र घोषणा पत्र' },
 
   // ---- buttons / misc ----
   reset: { en: 'Reset', mr: 'रीसेट', hi: 'रीसेट' },

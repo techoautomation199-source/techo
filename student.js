@@ -32,6 +32,10 @@ document.addEventListener('DOMContentLoaded', function () {
     await loadFeeAndInstallment(result.StudentID);
     if (window.techoApplyLang) techoApplyLang(localStorage.getItem('techoLang') || 'en');
 
+    if (window.techoRenderAgreements) {
+      techoRenderAgreements({ StudentID: result.StudentID, FullName: result.FullName, Course: result.Course });
+    }
+
     document.getElementById('screen-student-login').classList.remove('active');
     document.getElementById('screen-student-dash').classList.add('active');
   });

@@ -21,6 +21,20 @@ html,body{
   flex:1;max-width:1100px;margin:0 auto;padding:50px 24px 60px;text-align:center;position:relative;z-index:1;
 }
 
+.portal-home-btn{
+  position:fixed;top:20px;left:20px;z-index:5;
+  display:inline-flex;align-items:center;gap:8px;
+  background:#fff;color:var(--dark);border:1px solid var(--border);
+  padding:10px 16px;border-radius:10px;font-weight:700;font-size:13px;
+  box-shadow:0 4px 16px rgba(20,30,60,0.08);text-decoration:none;
+}
+.portal-home-btn:hover{background:var(--blue);color:#fff;border-color:var(--blue);}
+.portal-home-btn i{font-size:13px;}
+
+@media (max-width:640px){
+  .portal-home-btn{top:12px;left:12px;padding:8px 12px;font-size:12px;}
+}
+
 .portal-logo-row{display:flex;flex-direction:column;align-items:flex-start;margin-bottom:34px;}
 .portal-logo{font-size:32px;}
 .portal-logo-sub{font-size:9px;letter-spacing:1px;color:var(--gray-text);font-weight:600;}
