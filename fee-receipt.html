@@ -25,8 +25,8 @@
 
   <div class="form-header-row">
     <div>
-      <h2 class="reg-title">Fee Receipt Entry</h2>
-      <p class="reg-sub">Fill all the details to generate fee receipt</p>
+      <h2 class="reg-title" data-i18n="fee_receipt_title">Fee Receipt Entry</h2>
+      <p class="reg-sub" data-i18n="fee_receipt_sub">Fill all the details to generate fee receipt</p>
       <div class="lang-toggle-bar" id="langToggleBar">
         <button type="button" class="lang-toggle-btn" data-lang="en">English</button>
         <button type="button" class="lang-toggle-btn" data-lang="mr">मराठी</button>
@@ -41,72 +41,72 @@
 
   <form id="formReceipt" class="reg-card">
     <div class="form-grid-2">
-      <label>Receipt No. *<input type="text" id="rcptNo" placeholder="AUTO-GENERATE" readonly></label>
-      <label>Date *<input type="date" id="rcptDate" required></label>
+      <label><span data-i18n="receipt_no">Receipt No.</span> *<input type="text" id="rcptNo" placeholder="AUTO-GENERATE" readonly></label>
+      <label><span data-i18n="date">Date</span> *<input type="date" id="rcptDate" required></label>
     </div>
 
     <fieldset class="section-fieldset" style="margin-bottom:18px;">
-      <legend><i class="fa-solid fa-user"></i> <span data-i18n="student_info">विद्यार्थ्याची माहिती (Student Information)</span></legend>
+      <legend><i class="fa-solid fa-user"></i> <span data-i18n="student_info">Student Information</span></legend>
       <div class="mini-grid">
-        <label>Student ID (lookup) *<input type="text" id="rcptStudentId" placeholder="e.g. STU0001" required></label>
-        <label>विद्यार्थ्याचे नाव<input type="text" id="rcptName" readonly></label>
+        <label><span data-i18n="student_id_lookup">Student ID (lookup)</span> *<input type="text" id="rcptStudentId" placeholder="e.g. STU0001" required></label>
+        <label><span data-i18n="student_name">Student Name</span><input type="text" id="rcptName" readonly></label>
       </div>
       <div class="mini-grid">
-        <label>Course<input type="text" id="rcptCourse" readonly></label>
-        <label>बॅच<input type="text" id="rcptBatch" readonly></label>
+        <label><span data-i18n="course">Course</span><input type="text" id="rcptCourse" readonly></label>
+        <label><span data-i18n="batch">Batch</span><input type="text" id="rcptBatch" readonly></label>
       </div>
-      <button type="button" id="btnLookup" class="fbtn-outline" style="margin-top:4px;">Fetch Student</button>
-      <button type="button" id="btnViewReceipts" class="fbtn-outline" style="margin-top:4px;">View Past Receipts</button>
-      <button type="button" id="btnDeleteStudent" class="fbtn-outline" style="margin-top:4px;color:var(--red);border-color:var(--red);">Delete Student</button>
+      <button type="button" id="btnLookup" class="fbtn-outline" style="margin-top:4px;" data-i18n="fetch_student">Fetch Student</button>
+      <button type="button" id="btnViewReceipts" class="fbtn-outline" style="margin-top:4px;" data-i18n="view_receipts">View Past Receipts</button>
+      <button type="button" id="btnDeleteStudent" class="fbtn-outline" style="margin-top:4px;color:var(--red);border-color:var(--red);" data-i18n="delete_student">Delete Student</button>
     </fieldset>
 
     <div id="pastReceiptsWrap" class="detail-box" style="display:none;"></div>
 
     <div class="form-grid-2">
       <fieldset class="section-fieldset">
-        <legend><i class="fa-solid fa-indian-rupee-sign"></i> <span data-i18n="fee_info">फीची माहिती (Fee Information)</span></legend>
+        <legend><i class="fa-solid fa-indian-rupee-sign"></i> <span data-i18n="fee_info">Fee Information</span></legend>
         <div class="mini-grid">
-          <label>एकूण कोर्स फी<input type="number" id="rcptTotal" readonly></label>
-          <label>या पावतीनुसार भरलेली रक्कम *<input type="number" id="rcptAmount" required></label>
+          <label><span data-i18n="total_course_fee">Total Course Fee</span><input type="number" id="rcptTotal" readonly></label>
+          <label><span data-i18n="amount_this_receipt">Amount as per this Receipt</span> *<input type="number" id="rcptAmount" required></label>
         </div>
         <div class="mini-grid">
-          <label>यापूर्वी भरलेली रक्कम<input type="number" id="rcptPrevPaid" readonly></label>
-          <label>शिल्लक फी<input type="number" id="rcptBalance" readonly></label>
+          <label><span data-i18n="previously_paid">Previously Paid Amount</span><input type="number" id="rcptPrevPaid" readonly></label>
+          <label><span data-i18n="balance_fee">Balance Fee</span><input type="number" id="rcptBalance" readonly></label>
         </div>
       </fieldset>
 
       <fieldset class="radio-fieldset">
-        <legend><i class="fa-solid fa-credit-card"></i> <span data-i18n="payment_info">पेमेंटची माहिती (Payment Information)</span></legend>
-        <label><input type="radio" name="rcptMethod" value="Cash" checked> Cash</label>
-        <label><input type="radio" name="rcptMethod" value="UPI"> UPI</label>
-        <label><input type="radio" name="rcptMethod" value="Bank Transfer"> Bank Transfer</label>
-        <label><input type="radio" name="rcptMethod" value="Card"> Debit/Credit Card</label>
-        <label class="branch-field">Transaction / UTR / Reference No.<input type="text" id="rcptTxn" placeholder="Enter reference number"></label>
+        <legend><i class="fa-solid fa-credit-card"></i> <span data-i18n="payment_info">Payment Information</span></legend>
+        <label><input type="radio" name="rcptMethod" value="Cash" checked> <span data-i18n="cash">Cash</span></label>
+        <label><input type="radio" name="rcptMethod" value="UPI"> <span data-i18n="upi">UPI</span></label>
+        <label><input type="radio" name="rcptMethod" value="Bank Transfer"> <span data-i18n="bank_transfer">Bank Transfer</span></label>
+        <label><input type="radio" name="rcptMethod" value="Card"> <span data-i18n="debit_credit_card">Debit/Credit Card</span></label>
+        <label class="branch-field"><span data-i18n="transaction_utr_ref">Transaction / UTR / Reference No.</span><input type="text" id="rcptTxn" placeholder="Enter reference number"></label>
       </fieldset>
     </div>
 
-    <label class="reg-full">नोंद (Remarks) <textarea id="rcptRemarks" rows="2" placeholder="Enter remarks here..."></textarea></label>
+    <label class="reg-full"><span data-i18n="remarks">Remarks</span> <textarea id="rcptRemarks" rows="2" placeholder="Enter remarks here..."></textarea></label>
 
     <div class="declare-box">
-      <legend>महत्त्वाच्या सूचना (Important Notes)</legend>
-      <p style="font-size:12px;color:var(--gray-text);margin:0;">
-        1. ही पावती काळजीपूर्वक जतन करावी.<br>
-        2. प्रत्येक पेमेंटनंतर नवीन पावती दिली जाईल.<br>
-        3. पावतीशिवाय पेमेंटचा दावा ग्राह्य धरला जाणार नाही.<br>
-        4. फी संबंधित सर्व अटी Refund &amp; Cancellation Policy आणि Terms &amp; Conditions नुसार लागू राहतील.
+      <legend data-i18n="important_notes">Important Notes</legend>
+      <p style="font-size:12px;color:var(--gray-text);margin:0;" data-i18n="fee_notes_html">
+        1. Please keep this receipt safely.<br>
+        2. A new receipt will be issued after every payment.<br>
+        3. A payment claim will not be accepted without a receipt.<br>
+        4. All fee-related terms will be governed by the Refund &amp; Cancellation Policy and Terms &amp; Conditions.
       </p>
     </div>
 
     <p class="form-error" id="rcptError"></p>
-    <p class="reg-note">Submitting will record this payment and generate a receipt number.</p>
+    <p class="reg-note" data-i18n="submitting_records_receipt">Submitting will record this payment and generate a receipt number.</p>
   </form>
 
   <div class="popup-overlay" id="popupOverlay">
     <div class="popup-box">
       <i class="fa-solid fa-circle-check popup-icon"></i>
-      <h3>Fee Receipt Generated!</h3>
+      <h3 data-i18n="receipt_generated_title">Fee Receipt Generated!</h3>
       <p id="popupMsg"></p>
-      <p class="popup-next">Opening Installment Form next...</p>
+      <p class="popup-next" data-i18n="opening_installment_next">Opening Installment Form next...</p>
     </div>
   </div>
 

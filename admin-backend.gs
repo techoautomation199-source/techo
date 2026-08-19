@@ -54,7 +54,7 @@ function sheetRows(name) {
   const headers = values[0].map(function (h) { return String(h).trim(); });
   return values.slice(1).map(function (row) {
     const obj = {};
-    headers.forEach(function (h, i) { obj[h] = row[i]; });
+    headers.forEach(function (h, i) { obj[h] = formatCellValue(row[i]); });
 
     // also expose canonical alias keys (e.g. obj.Phone works even if the
     // actual header was "Mobile") so downstream code never breaks on
@@ -64,12 +64,28 @@ function sheetRows(name) {
       for (const canonical in HEADER_ALIASES) {
         if (HEADER_ALIASES[canonical].indexOf(key) !== -1) {
           const capitalized = canonical.charAt(0).toUpperCase() + canonical.slice(1);
-          if (!(capitalized in obj)) obj[capitalized] = row[i];
+          if (!(capitalized in obj)) obj[capitalized] = formatCellValue(row[i]);
         }
       }
     });
     return obj;
   });
+}
+
+/* Google Sheets auto-detects date/time-looking text and stores it as a
+   real Date value. When that Date object is later sent back to the
+   browser, JSON.stringify() silently converts it to a raw ISO string
+   like "2026-08-19T17:55:35.000Z" (the "000Z" is milliseconds + UTC
+   marker) — this formats it into a clean, readable local string instead
+   so every screen (fee history, installment dates, admission date, etc.)
+   shows a normal date instead of that ISO timestamp. */
+function formatCellValue(val) {
+  if (Object.prototype.toString.call(val) !== '[object Date]' || isNaN(val)) return val;
+  const hasTime = val.getHours() !== 0 || val.getMinutes() !== 0 || val.getSeconds() !== 0;
+  const tz = Session.getScriptTimeZone();
+  return hasTime
+    ? Utilities.formatDate(val, tz, 'dd/MM/yyyy hh:mm a')
+    : Utilities.formatDate(val, tz, 'dd/MM/yyyy');
 }
 
 /* Appends a row built from a {header: value} object, placing each value

@@ -27,8 +27,9 @@ document.addEventListener('DOMContentLoaded', function () {
       irow('mobile', 'Mobile', result.Mobile) + irow('admission_date', 'Admission Date', result.AdmissionDate) +
       irow('total_fee', 'Total Fee', '₹' + result.TotalFee) + irow('paid_fee', 'Paid Fee', '₹' + result.PaidFee) +
       irow('balance_fee', 'Pending Fee', '₹' + result.PendingFee) + irow('course_status', 'Course Status', result.CourseStatus);
+    if (window.techoApplyLang) techoApplyLang(localStorage.getItem('techoLang') || 'en');
 
-    loadFeeAndInstallment(result.StudentID);
+    await loadFeeAndInstallment(result.StudentID);
     if (window.techoApplyLang) techoApplyLang(localStorage.getItem('techoLang') || 'en');
 
     document.getElementById('screen-student-login').classList.remove('active');
@@ -41,22 +42,23 @@ document.addEventListener('DOMContentLoaded', function () {
     const history = feeResult.history || [];
     feeWrap.innerHTML = history.length
       ? history.map(function (f) {
-          return row('Receipt ' + f.ReceiptNo, '₹' + f.Amount + ' (' + f.PaymentMethod + ', ' + f.Date + ')');
+          return irow('receipt_label', 'Receipt', f.ReceiptNo + ' — ₹' + f.Amount + ' (' + f.PaymentMethod + ', ' + f.Date + ')');
         }).join('')
-      : '<p class="screen-sub">No fee payments recorded yet.</p>';
+      : '<p class="screen-sub" data-i18n="no_fee_payments">No fee payments recorded yet.</p>';
 
     const instResult = await apiS('getInstallment', { studentId: studentId });
     const instWrap = document.getElementById('sInstWrap');
     const inst = instResult.installment;
     if (inst) {
       instWrap.innerHTML =
-        row('Installment 1', '₹' + inst.Installment1Amount + ' due ' + inst.Installment1Date) +
-        row('Installment 2', '₹' + inst.Installment2Amount + ' due ' + inst.Installment2Date) +
-        row('Installment 3', '₹' + inst.Installment3Amount + ' due ' + inst.Installment3Date) +
-        row('Installment 4', '₹' + inst.Installment4Amount + ' due ' + inst.Installment4Date);
+        irow('first', 'First', '₹' + inst.Installment1Amount + ' due ' + inst.Installment1Date) +
+        irow('second', 'Second', '₹' + inst.Installment2Amount + ' due ' + inst.Installment2Date) +
+        irow('third', 'Third', '₹' + inst.Installment3Amount + ' due ' + inst.Installment3Date) +
+        irow('fourth', 'Fourth', '₹' + inst.Installment4Amount + ' due ' + inst.Installment4Date);
     } else {
-      instWrap.innerHTML = '<p class="screen-sub">No installment agreement on file.</p>';
+      instWrap.innerHTML = '<p class="screen-sub" data-i18n="no_installment_agreement">No installment agreement on file.</p>';
     }
+    if (window.techoApplyLang) techoApplyLang(localStorage.getItem('techoLang') || 'en');
   }
 
   document.getElementById('btnStudentLogout').addEventListener('click', function () {

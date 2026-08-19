@@ -25,6 +25,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
   document.getElementById('btnLookup').addEventListener('click', fetchStudent);
 
+  // Auto-fetch as soon as the Student ID is entered — no need to wait/click separately.
+  const rcptIdInput = document.getElementById('rcptStudentId');
+  let _lastFetchedId = '';
+  rcptIdInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      fetchStudent();
+    }
+  });
+  rcptIdInput.addEventListener('blur', function () {
+    const id = rcptIdInput.value.trim();
+    if (id && id !== _lastFetchedId) fetchStudent();
+  });
+
   document.getElementById('btnViewReceipts').addEventListener('click', async function () {
     const wrap = document.getElementById('pastReceiptsWrap');
     if (!_lookedUpStudent) { document.getElementById('rcptError').textContent = 'Fetch a student first.'; return; }
@@ -67,11 +81,20 @@ document.addEventListener('DOMContentLoaded', function () {
     _lookedUpStudent = null;
   });
 
+  let _fetchInFlight = false;
   async function fetchStudent() {
     const errEl = document.getElementById('rcptError');
+    const nameEl = document.getElementById('rcptName');
+    const lookupBtn = document.getElementById('btnLookup');
     errEl.textContent = '';
     const id = document.getElementById('rcptStudentId').value.trim();
     if (!id) { errEl.textContent = 'Enter a Student ID first.'; return; }
+    if (_fetchInFlight) return; // avoid duplicate overlapping calls
+
+    _fetchInFlight = true;
+    nameEl.value = '';
+    nameEl.placeholder = 'Fetching...';
+    lookupBtn.disabled = true;
 
     let result;
     try {
@@ -79,13 +102,21 @@ document.addEventListener('DOMContentLoaded', function () {
     } catch (err) {
       errEl.textContent = 'Could not reach the server. Check that ADMIN_SCRIPT_URL_FR is set correctly in fee-receipt.js.';
       console.error(err);
+      nameEl.placeholder = '';
+      lookupBtn.disabled = false;
+      _fetchInFlight = false;
       return;
     }
+    _fetchInFlight = false;
+    lookupBtn.disabled = false;
+    nameEl.placeholder = '';
+
     const found = (result.students || []).find(function (s) { return String(s.StudentID) === id; });
     if (!found) { errEl.textContent = 'Student ID not found.'; return; }
 
+    _lastFetchedId = id;
     _lookedUpStudent = found;
-    document.getElementById('rcptName').value = found.FullName;
+    nameEl.value = found.FullName;
     document.getElementById('rcptCourse').value = found.Course;
     document.getElementById('rcptBatch').value = found.Batch;
     document.getElementById('rcptTotal').value = found.TotalFee;
@@ -103,6 +134,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('formReceipt').reset();
     document.getElementById('rcptNo').value = 'RCPT' + Date.now();
     _lookedUpStudent = null;
+    _lastFetchedId = '';
   });
 
   document.getElementById('formReceipt').addEventListener('submit', async function (e) {
@@ -127,6 +159,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('formReceipt').reset();
     document.getElementById('rcptNo').value = 'RCPT' + Date.now();
     _lookedUpStudent = null;
+    _lastFetchedId = '';
     setTimeout(function () {
       window.location.href = 'installment.html?studentId=' + encodeURIComponent(studentId);
     }, 2500);

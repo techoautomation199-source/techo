@@ -1,7 +1,7 @@
 html,body{
   background:
     linear-gradient(160deg, rgba(238,242,251,0.35) 0%, rgba(230,236,253,0.35) 40%, rgba(253,241,227,0.35) 100%),
-    url('images/portal-bg.jpg') !important;
+    url('portal-bg.jpg') !important;
   background-size:cover !important;
   background-position:center !important;
   background-repeat:no-repeat !important;

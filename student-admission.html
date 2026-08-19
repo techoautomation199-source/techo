@@ -25,8 +25,8 @@
 
   <div class="form-header-row">
     <div>
-      <h2 class="reg-title">STUDENT ADMISSION FORM</h2>
-      <p class="reg-sub">Please fill all the details carefully. All fields marked with * are required.</p>
+      <h2 class="reg-title" data-i18n="admission_form_title">STUDENT ADMISSION FORM</h2>
+      <p class="reg-sub" data-i18n="admission_form_sub">Please fill all the details carefully. All fields marked with * are required.</p>
       <div class="lang-toggle-bar" id="langToggleBar">
         <button type="button" class="lang-toggle-btn" data-lang="en">English</button>
         <button type="button" class="lang-toggle-btn" data-lang="mr">मराठी</button>
@@ -41,7 +41,7 @@
 
   <form id="formAdmission" class="reg-card">
 
-    <label class="reg-full">प्रवेश दिनांक (Admission Date) *<input type="date" id="admDate" required></label>
+    <label class="reg-full"><span data-i18n="admission_date">Admission Date</span> *<input type="date" id="admDate" required></label>
 
     <div class="form-grid-3">
       <fieldset class="check-fieldset">
@@ -72,107 +72,107 @@
 
     <div class="form-grid-2">
       <fieldset class="section-fieldset">
-        <legend><i class="fa-solid fa-user"></i> <span data-i18n="personal_info">वैयक्तिक माहिती (Personal Information)</span></legend>
-        <label>विद्यार्थ्याचे पूर्ण नाव *<input type="text" id="stName" placeholder="Enter full name" required></label>
+        <legend><i class="fa-solid fa-user"></i> <span data-i18n="personal_info">Personal Information</span></legend>
+        <label><span data-i18n="student_full_name">Student's Full Name</span> *<input type="text" id="stName" placeholder="Enter full name" required></label>
         <div class="mini-grid">
-          <label>जन्मतारीख *<input type="date" id="stDob" required></label>
-          <label>वय *<input type="number" id="stAge" placeholder="Enter age" required></label>
+          <label><span data-i18n="dob">Date of Birth</span> *<input type="date" id="stDob" required></label>
+          <label><span data-i18n="age">Age</span> *<input type="number" id="stAge" placeholder="Enter age" required></label>
         </div>
         <div class="mini-grid">
-          <label>मोबाईल क्रमांक *<input type="tel" id="stMobile" placeholder="Enter mobile number" required></label>
-          <label>WhatsApp क्रमांक <input type="tel" id="stWhatsapp" placeholder="Enter WhatsApp number"></label>
+          <label><span data-i18n="mobile">Mobile Number</span> *<input type="tel" id="stMobile" placeholder="Enter mobile number" required></label>
+          <label><span data-i18n="whatsapp">WhatsApp Number</span> <input type="tel" id="stWhatsapp" placeholder="Enter WhatsApp number"></label>
         </div>
         <div class="mini-grid">
-          <label>ई-मेल *<input type="email" id="stEmail" placeholder="Enter email address" required></label>
-          <label>आधार क्रमांक *<input type="text" id="stAadhaar" placeholder="Enter Aadhar number" required></label>
+          <label><span data-i18n="email">Email</span> *<input type="email" id="stEmail" placeholder="Enter email address" required></label>
+          <label><span data-i18n="aadhaar">Aadhaar Number</span> *<input type="text" id="stAadhaar" placeholder="Enter Aadhar number" required></label>
         </div>
-        <label>PAN क्रमांक (असल्यास) <input type="text" id="stPan" placeholder="Enter PAN number"></label>
+        <label><span data-i18n="pan_optional">PAN Number (if any)</span> <input type="text" id="stPan" placeholder="Enter PAN number"></label>
       </fieldset>
 
       <fieldset class="section-fieldset">
-        <legend><i class="fa-solid fa-location-dot"></i> <span data-i18n="permanent_address">कायमचा पत्ता (Permanent Address)</span></legend>
-        <label>घर क्रमांक *<input type="text" id="addHouse" placeholder="Enter house no." required></label>
-        <label>गाव / शहर *<input type="text" id="addCity" placeholder="Enter village / city" required></label>
-        <label>तालुका *<input type="text" id="addTaluka" placeholder="Enter taluka" required></label>
-        <label>जिल्हा *<input type="text" id="addDistrict" placeholder="Enter district" required></label>
+        <legend><i class="fa-solid fa-location-dot"></i> <span data-i18n="permanent_address">Permanent Address</span></legend>
+        <label><span data-i18n="house_no">House No.</span> *<input type="text" id="addHouse" placeholder="Enter house no." required></label>
+        <label><span data-i18n="village_city">Village / City</span> *<input type="text" id="addCity" placeholder="Enter village / city" required></label>
+        <label><span data-i18n="taluka">Taluka</span> *<input type="text" id="addTaluka" placeholder="Enter taluka" required></label>
+        <label><span data-i18n="district">District</span> *<input type="text" id="addDistrict" placeholder="Enter district" required></label>
         <div class="mini-grid">
-          <label>राज्य *<input type="text" id="addState" placeholder="Enter state" required></label>
-          <label>पिनकोड *<input type="text" id="addPin" placeholder="Enter pincode" required></label>
+          <label><span data-i18n="state">State</span> *<input type="text" id="addState" placeholder="Enter state" required></label>
+          <label><span data-i18n="pincode">Pincode</span> *<input type="text" id="addPin" placeholder="Enter pincode" required></label>
         </div>
       </fieldset>
     </div>
 
     <div class="form-grid-3">
       <fieldset class="check-fieldset">
-        <legend><i class="fa-solid fa-book"></i> <span data-i18n="qualification">शैक्षणिक माहिती (Qualification) *</span></legend>
-        <label><input type="checkbox" name="qualification" value="10th"> 10 वी</label>
-        <label><input type="checkbox" name="qualification" value="12th"> 12 वी</label>
+        <legend><i class="fa-solid fa-book"></i> <span data-i18n="qualification">Qualification</span> *</legend>
+        <label><input type="checkbox" name="qualification" value="10th"> <span data-i18n="tenth">10th</span></label>
+        <label><input type="checkbox" name="qualification" value="12th"> <span data-i18n="twelfth">12th</span></label>
         <label><input type="checkbox" name="qualification" value="ITI"> ITI</label>
         <label><input type="checkbox" name="qualification" value="Diploma"> Diploma</label>
         <label><input type="checkbox" name="qualification" value="B.E."> B.E.</label>
         <label><input type="checkbox" name="qualification" value="B.Tech"> B.Tech</label>
         <label><input type="checkbox" name="qualification" value="Graduate"> Graduate</label>
-        <label class="branch-field">शाखा (Branch) *<input type="text" id="qualBranch" placeholder="Enter branch"></label>
-        <label class="branch-field">कॉलेज / संस्था *<input type="text" id="qualCollege" placeholder="Enter college / institute"></label>
-        <label class="branch-field">उत्तीर्ण वर्ष *<input type="text" id="qualYear" placeholder="Enter passing year"></label>
+        <label class="branch-field"><span data-i18n="branch">Branch</span> *<input type="text" id="qualBranch" placeholder="Enter branch"></label>
+        <label class="branch-field"><span data-i18n="college_institute">College / Institute</span> *<input type="text" id="qualCollege" placeholder="Enter college / institute"></label>
+        <label class="branch-field"><span data-i18n="passing_year">Passing Year</span> *<input type="text" id="qualYear" placeholder="Enter passing year"></label>
       </fieldset>
 
       <fieldset class="radio-fieldset">
-        <legend><i class="fa-solid fa-briefcase"></i> <span data-i18n="employment">नोकरीची माहिती (Employment)</span></legend>
-        <label><input type="radio" name="employment" value="Student" checked> विद्यार्थी</label>
-        <label><input type="radio" name="employment" value="Job"> नोकरी</label>
-        <label><input type="radio" name="employment" value="Business"> व्यवसाय</label>
+        <legend><i class="fa-solid fa-briefcase"></i> <span data-i18n="employment">Employment</span></legend>
+        <label><input type="radio" name="employment" value="Student" checked> <span data-i18n="role_student">Student</span></label>
+        <label><input type="radio" name="employment" value="Job"> <span data-i18n="role_job">Job</span></label>
+        <label><input type="radio" name="employment" value="Business"> <span data-i18n="role_business">Business</span></label>
         <label><input type="radio" name="employment" value="Fresher"> Fresher</label>
-        <label class="branch-field">कंपनीचे नाव <input type="text" id="empCompany" placeholder="Enter company name"></label>
-        <label class="branch-field">पद (Designation) <input type="text" id="empDesignation" placeholder="Enter designation"></label>
+        <label class="branch-field"><span data-i18n="company_name">Company Name</span> <input type="text" id="empCompany" placeholder="Enter company name"></label>
+        <label class="branch-field"><span data-i18n="designation">Designation</span> <input type="text" id="empDesignation" placeholder="Enter designation"></label>
       </fieldset>
 
       <fieldset class="check-fieldset">
-        <legend><i class="fa-solid fa-file-lines"></i> <span data-i18n="documents">ओळखपत्रे (Documents) *</span></legend>
-        <label><input type="checkbox" name="documents" value="Aadhaar Card"> आधार कार्ड</label>
-        <label><input type="checkbox" name="documents" value="PAN Card"> PAN कार्ड</label>
-        <label><input type="checkbox" name="documents" value="Photo"> पासपोर्ट साईज फोटो</label>
-        <label><input type="checkbox" name="documents" value="Educational Certificate"> शैक्षणिक प्रमाणपत्र</label>
+        <legend><i class="fa-solid fa-file-lines"></i> <span data-i18n="documents">Documents</span> *</legend>
+        <label><input type="checkbox" name="documents" value="Aadhaar Card"> <span data-i18n="aadhaar_card">Aadhaar Card</span></label>
+        <label><input type="checkbox" name="documents" value="PAN Card"> <span data-i18n="pan_card">PAN Card</span></label>
+        <label><input type="checkbox" name="documents" value="Photo"> <span data-i18n="passport_photo">Passport Size Photo</span></label>
+        <label><input type="checkbox" name="documents" value="Educational Certificate"> <span data-i18n="educational_certificate">Educational Certificate</span></label>
         <label><input type="checkbox" name="documents" value="Resume"> Resume</label>
       </fieldset>
     </div>
 
     <div class="form-grid-2">
       <fieldset class="section-fieldset">
-        <legend><i class="fa-solid fa-indian-rupee-sign"></i> <span data-i18n="fee_details">फीची माहिती (Fee Details) *</span></legend>
+        <legend><i class="fa-solid fa-indian-rupee-sign"></i> <span data-i18n="fee_details">Fee Details</span> *</legend>
         <div class="mini-grid">
-          <label>एकूण फी *<input type="number" id="feeTotal" placeholder="Enter total fee" required></label>
-          <label>भरलेली फी *<input type="number" id="feePaid" placeholder="Enter paid fee" required></label>
+          <label><span data-i18n="total_fee">Total Fee</span> *<input type="number" id="feeTotal" placeholder="Enter total fee" required></label>
+          <label><span data-i18n="paid_fee">Paid Fee</span> *<input type="number" id="feePaid" placeholder="Enter paid fee" required></label>
         </div>
-        <label>शिल्लक फी <input type="number" id="feeBalance" placeholder="Auto-calculated" readonly></label>
+        <label><span data-i18n="balance_fee">Balance Fee</span> <input type="number" id="feeBalance" placeholder="Auto-calculated" readonly></label>
         <label class="radio-fieldset-inline">
-          पेमेंट पद्धत *
+          <span data-i18n="payment_method">Payment Method</span> *
           <span><label><input type="radio" name="payMethod" value="Cash" checked> Cash</label>
           <label><input type="radio" name="payMethod" value="UPI"> UPI</label>
           <label><input type="radio" name="payMethod" value="Bank Transfer"> Bank Transfer</label>
           <label><input type="radio" name="payMethod" value="Card"> Card</label></span>
         </label>
-        <label>Transaction ID <input type="text" id="feeTxn" placeholder="Enter transaction ID"></label>
+        <label><span data-i18n="transaction_id">Transaction ID</span> <input type="text" id="feeTxn" placeholder="Enter transaction ID"></label>
       </fieldset>
 
       <fieldset class="section-fieldset">
-        <legend><i class="fa-solid fa-phone-volume"></i> <span data-i18n="emergency_contact">आपत्कालीन संपर्क (Emergency Contact)</span></legend>
-        <label>नाव *<input type="text" id="emName" placeholder="Enter contact name" required></label>
-        <label>नाते *<input type="text" id="emRelation" placeholder="Enter relation" required></label>
-        <label>मोबाईल क्रमांक *<input type="tel" id="emMobile" placeholder="Enter mobile number" required></label>
+        <legend><i class="fa-solid fa-phone-volume"></i> <span data-i18n="emergency_contact">Emergency Contact</span></legend>
+        <label><span data-i18n="contact_name">Name</span> *<input type="text" id="emName" placeholder="Enter contact name" required></label>
+        <label><span data-i18n="relation">Relation</span> *<input type="text" id="emRelation" placeholder="Enter relation" required></label>
+        <label><span data-i18n="mobile">Mobile Number</span> *<input type="tel" id="emMobile" placeholder="Enter mobile number" required></label>
       </fieldset>
     </div>
 
     <p class="form-error" id="admError"></p>
-    <p class="reg-note">Submitting this form will generate a Student ID and Password, and email them to the student.</p>
+    <p class="reg-note" data-i18n="admission_note">Submitting this form will generate a Student ID and Password, and email them to the student.</p>
   </form>
 
   <div class="popup-overlay" id="popupOverlay">
     <div class="popup-box">
       <i class="fa-solid fa-circle-check popup-icon"></i>
-      <h3>Admission Form Submitted!</h3>
+      <h3 data-i18n="admission_submitted_title">Admission Form Submitted!</h3>
       <p id="popupMsg"></p>
-      <p class="popup-next">Opening Fee Receipt next...</p>
+      <p class="popup-next" data-i18n="opening_fee_receipt_next">Opening Fee Receipt next...</p>
     </div>
   </div>
 
