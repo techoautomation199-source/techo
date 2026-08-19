@@ -1,4 +1,13 @@
-html,body{background:linear-gradient(160deg, #eef2fb 0%, #e6ecfd 40%, #fdf1e3 100%) !important;min-height:100vh;}
+html,body{
+  background:
+    linear-gradient(160deg, rgba(238,242,251,0.35) 0%, rgba(230,236,253,0.35) 40%, rgba(253,241,227,0.35) 100%),
+    url('images/portal-bg.jpg') !important;
+  background-size:cover !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+  background-attachment:fixed !important;
+  min-height:100vh;
+}
 
 .admin-topbar{
   background:linear-gradient(90deg, #1e4fd8, #8e3fc4);
