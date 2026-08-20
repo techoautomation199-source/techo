@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#ffffff">
-<title>Student Admission Form | TECHO</title>
+<title>Trainee Admission Form | TECHO</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -17,7 +17,7 @@
 
 <div class="admin-topbar">
   <span class="logo-word" style="font-size:20px;"><span>T</span><span>E</span><span>C</span><span>H</span><span>O</span></span>
-  <span class="admin-topbar-tag">Admin Section &gt; Student Admission Form</span>
+  <span class="admin-topbar-tag">Admin Section &gt; Trainee Admission Form</span>
   <a href="admin.html" class="topbar-back"><i class="fa-solid fa-arrow-left"></i> Admin</a>
 </div>
 
@@ -25,7 +25,7 @@
 
   <div class="form-header-row">
     <div>
-      <h2 class="reg-title" data-i18n="admission_form_title">STUDENT ADMISSION FORM</h2>
+      <h2 class="reg-title" data-i18n="admission_form_title">TRAINEE ADMISSION FORM</h2>
       <p class="reg-sub" data-i18n="admission_form_sub">Please fill all the details carefully. All fields marked with * are required.</p>
       <div class="lang-toggle-bar" id="langToggleBar">
         <button type="button" class="lang-toggle-btn" data-lang="en">English</button>
@@ -45,7 +45,7 @@
 
     <div class="form-grid-3">
       <fieldset class="check-fieldset">
-        <legend><i class="fa-solid fa-graduation-cap"></i> <span data-i18n="course_name">कोर्सचे नाव (Course Name) *</span></legend>
+        <legend><i class="fa-solid fa-graduation-cap"></i> <span data-i18n="course_name">कोर्सचे नाव (Specialization Name) *</span></legend>
         <label><input type="checkbox" name="course" value="PLC Programming"> PLC Programming</label>
         <label><input type="checkbox" name="course" value="SCADA"> SCADA</label>
         <label><input type="checkbox" name="course" value="HMI Programming"> HMI Programming</label>
@@ -73,7 +73,7 @@
     <div class="form-grid-2">
       <fieldset class="section-fieldset">
         <legend><i class="fa-solid fa-user"></i> <span data-i18n="personal_info">Personal Information</span></legend>
-        <label><span data-i18n="student_full_name">Student's Full Name</span> *<input type="text" id="stName" placeholder="Enter full name" required></label>
+        <label><span data-i18n="student_full_name">Trainee's Full Name</span> *<input type="text" id="stName" placeholder="Enter full name" required></label>
         <div class="mini-grid">
           <label><span data-i18n="dob">Date of Birth</span> *<input type="date" id="stDob" required></label>
           <label><span data-i18n="age">Age</span> *<input type="number" id="stAge" placeholder="Enter age" required></label>
@@ -119,7 +119,7 @@
 
       <fieldset class="radio-fieldset">
         <legend><i class="fa-solid fa-briefcase"></i> <span data-i18n="employment">Employment</span></legend>
-        <label><input type="radio" name="employment" value="Student" checked> <span data-i18n="role_student">Student</span></label>
+        <label><input type="radio" name="employment" value="Student" checked> <span data-i18n="role_student">Trainee</span></label>
         <label><input type="radio" name="employment" value="Job"> <span data-i18n="role_job">Job</span></label>
         <label><input type="radio" name="employment" value="Business"> <span data-i18n="role_business">Business</span></label>
         <label><input type="radio" name="employment" value="Fresher"> Fresher</label>
@@ -164,7 +164,7 @@
     </div>
 
     <p class="form-error" id="admError"></p>
-    <p class="reg-note" data-i18n="admission_note">Submitting this form will generate a Student ID and Password, and email them to the student.</p>
+    <p class="reg-note" data-i18n="admission_note">Submitting this form will generate a Trainee ID and Password, and email them to the trainee.</p>
   </form>
 
   <div class="popup-overlay" id="popupOverlay">

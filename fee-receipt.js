@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   document.getElementById('btnViewReceipts').addEventListener('click', async function () {
     const wrap = document.getElementById('pastReceiptsWrap');
-    if (!_lookedUpStudent) { document.getElementById('rcptError').textContent = 'Fetch a student first.'; return; }
+    if (!_lookedUpStudent) { document.getElementById('rcptError').textContent = 'Fetch a trainee first.'; return; }
     wrap.style.display = 'block';
     wrap.innerHTML = '<p class="loading-text"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</p>';
     let result;
@@ -57,12 +57,12 @@ document.addEventListener('DOMContentLoaded', function () {
         history.map(function (f) {
           return '<div class="d-row"><span>' + f.ReceiptNo + '</span><span>₹' + f.Amount + ' (' + f.PaymentMethod + ') — ' + f.Date + '</span></div>';
         }).join('')
-      : '<p>No receipts yet for this student.</p>';
+      : '<p>No receipts yet for this trainee.</p>';
   });
 
   document.getElementById('btnDeleteStudent').addEventListener('click', async function () {
-    if (!_lookedUpStudent) { document.getElementById('rcptError').textContent = 'Fetch a student first.'; return; }
-    const bossId = prompt('Enter Boss Admin ID to delete this student:');
+    if (!_lookedUpStudent) { document.getElementById('rcptError').textContent = 'Fetch a trainee first.'; return; }
+    const bossId = prompt('Enter Boss Admin ID to delete this trainee:');
     if (bossId === null) return;
     const bossPassword = prompt('Enter Boss Password:');
     if (bossPassword === null) return;
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
     if (result.error) { alert(result.error); return; }
-    alert('Student deleted.');
+    alert('Trainee deleted.');
     document.getElementById('formReceipt').reset();
     document.getElementById('pastReceiptsWrap').style.display = 'none';
     _lookedUpStudent = null;
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const lookupBtn = document.getElementById('btnLookup');
     errEl.textContent = '';
     const id = document.getElementById('rcptStudentId').value.trim();
-    if (!id) { errEl.textContent = 'Enter a Student ID first.'; return; }
+    if (!id) { errEl.textContent = 'Enter a Trainee ID first.'; return; }
     if (_fetchInFlight) return; // avoid duplicate overlapping calls
 
     _fetchInFlight = true;
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
     nameEl.placeholder = '';
 
     const found = (result.students || []).find(function (s) { return String(s.StudentID) === id; });
-    if (!found) { errEl.textContent = 'Student ID not found.'; return; }
+    if (!found) { errEl.textContent = 'Trainee ID not found.'; return; }
 
     _lastFetchedId = id;
     _lookedUpStudent = found;
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const errEl = document.getElementById('rcptError');
     errEl.textContent = '';
 
-    if (!_lookedUpStudent) { errEl.textContent = 'Please fetch a valid student first.'; return; }
+    if (!_lookedUpStudent) { errEl.textContent = 'Please fetch a valid trainee first.'; return; }
 
     const method = document.querySelector('input[name="rcptMethod"]:checked').value;
     const result = await apiFR('updateFee', {

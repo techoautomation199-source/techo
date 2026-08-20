@@ -46,18 +46,18 @@
     </div>
 
     <fieldset class="section-fieldset" style="margin-bottom:18px;">
-      <legend><i class="fa-solid fa-user"></i> <span data-i18n="student_info">Student Information</span></legend>
+      <legend><i class="fa-solid fa-user"></i> <span data-i18n="student_info">Trainee Information</span></legend>
       <div class="mini-grid">
-        <label><span data-i18n="student_id_lookup">Student ID (lookup)</span> *<input type="text" id="rcptStudentId" placeholder="e.g. STU0001" required></label>
-        <label><span data-i18n="student_name">Student Name</span><input type="text" id="rcptName" readonly></label>
+        <label><span data-i18n="student_id_lookup">Trainee ID (lookup)</span> *<input type="text" id="rcptStudentId" placeholder="e.g. STU0001" required></label>
+        <label><span data-i18n="student_name">Trainee Name</span><input type="text" id="rcptName" readonly></label>
       </div>
       <div class="mini-grid">
-        <label><span data-i18n="course">Course</span><input type="text" id="rcptCourse" readonly></label>
+        <label><span data-i18n="course">Specialization</span><input type="text" id="rcptCourse" readonly></label>
         <label><span data-i18n="batch">Batch</span><input type="text" id="rcptBatch" readonly></label>
       </div>
-      <button type="button" id="btnLookup" class="fbtn-outline" style="margin-top:4px;" data-i18n="fetch_student">Fetch Student</button>
+      <button type="button" id="btnLookup" class="fbtn-outline" style="margin-top:4px;" data-i18n="fetch_student">Fetch Trainee</button>
       <button type="button" id="btnViewReceipts" class="fbtn-outline" style="margin-top:4px;" data-i18n="view_receipts">View Past Receipts</button>
-      <button type="button" id="btnDeleteStudent" class="fbtn-outline" style="margin-top:4px;color:var(--red);border-color:var(--red);" data-i18n="delete_student">Delete Student</button>
+      <button type="button" id="btnDeleteStudent" class="fbtn-outline" style="margin-top:4px;color:var(--red);border-color:var(--red);" data-i18n="delete_student">Delete Trainee</button>
     </fieldset>
 
     <div id="pastReceiptsWrap" class="detail-box" style="display:none;"></div>
@@ -66,7 +66,7 @@
       <fieldset class="section-fieldset">
         <legend><i class="fa-solid fa-indian-rupee-sign"></i> <span data-i18n="fee_info">Fee Information</span></legend>
         <div class="mini-grid">
-          <label><span data-i18n="total_course_fee">Total Course Fee</span><input type="number" id="rcptTotal" readonly></label>
+          <label><span data-i18n="total_course_fee">Total Specialization Fee</span><input type="number" id="rcptTotal" readonly></label>
           <label><span data-i18n="amount_this_receipt">Amount as per this Receipt</span> *<input type="number" id="rcptAmount" required></label>
         </div>
         <div class="mini-grid">

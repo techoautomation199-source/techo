@@ -59,6 +59,54 @@
   margin:22px 0;padding:0 10px;
 }
 
+.service-request-box{
+  border:1px solid var(--border);border-radius:var(--radius);
+  padding:26px;margin:26px 0;box-shadow:var(--shadow);background:#fff;
+}
+.service-request-box h3{
+  font-size:16px;font-weight:800;color:var(--blue);margin-bottom:6px;
+  display:flex;align-items:center;gap:10px;
+}
+.service-request-box > p{font-size:13px;color:var(--gray-text);margin-bottom:16px;}
+.sr-form{display:flex;flex-direction:column;gap:14px;}
+.sr-row{display:flex;gap:14px;flex-wrap:wrap;}
+.sr-row input, .sr-form textarea{
+  flex:1;min-width:220px;border:1.5px solid var(--border);border-radius:10px;
+  padding:12px 14px;font-size:13.5px;font-family:inherit;
+}
+.sr-form textarea{resize:vertical;min-height:90px;}
+.sr-submit{
+  align-self:flex-start;display:inline-flex;align-items:center;gap:10px;
+  background:var(--blue);color:#fff;border:none;border-radius:10px;
+  padding:13px 24px;font-weight:700;font-size:13.5px;cursor:pointer;
+}
+.sr-submit:hover{background:#173da8;}
+.sr-submit:disabled{opacity:.6;cursor:not-allowed;}
+.sr-note{font-size:11.5px;color:var(--gray-text);}
+.sr-note.sr-error{color:var(--red);}
+
+/* ---------------- SERVICE REQUEST POPUP ---------------- */
+.popup-overlay{
+  position:fixed;inset:0;background:rgba(10,15,30,0.55);
+  display:none;align-items:center;justify-content:center;z-index:2000;
+  padding:20px;
+}
+.popup-overlay.show{display:flex;}
+.popup-box{
+  background:#fff;border-radius:16px;padding:36px 30px;max-width:380px;width:100%;
+  text-align:center;box-shadow:0 12px 40px rgba(0,0,0,0.25);
+  animation:popIn .25s ease;
+}
+@keyframes popIn{from{transform:scale(.85);opacity:0;}to{transform:scale(1);opacity:1;}}
+.popup-icon{font-size:48px;color:var(--green);margin-bottom:14px;}
+.popup-box h3{font-size:20px;font-weight:800;margin-bottom:10px;}
+.popup-box p{font-size:13.5px;color:var(--gray-text);}
+
+@media (max-width:640px){
+  .sr-row{flex-direction:column;}
+  .sr-submit{width:100%;justify-content:center;}
+}
+
 .freelance-box{
   display:flex;align-items:center;gap:20px;
   border:1.5px dashed var(--blue);border-radius:var(--radius);

@@ -112,6 +112,29 @@
 
   <p class="contact-any-way">For any of these services, feel free to email us, call us, or simply send a WhatsApp message — whichever is easiest for you.</p>
 
+  <div class="service-request-box" id="serviceRequestBox">
+    <h3><i class="fa-solid fa-headset"></i> REQUEST A SERVICE</h3>
+    <p>Tell us what you need and our team will call you back.</p>
+    <form id="serviceRequestForm" class="sr-form">
+      <div class="sr-row">
+        <input type="text" id="srName" placeholder="Your Name" required>
+        <input type="tel" id="srMobile" placeholder="Mobile Number" required pattern="[0-9+\-\s]{7,15}">
+      </div>
+      <textarea id="srMessage" placeholder="Tell us exactly what service you need" required rows="4"></textarea>
+      <button type="submit" class="sr-submit" id="srSubmitBtn"><i class="fa-solid fa-paper-plane"></i> SEND MESSAGE</button>
+      <p class="sr-note" id="srNote"></p>
+    </form>
+  </div>
+
+  <!-- ===================== SERVICE REQUEST SENT POPUP ===================== -->
+  <div class="popup-overlay" id="srPopupOverlay">
+    <div class="popup-box">
+      <i class="fa-solid fa-circle-check popup-icon"></i>
+      <h3>Message Sent!</h3>
+      <p>You will receive a phone call from TECHO Institute shortly.</p>
+    </div>
+  </div>
+
   <div class="trust-badges">
     <div class="trust-item"><i class="fa-solid fa-circle-check"></i><span>100% Problem Solving</span></div>
     <div class="trust-item"><i class="fa-solid fa-medal"></i><span>Good Quality Service</span></div>
@@ -132,5 +155,6 @@
 <footer class="site-footer">© 2026 TECHO Institute. All Rights Reserved.<div class="footer-links"><a href="terms.html">Policies</a></div></footer>
 
 <script src="script.js"></script>
+<script src="services.js"></script>
 </body>
 </html>

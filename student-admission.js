@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     let result;
-    if (!payload.course) { errEl.textContent = 'Please select at least one course.'; return; }
+    if (!payload.course) { errEl.textContent = 'Please select at least one specialization.'; return; }
     try {
       result = await apiSA('addStudent', payload);
     } catch (err) {
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     if (result.error) { errEl.textContent = result.error; return; }
 
-    document.getElementById('popupMsg').textContent = 'Student ID: ' + result.id + ' | Password: ' + result.password;
+    document.getElementById('popupMsg').textContent = 'Trainee ID: ' + result.id + ' | Password: ' + result.password;
     document.getElementById('popupOverlay').classList.add('show');
     document.getElementById('formAdmission').reset();
     setTimeout(function () {

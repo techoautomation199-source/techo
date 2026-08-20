@@ -21,9 +21,9 @@ async function apiAG(action, payload) {
 const TECHO_AGREEMENT_TEXT = {
 
   undertaking: {
-    heading: { en: 'Student Undertaking', mr: 'विद्यार्थी हमीपत्र', hi: 'छात्र वचन पत्र (Undertaking)' },
+    heading: { en: 'Trainee Undertaking', mr: 'विद्यार्थी हमीपत्र', hi: 'छात्र वचन पत्र (Undertaking)' },
     intro: {
-      en: 'I, %NAME%, residing at %ADDRESS%, have voluntarily taken admission at TECHO Industrial Automation in the %COURSE% course, and having agreed to the following, give this undertaking:',
+      en: 'I, %NAME%, residing at %ADDRESS%, have voluntarily taken admission at TECHO Industrial Automation in the %SPECIALIZATION% specialization, and having agreed to the following, give this undertaking:',
       mr: 'मी, %NAME%, राहणार %ADDRESS%, यांनी TECHO Industrial Automation येथे %COURSE% या कोर्समध्ये स्वेच्छेने प्रवेश घेतला असून, खालील बाबी मान्य करून हे हमीपत्र देत आहे.',
       hi: 'मैं, %NAME%, निवासी %ADDRESS%, ने TECHO Industrial Automation में %COURSE% कोर्स में स्वेच्छा से प्रवेश लिया है, और निम्नलिखित बातों को स्वीकार करते हुए यह वचन पत्र देता/देती हूं।'
     },
@@ -33,7 +33,7 @@ const TECHO_AGREEMENT_TEXT = {
         "All information given in the admission form is true, accurate and complete. If any information is found to be false, the institute has the right to cancel my admission.",
         "I will follow all the institute's rules, Terms & Conditions, Privacy Policy, Refund & Cancellation Policy, Placement Policy, Code of Conduct and other applicable rules.",
         "I will try to attend classes regularly and be punctual.",
-        "I will behave respectfully with the institute's trainers, staff and fellow students, and will not engage in any misconduct.",
+        "I will behave respectfully with the institute's trainers, staff and fellow trainees, and will not engage in any misconduct.",
         "I will not copy, share, sell or publish online any Notes, PDF, PLC Programs, SCADA Projects, HMI Projects, Videos, Software or other Study Material given by the institute.",
         "I will not make any Audio, Video or Screen Recording of any Lecture, Practical, Webinar or Training Session without the institute's permission.",
         "I will use PLC Kits, HMI, SCADA System, computers and other equipment carefully during practicals. If any damage is caused by me intentionally, I will be responsible for compensating for it.",
@@ -86,9 +86,9 @@ const TECHO_AGREEMENT_TEXT = {
   },
 
   declaration: {
-    heading: { en: 'Student Declaration Form', mr: 'विद्यार्थी घोषणा पत्र', hi: 'छात्र घोषणा पत्र (Declaration)' },
+    heading: { en: 'Trainee Declaration Form', mr: 'विद्यार्थी घोषणा पत्र', hi: 'छात्र घोषणा पत्र (Declaration)' },
     intro: {
-      en: 'I, %NAME%, am voluntarily taking admission at TECHO Industrial Automation in the %COURSE% course. I have read all the following terms and declarations completely, understood them, and I accept them.',
+      en: 'I, %NAME%, am voluntarily taking admission at TECHO Industrial Automation in the %SPECIALIZATION% specialization. I have read all the following terms and declarations completely, understood them, and I accept them.',
       mr: 'मी, %NAME%, TECHO Industrial Automation येथे %COURSE% या कोर्समध्ये स्वेच्छेने प्रवेश घेत आहे. मी खालील सर्व अटी व घोषणा पूर्णपणे वाचल्या असून त्या मला समजल्या आहेत व मी त्या मान्य करतो/करते.',
       hi: 'मैं, %NAME%, TECHO Industrial Automation में %COURSE% कोर्स में स्वेच्छा से प्रवेश ले रहा/रही हूं। मैंने निम्नलिखित सभी शर्तें और घोषणाएं पूरी तरह से पढ़ ली हैं, समझ ली हैं और उन्हें स्वीकार करता/करती हूं।'
     },
@@ -157,7 +157,7 @@ const TECHO_AGREEMENT_LABELS = {
   submitted_on: { en: 'Submitted on', mr: 'सबमिट केल्याची तारीख', hi: 'सबमिट करने की तारीख' },
   place_label: { en: 'Place', mr: 'ठिकाण', hi: 'स्थान' },
   student_signature_short: { en: 'Digital Signature — Type Full Name to Sign', mr: 'डिजिटल स्वाक्षरी — स्वाक्षरीसाठी पूर्ण नाव टाइप करा', hi: 'डिजिटल हस्ताक्षर — हस्ताक्षर हेतु पूरा नाम टाइप करें' },
-  parent_optional: { en: 'Parent / Guardian (if student is below 18 years)', mr: 'पालक / संरक्षक (18 वर्षांखालील विद्यार्थ्यांसाठी)', hi: 'अभिभावक (यदि छात्र 18 वर्ष से कम आयु का है)' },
+  parent_optional: { en: 'Parent / Guardian (if trainee is below 18 years)', mr: 'पालक / संरक्षक (18 वर्षांखालील विद्यार्थ्यांसाठी)', hi: 'अभिभावक (यदि छात्र 18 वर्ष से कम आयु का है)' },
   submit_form: { en: 'Submit', mr: 'सबमिट करा', hi: 'सबमिट करें' },
   address_label: { en: 'Your Address', mr: 'तुमचा पत्ता', hi: 'आपका पता' }
 };
@@ -194,7 +194,7 @@ function renderAgreementView(type, form) {
   html += renderAgreementPoints(type);
   html += '<p class="ag-final">' + (t.final[techoAgLang] || t.final.en) + '</p>';
   html += '<div class="ag-sign-row">';
-  html += '<div><span class="ag-k" data-i18n="student_signature">Student Digital Signature</span><span class="ag-v">' + (form.Signature || '') + '</span></div>';
+  html += '<div><span class="ag-k" data-i18n="student_signature">Trainee Digital Signature</span><span class="ag-v">' + (form.Signature || '') + '</span></div>';
   if (form.ParentName) {
     html += '<div><span class="ag-k">' + agT(TECHO_AGREEMENT_LABELS, 'parent_optional') + '</span><span class="ag-v">' + form.ParentName + (form.ParentSignature ? ' — ' + form.ParentSignature : '') + '</span></div>';
   }

@@ -42,22 +42,22 @@
   <form id="formInstallment" class="reg-card">
 
     <fieldset class="section-fieldset" style="margin-bottom:18px;">
-      <legend><i class="fa-solid fa-user"></i> <span data-i18n="student_info">Student Information</span></legend>
+      <legend><i class="fa-solid fa-user"></i> <span data-i18n="student_info">Trainee Information</span></legend>
       <div class="mini-grid">
-        <label><span data-i18n="student_id_lookup">Student ID (lookup)</span> *<input type="text" id="instStudentId" placeholder="e.g. STU0001" required></label>
-        <label><span data-i18n="student_name">Student Name</span><input type="text" id="instName" readonly></label>
+        <label><span data-i18n="student_id_lookup">Trainee ID (lookup)</span> *<input type="text" id="instStudentId" placeholder="e.g. STU0001" required></label>
+        <label><span data-i18n="student_name">Trainee Name</span><input type="text" id="instName" readonly></label>
       </div>
       <div class="mini-grid">
-        <label><span data-i18n="course">Course</span><input type="text" id="instCourse" readonly></label>
+        <label><span data-i18n="course">Specialization</span><input type="text" id="instCourse" readonly></label>
         <label><span data-i18n="mobile">Mobile Number</span><input type="text" id="instMobile" readonly></label>
       </div>
-      <button type="button" id="btnLookupInst" class="fbtn-outline" style="margin-top:4px;" data-i18n="fetch_student">Fetch Student</button>
+      <button type="button" id="btnLookupInst" class="fbtn-outline" style="margin-top:4px;" data-i18n="fetch_student">Fetch Trainee</button>
     </fieldset>
 
     <fieldset class="section-fieldset" style="margin-bottom:18px;">
       <legend><i class="fa-solid fa-indian-rupee-sign"></i> <span data-i18n="fee_info">Fee Information</span></legend>
       <div class="mini-grid">
-        <label><span data-i18n="total_course_fee">Total Course Fee</span> *<input type="number" id="instTotal" readonly></label>
+        <label><span data-i18n="total_course_fee">Total Specialization Fee</span> *<input type="number" id="instTotal" readonly></label>
         <label><span data-i18n="paid_at_admission">Fee Paid at Admission</span><input type="number" id="instPaid" readonly></label>
       </div>
       <label><span data-i18n="balance_fee">Balance Fee</span> <input type="number" id="instBalance" readonly></label>
@@ -77,7 +77,7 @@
     </fieldset>
 
     <fieldset class="declare-box">
-      <legend><span data-i18n="student_declaration">Student Declaration</span></legend>
+      <legend><span data-i18n="student_declaration">Trainee Declaration</span></legend>
       <label><input type="checkbox" required> <span data-i18n="declare_point_1">I agree to pay all installments on time as per the schedule above.</span></label>
       <label><input type="checkbox" required> <span data-i18n="declare_point_2">If any installment is paid late, the institute has the right to temporarily stop training/login/Study Material.</span></label>
       <label><input type="checkbox" required> <span data-i18n="declare_point_3">The final Certificate will not be issued until all installments are paid in full.</span></label>
@@ -86,15 +86,15 @@
 
     <div class="form-grid-3">
       <fieldset class="sign-fieldset">
-        <legend><span data-i18n="student_signature">Student Digital Signature</span></legend>
+        <legend><span data-i18n="student_signature">Trainee Digital Signature</span></legend>
         <label><span data-i18n="digital_signature_label">Digital Signature — Type Full Name to Sign</span> *<input type="text" id="signStudentDigital" placeholder="Type your full name to sign"></label>
-        <label><span data-i18n="contact_name">Name</span> *<input type="text" id="signStudentName" placeholder="Enter student name"></label>
+        <label><span data-i18n="contact_name">Name</span> *<input type="text" id="signStudentName" placeholder="Enter trainee name"></label>
         <label><span data-i18n="date">Date</span> *<input type="date" id="signDate"></label>
         <div class="sign-pad"><i class="fa-solid fa-signature"></i> <span data-i18n="sign_note_student">This typed name is your official digital signature</span></div>
       </fieldset>
 
       <fieldset class="sign-fieldset">
-        <legend><span data-i18n="parent_guardian">Parent / Guardian (For students below 18 years)</span></legend>
+        <legend><span data-i18n="parent_guardian">Parent / Guardian (For trainees below 18 years)</span></legend>
         <label><span data-i18n="contact_name">Name</span><input type="text" id="signParentName" placeholder="Enter parent/guardian name"></label>
         <label><span data-i18n="mobile">Mobile Number</span><input type="tel" id="signParentMobile" placeholder="Enter mobile number"></label>
       </fieldset>
@@ -115,7 +115,7 @@
       <i class="fa-solid fa-circle-check popup-icon"></i>
       <h3 data-i18n="installment_saved_title">Installment Agreement Saved!</h3>
       <p id="popupMsg"></p>
-      <p class="popup-next" data-i18n="enrollment_complete">Enrollment complete for this student.</p>
+      <p class="popup-next" data-i18n="enrollment_complete">Enrollment complete for this trainee.</p>
       <a href="admin.html" class="popup-done-btn" data-i18n="done">Done</a>
     </div>
   </div>

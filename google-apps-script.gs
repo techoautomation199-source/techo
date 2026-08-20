@@ -37,8 +37,14 @@
    ========================================================================= */
 
 function doPost(e) {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   var data = JSON.parse(e.postData.contents);
+
+  // ---- SERVICES PAGE "Request a Service" form — email only, no sheet row ----
+  if (data.action === 'serviceRequest') {
+    return handleServiceRequest(data);
+  }
+
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
 
   sheet.appendRow([
     data.timestamp,
@@ -76,6 +82,29 @@ function doPost(e) {
     Logger.log('Email send failed: ' + mailErr);
   }
 
+  return ContentService
+    .createTextOutput(JSON.stringify({ result: 'success' }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+/* ---- SERVICES PAGE: "Request a Service" form handler ----
+   Sends the visitor's Name, Mobile Number and Message straight to
+   techoautomation199@gmail.com. Nothing is saved to the Sheet for this form. */
+function handleServiceRequest(data) {
+  try {
+    MailApp.sendEmail({
+      to: 'techoautomation199@gmail.com',
+      subject: 'New Service Request — TECHO Website',
+      body:
+        'A new service request has been submitted on the TECHO website (Services page).\n\n' +
+        'Name: ' + data.name + '\n' +
+        'Mobile Number: ' + data.mobile + '\n' +
+        'Message: ' + data.message + '\n\n' +
+        'Submitted on: ' + data.timestamp
+    });
+  } catch (mailErr) {
+    Logger.log('Service request email failed: ' + mailErr);
+  }
   return ContentService
     .createTextOutput(JSON.stringify({ result: 'success' }))
     .setMimeType(ContentService.MimeType.JSON);
