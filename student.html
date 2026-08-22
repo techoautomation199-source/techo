@@ -36,14 +36,19 @@
 
   <!-- ============ DASHBOARD (view only) ============ -->
   <section id="screen-student-dash" class="admin-screen">
-    <h2 class="screen-title"><span data-i18n="welcome_comma">Welcome,</span> <span id="sName"></span></h2>
+    <div id="sPhotoWrap" class="student-photo-wrap"></div>
+    <h2 class="screen-title" style="text-align:center;"><span data-i18n="welcome_comma">Welcome,</span> <span id="sName"></span></h2>
     <div class="lang-toggle-bar" id="langToggleBar" style="margin-bottom:16px;">
       <button type="button" class="lang-toggle-btn" data-lang="en">English</button>
       <button type="button" class="lang-toggle-btn" data-lang="mr">मराठी</button>
       <button type="button" class="lang-toggle-btn" data-lang="hi">हिंदी</button>
     </div>
     <p class="screen-sub" data-i18n="profile_view_note">This is a view-only profile — for any corrections, please contact the institute.</p>
+    <div class="detail-actions" id="sDetailActions">
+      <button type="button" class="fbtn-outline" id="btnEditProfile"><i class="fa-solid fa-pen"></i> <span data-i18n="edit_profile">Edit Profile</span></button>
+    </div>
     <div id="sDetailWrap" class="detail-box"></div>
+    <div id="sEditWrap" style="display:none;"></div>
 
     <h3 class="sub-heading" data-i18n="fee_payment_history">Fee Payment History</h3>
     <div id="sFeeWrap" class="detail-box"></div>
@@ -64,6 +69,7 @@
 </main>
 
 <script src="i18n.js"></script>
+<script src="photo.js"></script>
 <script src="student.js"></script>
 <script src="agreements.js"></script>
 </body>

@@ -44,6 +44,11 @@ function doPost(e) {
     return handleServiceRequest(data);
   }
 
+  // ---- RATE US PAGE — Trainee / Service feedback ----
+  if (data.action === 'submitFeedback') {
+    return handleFeedbackSubmit(data);
+  }
+
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
 
   sheet.appendRow([
@@ -111,9 +116,110 @@ function handleServiceRequest(data) {
 }
 
 function doGet(e) {
+  if (e && e.parameter && e.parameter.action === 'getFeedbackCounts') {
+    return getFeedbackCounts();
+  }
   return ContentService
     .createTextOutput('TECHO enrollment backend is running.')
     .setMimeType(ContentService.MimeType.TEXT);
+}
+
+/* ---- RATE US PAGE: Trainee / Service feedback ----
+   Saves every rating to a "Feedback" tab (created automatically the first
+   time) in this same Sheet, and emails the details to
+   techoautomation199@gmail.com. Nothing is emailed back to the person who
+   gave the feedback (their name only, no email address is collected). */
+function getFeedbackSheet() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName('Feedback');
+  if (!sheet) {
+    sheet = ss.insertSheet('Feedback');
+    sheet.appendRow(['Timestamp', 'Type', 'Name', 'Rating', 'Service', 'Upgrade Suggestion', 'Problem Faced']);
+  }
+  return sheet;
+}
+
+function handleFeedbackSubmit(data) {
+  try {
+    var sheet = getFeedbackSheet();
+    sheet.appendRow([
+      data.timestamp,
+      data.type,
+      data.name,
+      data.rating,
+      data.service || '',
+      data.upgrade || '',
+      data.problem || ''
+    ]);
+  } catch (sheetErr) {
+    Logger.log('Feedback sheet save failed: ' + sheetErr);
+  }
+
+  try {
+    var typeLabel = (data.type === 'student') ? 'Trainee' : 'Service';
+    MailApp.sendEmail({
+      to: 'techoautomation199@gmail.com',
+      subject: 'New ' + typeLabel + ' Feedback — TECHO Website',
+      body:
+        'A new feedback/rating has been submitted on the TECHO website (Rate Us page).\n\n' +
+        'Type: ' + typeLabel + '\n' +
+        'Name: ' + data.name + '\n' +
+        'Rating: ' + data.rating + ' / 5\n' +
+        (data.service ? ('Service: ' + data.service + '\n') : '') +
+        'What can be upgraded: ' + (data.upgrade || '-') + '\n' +
+        'Problem faced: ' + (data.problem || '-') + '\n\n' +
+        'Submitted on: ' + data.timestamp
+    });
+  } catch (mailErr) {
+    Logger.log('Feedback email failed: ' + mailErr);
+  }
+
+  return ContentService
+    .createTextOutput(JSON.stringify({ result: 'success' }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function getFeedbackCounts() {
+  var sheet = getFeedbackSheet();
+  var values = sheet.getDataRange().getValues();
+  var student = 0, service = 0;
+  var problemCount = 0, noProblemCount = 0;
+  var upgradeCount = 0, noUpgradeCount = 0;
+  var ratingCounts = { '1': 0, '2': 0, '3': 0, '4': 0, '5': 0 };
+
+  for (var i = 1; i < values.length; i++) {
+    var type = String(values[i][1] || '').toLowerCase();
+    if (type === 'student') student++;
+    else if (type === 'service') service++;
+
+    // Column D (index 3) = "Rating" (1-5)
+    var ratingVal = Math.round(Number(values[i][3]));
+    if (ratingVal >= 1 && ratingVal <= 5) {
+      ratingCounts[String(ratingVal)]++;
+    }
+
+    // Column F (index 5) = "Upgrade Suggestion". Only counts if it's not empty.
+    var upgradeText = String(values[i][5] || '').trim();
+    if (upgradeText.length > 0) upgradeCount++;
+    else noUpgradeCount++;
+
+    // Column G (index 6) = "Problem Faced". Only counts if it's not empty.
+    var problemText = String(values[i][6] || '').trim();
+    if (problemText.length > 0) problemCount++;
+    else noProblemCount++;
+  }
+  return ContentService
+    .createTextOutput(JSON.stringify({
+      student: student,
+      service: service,
+      total: student + service,
+      problemCount: problemCount,
+      noProblemCount: noProblemCount,
+      upgradeCount: upgradeCount,
+      noUpgradeCount: noUpgradeCount,
+      ratingCounts: ratingCounts
+    }))
+    .setMimeType(ContentService.MimeType.JSON);
 }
 
 /* ---- ONE-TIME TEST: run this manually from the Apps Script editor -----

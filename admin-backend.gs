@@ -16,13 +16,21 @@
    1. Create a new Google Sheet, name it "TECHO Admin System".
    2. Create 6 tabs (bottom of the sheet) named EXACTLY:
       Admins, Students, Attendance, FeeHistory, Installments, Agreements
-   3. In "Admins" tab, Row 1 headers (A to N):
-      AdminID | Password | FullName | PhotoURL | Phone | WhatsApp | Email |
+   3. In "Admins" tab, Row 1 headers (A to O):
+      AdminID | Password | FullName | PhotoURL | Gender | Phone | WhatsApp | Email |
       Aadhaar | PAN | Address | Role | CreatedBy | Status | CreatedDate
-   4. In "Students" tab, Row 1 headers (A to Q):
+      (If you already have an older sheet without "Gender", just add a new
+      column header "Gender" anywhere in Row 1 — appendRowByHeaders matches
+      by header text, not position, so the order doesn't matter.)
+   4. In "Students" tab, Row 1 headers (any order — add these as new
+      columns if you already have an older sheet with fewer columns):
       StudentID | Password | FullName | FatherName | MotherName | PhotoURL |
-      Mobile | WhatsApp | Email | Aadhaar | Address | Course | Batch |
-      AdmissionDate | TotalFee | PaidFee | PendingFee | CourseStatus | CreatedBy
+      DOB | Age | Mobile | WhatsApp | Email | Aadhaar | PAN | Address |
+      TrainingMode | Course | Batch | Qualification | QualBranch |
+      QualCollege | QualYear | Employment | EmpCompany | EmpDesignation |
+      Documents | AdmissionDate | TotalFee | PaidFee | PendingFee |
+      PaymentMethod | TransactionID | CourseStatus | EmergencyName |
+      EmergencyRelation | EmergencyMobile | CreatedBy
    5. In "Attendance" tab, Row 1 headers (A to E):
       AdminID | Date | LoginTime | LogoutTime | Status
    6. In "FeeHistory" tab, Row 1 headers (A to F):
@@ -136,6 +144,47 @@ function appendRowByHeaders(sheetName, dataObj) {
   sheet.appendRow(row);
 }
 
+/* Updates specific columns of an EXISTING row (matched by a column such
+   as StudentID) — only the headers present in dataObj get overwritten,
+   every other cell on that row is left exactly as it was. Same tolerant
+   header matching as appendRowByHeaders (case/space-insensitive +
+   alias-aware). Returns false if the sheet/match-column/row isn't found. */
+function updateRowByHeaders(sheetName, matchHeader, matchValue, dataObj) {
+  const sheet = getSheet(sheetName);
+  if (!sheet) return false;
+  const rawHeaders = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  const matchKey = matchHeader.toLowerCase().replace(/\s+/g, '').trim();
+  const matchColIdx = rawHeaders.findIndex(function (h) {
+    return String(h).toLowerCase().replace(/\s+/g, '').trim() === matchKey;
+  });
+  if (matchColIdx === -1) return false;
+
+  const values = sheet.getDataRange().getValues();
+  let rowIdx = -1;
+  for (let i = 1; i < values.length; i++) {
+    if (String(values[i][matchColIdx]) === String(matchValue)) { rowIdx = i; break; }
+  }
+  if (rowIdx === -1) return false;
+
+  const lookup = {};
+  Object.keys(dataObj).forEach(function (k) { lookup[k.toLowerCase().trim()] = dataObj[k]; });
+
+  rawHeaders.forEach(function (h, colIdx) {
+    const key = String(h).toLowerCase().replace(/\s+/g, '').trim();
+    let val, has = false;
+    if (Object.prototype.hasOwnProperty.call(lookup, key)) { val = lookup[key]; has = true; }
+    else {
+      for (const canonical in HEADER_ALIASES) {
+        if (HEADER_ALIASES[canonical].indexOf(key) !== -1 && Object.prototype.hasOwnProperty.call(lookup, canonical)) {
+          val = lookup[canonical]; has = true; break;
+        }
+      }
+    }
+    if (has) sheet.getRange(rowIdx + 1, colIdx + 1).setValue(val);
+  });
+  return true;
+}
+
 function randomPassword() {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
   let out = '';
@@ -168,10 +217,13 @@ function doPost(e) {
       case 'listAdmins': result = { admins: listAdmins() }; break;
       case 'viewAdminProfile': result = viewAdminProfile(data); break;
       case 'deleteAdmin': result = deleteAdmin(data); break;
+      case 'uploadPhoto': result = uploadPhoto(data); break;
       case 'setAdminStatus': result = setAdminStatus(data); break;
       case 'addStudent': result = addStudent(data); break;
       case 'listStudents': result = { students: listStudents(data) }; break;
       case 'studentLogin': result = studentLogin(data); break;
+      case 'verifyAdminGate': result = verifyAdminGate(data); break;
+      case 'updateStudent': result = updateStudent(data); break;
       case 'updateFee': result = updateFee(data); break;
       case 'setCourseStatus': result = setCourseStatus(data); break;
       case 'markPresent': result = markPresent(data); break;
@@ -247,7 +299,7 @@ function createAdmin(data) {
 
   appendRowByHeaders(SHEET_NAMES.ADMINS, {
     AdminID: id, Password: password, FullName: data.fullName, PhotoURL: data.photoUrl || '',
-    Phone: data.phone, WhatsApp: data.whatsapp, Email: data.email, Aadhaar: data.aadhaar,
+    Gender: data.gender || '', Phone: data.phone, WhatsApp: data.whatsapp, Email: data.email, Aadhaar: data.aadhaar,
     PAN: data.pan, Address: data.address || '', Role: data.role,
     CreatedBy: data.createdBy || 'SELF', Status: data.status || 'Active', CreatedDate: createdDate
   });
@@ -258,7 +310,7 @@ function createAdmin(data) {
 function listAdmins() {
   return sheetRows(SHEET_NAMES.ADMINS).map(function (r) {
     return {
-      AdminID: r.AdminID, FullName: r.FullName, PhotoURL: r.PhotoURL,
+      AdminID: r.AdminID, FullName: r.FullName, PhotoURL: r.PhotoURL, Gender: r.Gender,
       Role: r.Role, Status: r.Status
     };
   });
@@ -282,11 +334,39 @@ function viewAdminProfile(data) {
   if (!target) return { error: 'Admin not found' };
 
   return {
-    AdminID: target.AdminID, FullName: target.FullName, PhotoURL: target.PhotoURL,
+    AdminID: target.AdminID, FullName: target.FullName, PhotoURL: target.PhotoURL, Gender: target.Gender,
     Phone: target.Phone, WhatsApp: target.WhatsApp, Email: target.Email, Address: target.Address,
     Role: target.Role, Status: target.Status, CreatedBy: target.CreatedBy, CreatedDate: target.CreatedDate,
     viewerId: entered.AdminID, viewerPassword: entered.Password, viewerIsBoss: isBoss
   };
+}
+
+/* ---------------- PHOTO UPLOAD (gallery photo -> stored directly on the sheet) ----------------
+   Google Drive "hotlinking" (drive.google.com/uc?export=view, and even the
+   lh3.googleusercontent.com thumbnail link) turned out to be unreliable —
+   Google sometimes blocks these from loading inside a plain <img> tag, so
+   the photo would upload fine but never actually show on the profile.
+   To make this 100% reliable, we skip Drive entirely for photos: the
+   browser already resizes/compresses the chosen photo down to a small
+   size before sending it here, and we simply hand that same image straight
+   back as a "data:" URL — which the <img> tag can always display instantly,
+   with zero dependency on Drive links, sharing settings, or permissions.
+   This same data: URL is what gets saved as PhotoURL in the Admins/
+   Students sheet. */
+function uploadPhoto(data) {
+  try {
+    if (!data.base64) return { error: 'No photo data received' };
+    const mimeType = data.mimeType || 'image/jpeg';
+    /* A Google Sheets cell can hold at most 50,000 characters — the
+       browser keeps compressing the photo until its base64 text is safely
+       under that, but we double-check here too. */
+    if (data.base64.length > 47000) {
+      return { error: 'Photo is still too large after resizing. Please choose a smaller/simpler photo and try again.' };
+    }
+    return { url: 'data:' + mimeType + ';base64,' + data.base64 };
+  } catch (err) {
+    return { error: 'Photo upload failed: ' + err.message };
+  }
 }
 
 function adminLogin(data) {
@@ -365,11 +445,16 @@ function addStudent(data) {
 
   appendRowByHeaders(SHEET_NAMES.STUDENTS, {
     StudentID: id, Password: password, FullName: data.fullName, FatherName: data.fatherName || '',
-    MotherName: data.motherName || '', PhotoURL: data.photoUrl || '', Mobile: data.mobile,
-    WhatsApp: data.whatsapp || '', Email: data.email, Aadhaar: data.aadhaar || '',
-    Address: data.address || '', Course: data.course, Batch: data.batch,
-    AdmissionDate: data.admissionDate, TotalFee: totalFee, PaidFee: paidFee,
-    PendingFee: totalFee - paidFee, CourseStatus: 'Ongoing', CreatedBy: data.createdBy || ''
+    MotherName: data.motherName || '', PhotoURL: data.photoUrl || '', DOB: data.dob || '', Age: data.age || '',
+    Mobile: data.mobile, WhatsApp: data.whatsapp || '', Email: data.email, Aadhaar: data.aadhaar || '',
+    PAN: data.pan || '', Address: data.address || '', TrainingMode: data.mode || '',
+    Course: data.course, Batch: data.batch, Qualification: data.qualification || '',
+    QualBranch: data.qualBranch || '', QualCollege: data.qualCollege || '', QualYear: data.qualYear || '',
+    Employment: data.employment || '', EmpCompany: data.empCompany || '', EmpDesignation: data.empDesignation || '',
+    Documents: data.documents || '', AdmissionDate: data.admissionDate, TotalFee: totalFee, PaidFee: paidFee,
+    PendingFee: totalFee - paidFee, PaymentMethod: data.paymentMethod || '', TransactionID: data.transactionId || '',
+    CourseStatus: 'Ongoing', EmergencyName: data.emName || '', EmergencyRelation: data.emRelation || '',
+    EmergencyMobile: data.emMobile || '', CreatedBy: data.createdBy || ''
   });
 
   try {
@@ -423,6 +508,53 @@ function studentLogin(data) {
   });
   if (!found) return { error: 'Invalid ID or Password' };
   return found;
+}
+
+/* Used to gate the "Edit Profile" button on the Trainee dashboard — ANY
+   currently-Active admin (Boss or Supervisor) can authorize an edit by
+   entering their own Admin ID + Password. (If the Boss is the only admin
+   account that exists yet, that naturally means the Boss ID is the only
+   one that will work — no special-casing needed.) */
+function verifyAdminGate(data) {
+  if (!verifyAnyActiveAdmin(data.adminId, data.adminPassword)) {
+    return { error: 'Invalid Admin ID or Password' };
+  }
+  return { ok: true };
+}
+
+/* Saves edits made on the Trainee dashboard's Edit Profile form. Re-checks
+   the admin credentials server-side (never trust the client) before
+   touching the sheet. Only the fields actually sent are overwritten —
+   everything else on that student's row is left untouched. */
+function updateStudent(data) {
+  if (!verifyAnyActiveAdmin(data.adminId, data.adminPassword)) {
+    return { error: 'Invalid Admin ID or Password' };
+  }
+  const rows = sheetRows(SHEET_NAMES.STUDENTS);
+  const exists = rows.some(function (r) { return String(r.StudentID) === String(data.studentId); });
+  if (!exists) return { error: 'Trainee not found' };
+
+  const totalFee = data.totalFee !== undefined && data.totalFee !== '' ? Number(data.totalFee) : undefined;
+  const paidFee = data.paidFee !== undefined && data.paidFee !== '' ? Number(data.paidFee) : undefined;
+
+  const updates = {
+    FullName: data.fullName, PhotoURL: data.photoUrl, DOB: data.dob, Age: data.age,
+    Mobile: data.mobile, WhatsApp: data.whatsapp, Email: data.email, Aadhaar: data.aadhaar,
+    PAN: data.pan, Address: data.address, TrainingMode: data.mode, Course: data.course, Batch: data.batch,
+    Qualification: data.qualification, QualBranch: data.qualBranch, QualCollege: data.qualCollege,
+    QualYear: data.qualYear, Employment: data.employment, EmpCompany: data.empCompany,
+    EmpDesignation: data.empDesignation, Documents: data.documents, AdmissionDate: data.admissionDate,
+    PaymentMethod: data.paymentMethod, TransactionID: data.transactionId, CourseStatus: data.courseStatus,
+    EmergencyName: data.emName, EmergencyRelation: data.emRelation, EmergencyMobile: data.emMobile
+  };
+  if (totalFee !== undefined) updates.TotalFee = totalFee;
+  if (paidFee !== undefined) updates.PaidFee = paidFee;
+  if (totalFee !== undefined && paidFee !== undefined) updates.PendingFee = totalFee - paidFee;
+
+  Object.keys(updates).forEach(function (k) { if (updates[k] === undefined) delete updates[k]; });
+
+  updateRowByHeaders(SHEET_NAMES.STUDENTS, 'StudentID', data.studentId, updates);
+  return { ok: true };
 }
 
 function updateFee(data) {

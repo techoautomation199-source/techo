@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ffffff">
+<title>Rate Us | TECHO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="common.css">
+<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="forms.css">
+<link rel="stylesheet" href="rating.css">
+</head>
+<body>
+
+<div class="admin-topbar">
+  <span class="logo-word" style="font-size:20px;"><span>T</span><span>E</span><span>C</span><span>H</span><span>O</span></span>
+  <span class="admin-topbar-tag">Rate Us &amp; Share Feedback</span>
+  <a href="services.html" class="topbar-back"><i class="fa-solid fa-arrow-left"></i> Services</a>
+</div>
+
+<main class="admin-main wide-main">
+
+  <div class="form-header-row">
+    <div>
+      <h2 class="reg-title" data-i18n="rating_title">RATE US</h2>
+      <p class="reg-sub" data-i18n="rating_sub">Your feedback helps us improve. Please share your experience.</p>
+      <div class="lang-toggle-bar" id="langToggleBar">
+        <button type="button" class="lang-toggle-btn" data-lang="en">English</button>
+        <button type="button" class="lang-toggle-btn" data-lang="mr">मराठी</button>
+        <button type="button" class="lang-toggle-btn" data-lang="hi">हिंदी</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="rating-counts">
+    <div class="rc-box">
+      <span class="rc-num" id="rcStudent">—</span>
+      <p data-i18n="rc_student">Trainee Feedback</p>
+    </div>
+    <div class="rc-box">
+      <span class="rc-num" id="rcService">—</span>
+      <p data-i18n="rc_service">Service Feedback</p>
+    </div>
+    <div class="rc-box rc-total">
+      <span class="rc-num" id="rcTotal">—</span>
+      <p data-i18n="rc_total">Total Feedback</p>
+    </div>
+  </div>
+
+  <div class="rating-toggle" id="ratingToggle">
+    <button type="button" class="rt-btn active" data-type="student"><i class="fa-solid fa-user-graduate"></i> <span data-i18n="rt_student">Trainee</span></button>
+    <button type="button" class="rt-btn" data-type="service"><i class="fa-solid fa-screwdriver-wrench"></i> <span data-i18n="rt_service">Service</span></button>
+  </div>
+
+  <!-- ===================== TRAINEE RATING FORM ===================== -->
+  <form id="studentRatingForm" class="admin-form reg-card rating-form" data-type="student">
+    <label class="reg-full"><span data-i18n="name">Name</span> *<input type="text" id="srtName" required></label>
+
+    <div class="reg-full">
+      <span data-i18n="rt_your_rating">Your Rating</span> *
+      <div class="star-rating" id="srtStars" data-value="0">
+        <i class="fa-solid fa-star" data-star="1"></i>
+        <i class="fa-solid fa-star" data-star="2"></i>
+        <i class="fa-solid fa-star" data-star="3"></i>
+        <i class="fa-solid fa-star" data-star="4"></i>
+        <i class="fa-solid fa-star" data-star="5"></i>
+      </div>
+      <input type="hidden" id="srtRatingValue" value="0">
+    </div>
+
+    <label class="reg-full"><span data-i18n="rt_upgrade">What more can be upgraded?</span><textarea id="srtUpgrade" rows="3"></textarea></label>
+    <label class="reg-full"><span data-i18n="rt_problem">What problem did you face? (if any)</span><textarea id="srtProblem" rows="3"></textarea></label>
+
+    <button type="submit" class="admin-submit" id="srtSubmitBtn" data-i18n="submit">Submit</button>
+    <p class="form-error" id="srtError"></p>
+  </form>
+
+  <!-- ===================== SERVICE RATING FORM ===================== -->
+  <form id="serviceRatingForm" class="admin-form reg-card rating-form" data-type="service" style="display:none;">
+    <label class="reg-full"><span data-i18n="name">Name</span> *<input type="text" id="svrName" required></label>
+    <label class="reg-full"><span data-i18n="rt_which_service">Which service? (optional)</span><input type="text" id="svrService"></label>
+
+    <div class="reg-full">
+      <span data-i18n="rt_your_rating">Your Rating</span> *
+      <div class="star-rating" id="svrStars" data-value="0">
+        <i class="fa-solid fa-star" data-star="1"></i>
+        <i class="fa-solid fa-star" data-star="2"></i>
+        <i class="fa-solid fa-star" data-star="3"></i>
+        <i class="fa-solid fa-star" data-star="4"></i>
+        <i class="fa-solid fa-star" data-star="5"></i>
+      </div>
+      <input type="hidden" id="svrRatingValue" value="0">
+    </div>
+
+    <label class="reg-full"><span data-i18n="rt_upgrade">What more can be upgraded?</span><textarea id="svrUpgrade" rows="3"></textarea></label>
+    <label class="reg-full"><span data-i18n="rt_problem">What problem did you face? (if any)</span><textarea id="svrProblem" rows="3"></textarea></label>
+
+    <button type="submit" class="admin-submit" id="svrSubmitBtn" data-i18n="submit">Submit</button>
+    <p class="form-error" id="svrError"></p>
+  </form>
+
+  <!-- ===================== UPGRADE SUGGESTIONS PIE CHART (live) ===================== -->
+  <div class="problem-chart-box">
+    <h3 data-i18n="upgrade_chart_title">Upgrade Suggestions Overview</h3>
+    <div class="pc-wrap">
+      <div class="pc-pie" id="upgradePie"></div>
+      <div class="pc-legend">
+        <div class="pc-legend-item"><span class="pc-dot pc-dot-blue"></span> <span data-i18n="pc_upgrade">Suggestion Given</span>: <b id="pcUpgradeCount">0</b></div>
+        <div class="pc-legend-item"><span class="pc-dot pc-dot-gray"></span> <span data-i18n="pc_no_upgrade">No Suggestion</span>: <b id="pcNoUpgradeCount">0</b></div>
+      </div>
+    </div>
+    <p class="pc-note" data-i18n="pc_upgrade_note">This chart updates automatically as people submit feedback. It only counts an entry when the "What more can be upgraded?" box is actually filled in.</p>
+  </div>
+
+  <!-- ===================== PROBLEM REPORTS PIE CHART (live) ===================== -->
+  <div class="problem-chart-box">
+    <h3 data-i18n="problem_chart_title">Problem Reports Overview</h3>
+    <div class="pc-wrap">
+      <div class="pc-pie" id="problemPie"></div>
+      <div class="pc-legend">
+        <div class="pc-legend-item"><span class="pc-dot pc-dot-red"></span> <span data-i18n="pc_problem">Problem Reported</span>: <b id="pcProblemCount">0</b></div>
+        <div class="pc-legend-item"><span class="pc-dot pc-dot-green"></span> <span data-i18n="pc_no_problem">No Problem</span>: <b id="pcNoProblemCount">0</b></div>
+      </div>
+    </div>
+    <p class="pc-note" data-i18n="pc_note">This chart updates automatically as people submit feedback. It only counts an entry as a "Problem" when the problem box is actually filled in.</p>
+  </div>
+
+  <!-- ===================== RATING DISTRIBUTION CHART (live) ===================== -->
+  <div class="problem-chart-box">
+    <h3 data-i18n="rating_chart_title">Rating Distribution</h3>
+    <div class="rating-bars" id="ratingBars">
+      <div class="rb-row"><span class="rb-label">5 <i class="fa-solid fa-star"></i></span><div class="rb-track"><div class="rb-fill" id="rbFill5"></div></div><b id="rbCount5">0</b></div>
+      <div class="rb-row"><span class="rb-label">4 <i class="fa-solid fa-star"></i></span><div class="rb-track"><div class="rb-fill" id="rbFill4"></div></div><b id="rbCount4">0</b></div>
+      <div class="rb-row"><span class="rb-label">3 <i class="fa-solid fa-star"></i></span><div class="rb-track"><div class="rb-fill" id="rbFill3"></div></div><b id="rbCount3">0</b></div>
+      <div class="rb-row"><span class="rb-label">2 <i class="fa-solid fa-star"></i></span><div class="rb-track"><div class="rb-fill" id="rbFill2"></div></div><b id="rbCount2">0</b></div>
+      <div class="rb-row"><span class="rb-label">1 <i class="fa-solid fa-star"></i></span><div class="rb-track"><div class="rb-fill" id="rbFill1"></div></div><b id="rbCount1">0</b></div>
+    </div>
+    <p class="pc-note" data-i18n="rating_chart_note">Shows how many people gave each star rating, live.</p>
+  </div>
+
+</main>
+
+<!-- ===================== THANK YOU POPUP ===================== -->
+<div class="popup-overlay" id="ratingPopupOverlay">
+  <div class="popup-box">
+    <i class="fa-solid fa-circle-check popup-icon"></i>
+    <h3 data-i18n="rt_thanks_title">Thank You!</h3>
+    <p data-i18n="rt_thanks_msg">Your feedback means a lot to us.</p>
+  </div>
+</div>
+
+<script src="i18n.js"></script>
+<script src="rating.js"></script>
+</body>
+</html>

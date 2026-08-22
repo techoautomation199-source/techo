@@ -73,6 +73,22 @@
     <div class="form-grid-2">
       <fieldset class="section-fieldset">
         <legend><i class="fa-solid fa-user"></i> <span data-i18n="personal_info">Personal Information</span></legend>
+
+        <div class="photo-upload-box compact" id="saPhotoBox">
+          <div class="photo-preview" id="saPhotoPreview"><img id="saPhotoImg" alt=""><i class="fa-solid fa-user"></i></div>
+          <div class="photo-upload-actions">
+            <span class="photo-upload-label" data-i18n="trainee_photo">Trainee Photo</span>
+            <div class="photo-upload-btn-row">
+              <label class="photo-upload-btn" for="saPhotoFile"><i class="fa-solid fa-images"></i> <span data-i18n="upload_photo">Upload Photo</span></label>
+              <input type="file" id="saPhotoFile" accept="image/*" hidden>
+              <button type="button" class="photo-remove-btn" id="saPhotoRemove"><i class="fa-solid fa-trash"></i> <span data-i18n="remove">Remove</span></button>
+            </div>
+            <input type="hidden" id="saPhoto">
+            <p class="photo-hint" data-i18n="photo_hint">If no photo is uploaded, a default avatar will be generated automatically.</p>
+            <p class="form-error" id="saPhotoError"></p>
+          </div>
+        </div>
+
         <label><span data-i18n="student_full_name">Trainee's Full Name</span> *<input type="text" id="stName" placeholder="Enter full name" required></label>
         <div class="mini-grid">
           <label><span data-i18n="dob">Date of Birth</span> *<input type="date" id="stDob" required></label>
@@ -180,6 +196,7 @@
 </main>
 
 <script src="i18n.js"></script>
+<script src="photo.js"></script>
 <script src="student-admission.js"></script>
 </body>
 </html>

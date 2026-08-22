@@ -1,0 +1,92 @@
+/* ---------------- LIVE FEEDBACK COUNTS ---------------- */
+.rating-counts{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0 24px;
+}
+.rc-box{
+  background:#fff;border:1px solid var(--border);border-radius:14px;
+  padding:18px 10px;text-align:center;box-shadow:var(--shadow);
+}
+.rc-num{display:block;font-size:26px;font-weight:800;color:var(--blue);margin-bottom:4px;}
+.rc-box p{font-size:11.5px;font-weight:700;color:var(--gray-text);}
+.rc-total .rc-num{color:var(--orange);}
+
+@media (max-width:640px){
+  .rating-counts{grid-template-columns:1fr 1fr 1fr;gap:8px;}
+  .rc-num{font-size:20px;}
+  .rc-box{padding:12px 6px;}
+  .rc-box p{font-size:10px;}
+}
+
+/* ---------------- TRAINEE / SERVICE TOGGLE ---------------- */
+.rating-toggle{
+  display:flex;background:#eef1f8;border-radius:999px;padding:5px;
+  max-width:340px;margin:0 auto 22px;
+}
+.rt-btn{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
+  border:none;background:none;border-radius:999px;
+  padding:12px 10px;font-weight:700;font-size:13px;color:var(--gray-text);
+  cursor:pointer;
+}
+.rt-btn.active{
+  background:linear-gradient(135deg,#1e4fd8,#8e3fc4);color:#fff;
+  box-shadow:0 6px 16px rgba(30,79,216,0.3);
+}
+
+/* ---------------- STAR RATING WIDGET ---------------- */
+.star-rating{
+  display:flex;gap:8px;margin-top:8px;font-size:26px;color:#d9deea;
+}
+.star-rating i{cursor:pointer;transition:color .15s, transform .1s;}
+.star-rating i:hover{transform:scale(1.12);}
+.star-rating i.filled{color:#ffb020;}
+
+/* ---------------- PROBLEM REPORTS PIE CHART ---------------- */
+.problem-chart-box{
+  background:#fff;border:1px solid var(--border);border-radius:var(--radius);
+  padding:22px;margin:26px 0 10px;box-shadow:var(--shadow);
+}
+.problem-chart-box h3{font-size:15px;font-weight:800;color:var(--blue);margin-bottom:16px;text-align:center;}
+.pc-wrap{display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;}
+.pc-pie{
+  width:140px;height:140px;border-radius:50%;flex-shrink:0;
+  background:conic-gradient(var(--border) 0deg 360deg);
+  transition:background .4s ease;
+}
+.pc-legend{display:flex;flex-direction:column;gap:10px;font-size:13.5px;color:var(--gray-text);}
+.pc-legend b{color:#111;font-size:14px;}
+.pc-dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;}
+.pc-dot-red{background:var(--red);}
+.pc-dot-green{background:var(--green);}
+.pc-dot-blue{background:var(--blue);}
+.pc-dot-gray{background:#c7cce0;}
+.pc-note{font-size:11px;color:var(--gray-text);text-align:center;margin-top:16px;}
+
+/* ---------------- RATING DISTRIBUTION BAR CHART ---------------- */
+.rating-bars{display:flex;flex-direction:column;gap:12px;}
+.rb-row{display:flex;align-items:center;gap:10px;}
+.rb-label{width:44px;flex-shrink:0;font-size:13px;font-weight:700;color:var(--gray-text);}
+.rb-label i{color:#ffb020;font-size:11px;}
+.rb-track{flex:1;height:14px;background:#eef1f8;border-radius:999px;overflow:hidden;}
+.rb-fill{height:100%;width:0%;background:linear-gradient(90deg,#1e4fd8,#8e3fc4);border-radius:999px;transition:width .4s ease;}
+.rb-row b{width:24px;text-align:right;font-size:13px;color:#111;flex-shrink:0;}
+
+@media (max-width:640px){
+  .pc-wrap{gap:18px;}
+  .pc-pie{width:110px;height:110px;}
+}
+.popup-overlay{
+  position:fixed;inset:0;background:rgba(10,15,30,0.55);
+  display:none;align-items:center;justify-content:center;z-index:2000;
+  padding:20px;
+}
+.popup-overlay.show{display:flex;}
+.popup-box{
+  background:#fff;border-radius:16px;padding:36px 30px;max-width:380px;width:100%;
+  text-align:center;box-shadow:0 12px 40px rgba(0,0,0,0.25);
+  animation:popIn .25s ease;
+}
+@keyframes popIn{from{transform:scale(.85);opacity:0;}to{transform:scale(1);opacity:1;}}
+.popup-icon{font-size:48px;color:var(--green);margin-bottom:14px;}
+.popup-box h3{font-size:20px;font-weight:800;margin-bottom:10px;}
+.popup-box p{font-size:13.5px;color:var(--gray-text);}

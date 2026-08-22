@@ -18,7 +18,14 @@ function radioValue(name) {
   return el ? el.value : '';
 }
 
+let _saPhotoCtl = null;
+
 document.addEventListener('DOMContentLoaded', function () {
+  _saPhotoCtl = techoSetupPhotoUpload({
+    fileInputId: 'saPhotoFile', previewImgId: 'saPhotoImg', previewBoxId: 'saPhotoPreview',
+    hiddenUrlId: 'saPhoto', removeBtnId: 'saPhotoRemove', errorId: 'saPhotoError'
+  });
+
   const totalEl = document.getElementById('feeTotal');
   const paidEl = document.getElementById('feePaid');
   const balEl = document.getElementById('feeBalance');
@@ -33,6 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('btnReset').addEventListener('click', function () {
     document.getElementById('formAdmission').reset();
     balEl.value = '';
+    if (_saPhotoCtl) _saPhotoCtl.reset();
   });
 
   document.getElementById('formAdmission').addEventListener('submit', async function (e) {
@@ -40,12 +48,28 @@ document.addEventListener('DOMContentLoaded', function () {
     const errEl = document.getElementById('admError');
     errEl.textContent = '';
 
+    let photoUrl = document.getElementById('saPhoto').value.trim();
+    if (_saPhotoCtl && _saPhotoCtl.hasPending()) {
+      errEl.textContent = 'Uploading photo...';
+      try {
+        photoUrl = await _saPhotoCtl.upload(apiSA, 'Students', 'student');
+        errEl.textContent = '';
+      } catch (err) {
+        errEl.textContent = 'Photo upload failed: ' + err.message;
+        return;
+      }
+    }
+
     const payload = {
+      photoUrl: photoUrl,
       fullName: document.getElementById('stName').value.trim(),
+      dob: document.getElementById('stDob').value,
+      age: document.getElementById('stAge').value,
       mobile: document.getElementById('stMobile').value.trim(),
       whatsapp: document.getElementById('stWhatsapp').value.trim(),
       email: document.getElementById('stEmail').value.trim(),
       aadhaar: document.getElementById('stAadhaar').value.trim(),
+      pan: document.getElementById('stPan').value.trim(),
       address: [
         document.getElementById('addHouse').value.trim(),
         document.getElementById('addCity').value.trim(),
@@ -54,11 +78,25 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('addState').value.trim(),
         document.getElementById('addPin').value.trim()
       ].filter(Boolean).join(', '),
+      mode: radioValue('mode'),
       course: checkedValues('course').join(', '),
       batch: radioValue('batch'),
+      qualification: checkedValues('qualification').join(', '),
+      qualBranch: document.getElementById('qualBranch').value.trim(),
+      qualCollege: document.getElementById('qualCollege').value.trim(),
+      qualYear: document.getElementById('qualYear').value.trim(),
+      employment: radioValue('employment'),
+      empCompany: document.getElementById('empCompany').value.trim(),
+      empDesignation: document.getElementById('empDesignation').value.trim(),
+      documents: checkedValues('documents').join(', '),
       admissionDate: document.getElementById('admDate').value,
       totalFee: document.getElementById('feeTotal').value,
       paidFee: document.getElementById('feePaid').value,
+      paymentMethod: radioValue('payMethod'),
+      transactionId: document.getElementById('feeTxn').value.trim(),
+      emName: document.getElementById('emName').value.trim(),
+      emRelation: document.getElementById('emRelation').value.trim(),
+      emMobile: document.getElementById('emMobile').value.trim(),
       createdBy: 'Admin'
     };
 
@@ -76,6 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('popupMsg').textContent = 'Trainee ID: ' + result.id + ' | Password: ' + result.password;
     document.getElementById('popupOverlay').classList.add('show');
     document.getElementById('formAdmission').reset();
+    if (_saPhotoCtl) _saPhotoCtl.reset();
     setTimeout(function () {
       window.location.href = 'fee-receipt.html?studentId=' + encodeURIComponent(result.id);
     }, 2500);

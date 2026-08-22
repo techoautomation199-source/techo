@@ -107,6 +107,21 @@
   .sr-submit{width:100%;justify-content:center;}
 }
 
+.rate-us-btn{
+  display:flex;align-items:center;justify-content:center;gap:14px;
+  background:linear-gradient(135deg, var(--orange), #ffb648);
+  color:#fff;text-decoration:none;
+  border-radius:var(--radius);padding:20px 24px;margin:6px 0 30px;
+  font-weight:800;font-size:15px;letter-spacing:.4px;
+  box-shadow:0 10px 26px rgba(247,148,29,0.32);
+}
+.rate-us-btn i{font-size:18px;}
+.rate-us-btn:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(247,148,29,0.4);}
+
+@media (max-width:640px){
+  .rate-us-btn{flex-wrap:wrap;text-align:center;font-size:13.5px;padding:16px;}
+}
+
 .freelance-box{
   display:flex;align-items:center;gap:20px;
   border:1.5px dashed var(--blue);border-radius:var(--radius);

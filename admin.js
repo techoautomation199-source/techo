@@ -23,21 +23,49 @@ function showScreen(id) {
 }
 
 /* Fun cartoon-style avatar (via DiceBear, free & no key needed) used
-   whenever no Photo URL was provided for an admin — styled by role:
-   Boss gets a blazer/suit look, Supervisor gets a plain dark t-shirt. */
+   whenever no Photo was uploaded — only the safe, always-valid "seed" +
+   "backgroundColor" params are sent to DiceBear (so the face/hair image
+   always renders, never breaks). The coat/white-shirt (admin) or black
+   t-shirt (student) look plus the "TECHO" name are drawn on top with
+   CSS (see renderAvatar / renderStudentAvatar + the .techo-avatar-*
+   classes in admin.css) — that way the look never depends on guessing
+   DiceBear's exact clothing option names. */
 function safeRole(role) {
   return (role && role !== 'undefined') ? role : 'Supervisor';
 }
 
-function avatarUrl(name, role) {
-  const seed = encodeURIComponent(name || 'TECHO');
-  const clothes = role === 'Boss' ? 'BlazerShirt' : 'CrewNeck';
-  const color = role === 'Boss' ? 'Black03' : 'Black';
-  return 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + seed +
-    '&clotheType=' + clothes + '&clotheColor=' + color;
+function safeGender(gender) {
+  return (String(gender || '').trim().toLowerCase() === 'female') ? 'Female' : 'Male';
 }
 
+function avatarUrl(name) {
+  const seed = encodeURIComponent(name || 'TECHO');
+  return 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + seed + '&backgroundColor=eef2fb';
+}
+
+/* Builds the avatar-wrap markup used both in the Admin List and the
+   Profile Detail screen: real uploaded photo when available, otherwise
+   the generated face + a CSS coat/white-shirt bar + "TECHO" nameplate;
+   optional extra badge (e.g. the role "T" badge) is appended after it. */
+function renderAvatar(a, badgeHtml) {
+  const hasPhoto = !!a.PhotoURL;
+  const fallback = avatarUrl(a.FullName);
+  const outfit = hasPhoto ? '' :
+    '<span class="techo-avatar-outfit ' + (safeGender(a.Gender) === 'Female' ? 'female' : 'male') + '"></span>' +
+    '<span class="techo-avatar-tag">TECHO</span>';
+  return '<span class="avatar-wrap"><span class="avatar-circle">' +
+    '<img src="' + (a.PhotoURL || fallback) + '" alt="" onerror="this.src=\'' + fallback + '\'">' +
+    outfit + '</span>' + (badgeHtml || '') + '</span>';
+}
+
+let _caPhotoCtl = null;
+
 document.addEventListener('DOMContentLoaded', function () {
+  _caPhotoCtl = techoSetupPhotoUpload({
+    fileInputId: 'caPhotoFile', previewImgId: 'caPhotoImg', previewBoxId: 'caPhotoPreview',
+    hiddenUrlId: 'caPhoto', removeBtnId: 'caPhotoRemove', errorId: 'caPhotoError'
+  });
+
   async function openNewAdminForm() {
     let status;
     try {
@@ -57,6 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     document.getElementById('formCreateAdmin').reset();
+    if (_caPhotoCtl) _caPhotoCtl.reset();
     document.getElementById('caCreatedDate').value = new Date().toLocaleString();
     document.getElementById('gateBossId').value = bossId;
     document.getElementById('gateBossPassword').value = bossPassword;
@@ -113,9 +142,7 @@ async function loadAdminList() {
     const statusClass = a.Status === 'Active' ? '' : 'inactive';
     const badge = a.Role !== 'Boss' ? '<span class="avatar-badge">T</span>' : '';
     item.innerHTML =
-      '<span class="avatar-wrap">' +
-      '<img src="' + (a.PhotoURL || avatarUrl(a.FullName, a.Role)) + '" alt="" onerror="this.src=\'' + avatarUrl(a.FullName, a.Role) + '\'">' +
-      badge + '</span>' +
+      renderAvatar(a, badge) +
       '<div><div class="pl-name">' + a.FullName + '</div><div class="pl-role">' + safeRole(a.Role) + '</div></div>' +
       '<div class="pl-right">' +
       '<span class="pl-status ' + statusClass + '"><i class="fa-solid fa-circle"></i> ' + a.Status + '</span>' +
@@ -207,10 +234,7 @@ async function onViewGateSubmit(e) {
 /* ---------------- Profile Detail (password never shown) ---------------- */
 function renderProfile(a) {
   const pdBadge = a.Role !== 'Boss' ? '<span class="avatar-badge pd-badge">T</span>' : '';
-  document.getElementById('pdPhotoWrap').innerHTML =
-    '<span class="avatar-wrap">' +
-    '<img src="' + (a.PhotoURL || avatarUrl(a.FullName, a.Role)) + '" alt="" onerror="this.src=\'' + avatarUrl(a.FullName, a.Role) + '\'">' +
-    pdBadge + '</span>';
+  document.getElementById('pdPhotoWrap').innerHTML = renderAvatar(a, pdBadge);
   document.getElementById('pdName').textContent = a.FullName;
   document.getElementById('pdRole').textContent = safeRole(a.Role);
 
@@ -221,6 +245,7 @@ function renderProfile(a) {
 
   const rows = [
     ['fa-id-badge', 'Admin ID', a.AdminID],
+    ['fa-venus-mars', 'Gender', a.Gender],
     ['fa-phone', 'Mobile Number', a.Phone],
     ['fa-brands fa-whatsapp', 'WhatsApp Number', a.WhatsApp],
     ['fa-envelope', 'Email Address', a.Email],
@@ -275,6 +300,18 @@ async function onCreateAdminSubmit(e) {
   const errEl = document.getElementById('createError');
   errEl.textContent = '';
 
+  let photoUrl = document.getElementById('caPhoto').value.trim();
+  if (_caPhotoCtl && _caPhotoCtl.hasPending()) {
+    errEl.textContent = 'Uploading photo...';
+    try {
+      photoUrl = await _caPhotoCtl.upload(api, 'Admins', 'admin');
+      errEl.textContent = '';
+    } catch (err) {
+      errEl.textContent = 'Photo upload failed: ' + err.message;
+      return;
+    }
+  }
+
   const statusEl = document.querySelector('input[name="caStatus"]:checked');
   const addressParts = [
     document.getElementById('caAddress').value.trim(),
@@ -284,7 +321,8 @@ async function onCreateAdminSubmit(e) {
   ].filter(Boolean).join(', ');
 
   const payload = {
-    photoUrl: document.getElementById('caPhoto').value.trim(),
+    photoUrl: photoUrl,
+    gender: document.getElementById('caGender').value,
     fullName: document.getElementById('caName').value.trim(),
     phone: document.getElementById('caPhone').value.trim(),
     whatsapp: document.getElementById('caWhatsapp').value.trim(),
@@ -314,4 +352,5 @@ async function onCreateAdminSubmit(e) {
   document.getElementById('createdRole').textContent = result.role;
   showScreen('screen-created');
   document.getElementById('formCreateAdmin').reset();
+  if (_caPhotoCtl) _caPhotoCtl.reset();
 }

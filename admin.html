@@ -62,10 +62,24 @@
         <label>PAN ID <input type="text" id="caPan" placeholder="Enter PAN ID"></label>
         <label>Date of Birth <input type="date" id="caDob"></label>
 
-        <label>Gender
-          <select id="caGender"><option value="" disabled selected>Select Gender</option><option>Male</option><option>Female</option><option>Other</option></select>
+        <label>Gender *
+          <select id="caGender" required><option value="" disabled selected>Select Gender</option><option>Male</option><option>Female</option><option>Other</option></select>
         </label>
-        <label>Profile Photo URL (Google Drive link) <input type="url" id="caPhoto" placeholder="https://drive.google.com/..."></label>
+      </div>
+
+      <div class="reg-full photo-upload-box" id="caPhotoBox">
+        <div class="photo-preview" id="caPhotoPreview"><img id="caPhotoImg" alt=""><i class="fa-solid fa-user"></i></div>
+        <div class="photo-upload-actions">
+          <span class="photo-upload-label">Profile Photo</span>
+          <div class="photo-upload-btn-row">
+            <label class="photo-upload-btn" for="caPhotoFile"><i class="fa-solid fa-images"></i> Choose from Gallery</label>
+            <input type="file" id="caPhotoFile" accept="image/*" hidden>
+            <button type="button" class="photo-remove-btn" id="caPhotoRemove"><i class="fa-solid fa-trash"></i> Remove</button>
+          </div>
+          <input type="hidden" id="caPhoto">
+          <p class="photo-hint">JPG/PNG only. If no photo is uploaded, a professional avatar will be generated automatically based on Gender.</p>
+          <p class="form-error" id="caPhotoError"></p>
+        </div>
       </div>
 
       <label class="reg-full">Address <textarea id="caAddress" rows="2" placeholder="Enter complete address"></textarea></label>
@@ -190,6 +204,7 @@
   <div class="policies-footer-link"><a href="terms.html"><i class="fa-solid fa-file-shield"></i> Policies</a></div>
 </main>
 
+<script src="photo.js"></script>
 <script src="admin.js"></script>
 </body>
 </html>
