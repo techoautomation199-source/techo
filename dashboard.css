@@ -1,0 +1,95 @@
+.dash-counts{margin-bottom:6px;}
+.dash-date{text-align:center;font-size:12px;color:var(--gray-text);margin-bottom:24px;}
+
+/* ---------------- modern gradient hero header ---------------- */
+.dash-hero{
+  background:linear-gradient(135deg,#1e4fd8,#8e3fc4);
+  border-radius:18px;padding:26px 28px;color:#fff;margin-bottom:26px;
+  box-shadow:0 14px 34px rgba(30,79,216,0.28);
+}
+.dash-hero .reg-title{color:#fff;}
+.dash-hero .reg-sub{color:#e4e9ff;}
+.dash-hero .lang-toggle-btn{background:rgba(255,255,255,0.14);border-color:rgba(255,255,255,0.35);color:#fff;}
+.dash-hero .lang-toggle-btn.active{background:#fff;color:var(--blue);border-color:#fff;}
+.dash-hero .fbtn-outline{background:rgba(255,255,255,0.14);border-color:rgba(255,255,255,0.4);color:#fff;}
+.dash-hero .fbtn-outline:hover{background:#fff;color:var(--blue);}
+
+.rc-box{transition:transform .15s ease, box-shadow .15s ease;}
+.rc-box:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(20,30,60,0.12);}
+
+.form-success{
+  font-size:12.5px;color:var(--green);font-weight:700;margin-top:8px;
+}
+
+/* ---------------- lookup mode toggle (Admin vs Self) ---------------- */
+.lookup-mode-toggle{display:flex;gap:10px;margin:6px 0 16px;flex-wrap:wrap;}
+.lmt-btn{
+  border:1.5px solid var(--border);background:#fff;border-radius:999px;
+  padding:8px 16px;font-weight:700;font-size:12px;color:var(--gray-text);cursor:pointer;
+}
+.lmt-btn.active{background:var(--blue);border-color:var(--blue);color:#fff;}
+
+/* ---------------- attendance log table (per-trainee lookup) ---------------- */
+.att-log-table{width:100%;border-collapse:collapse;margin-top:16px;font-size:12.5px;}
+.att-log-table th, .att-log-table td{
+  padding:9px 10px;text-align:left;border-bottom:1px solid var(--border);
+}
+.att-log-table th{background:#f6f8fc;font-weight:800;color:var(--gray-text);font-size:11px;text-transform:uppercase;letter-spacing:.4px;}
+.att-log-empty{font-size:12.5px;color:var(--gray-text);margin-top:14px;}
+
+.att-status-pill{
+  display:inline-block;padding:3px 10px;border-radius:999px;font-weight:700;font-size:11px;
+}
+.att-status-present{background:#e7f7ec;color:var(--green);}
+.att-status-absent{background:#fdeaea;color:var(--red);}
+.att-status-holiday{background:#fff4e2;color:var(--orange);}
+
+@media (max-width:640px){
+  .att-log-table{font-size:11px;}
+  .att-log-table th, .att-log-table td{padding:7px 6px;}
+}
+
+/* ---------------- yearly holiday calendar ---------------- */
+.cal-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:4px;}
+.cal-year-nav{display:flex;align-items:center;gap:10px;}
+.cal-nav-btn{
+  border:1.5px solid var(--border);background:#fff;border-radius:8px;
+  width:32px;height:32px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--blue);
+}
+.cal-nav-btn:hover{background:#eef1f8;}
+.cal-year-label{font-weight:800;font-size:17px;min-width:52px;text-align:center;}
+
+.cal-months-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0 24px;
+}
+.cal-month-box{
+  border:1px solid var(--border);border-radius:12px;padding:10px;background:#fbfcff;
+}
+.cal-month-title{font-weight:800;font-size:12px;text-align:center;margin-bottom:6px;color:var(--blue);}
+.cal-weekdays{
+  display:grid;grid-template-columns:repeat(7,1fr);font-size:8.5px;color:var(--gray-text);
+  font-weight:700;text-align:center;margin-bottom:3px;
+}
+.cal-days-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}
+.cal-day{font-size:9.5px;text-align:center;padding:3px 0;border-radius:4px;color:#333;}
+.cal-day-empty{visibility:hidden;}
+.cal-day-holiday{background:var(--orange);color:#fff;font-weight:800;}
+
+.cal-list-heading{font-size:13px;font-weight:800;margin:6px 0 10px;color:var(--gray-text);}
+.cal-holiday-list{display:flex;flex-direction:column;gap:8px;}
+.cal-holiday-row{
+  display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;
+  border:1px solid #f4dfc0;border-radius:10px;padding:9px 12px;font-size:12px;background:#fff9f0;
+}
+.cal-holiday-date{font-weight:800;color:var(--orange);min-width:80px;}
+.cal-holiday-reason{flex:1;color:#333;}
+.cal-holiday-by{font-size:11px;color:var(--gray-text);}
+.att-log-empty{font-size:12.5px;color:var(--gray-text);}
+
+@media (max-width:900px){
+  .cal-months-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:560px){
+  .cal-months-grid{grid-template-columns:1fr;}
+}

@@ -12,14 +12,13 @@
    open the Google Sheet -> File -> Download -> Microsoft Excel (.xlsx).
    ========================================================================= */
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPM9vOuQ23GSCCLG-hIWE_3AszMFM2JoivGY-1ctIjLZn2f2_KJvVPHxNrAOQUOVcK/exec";
 
 /* ---------------- send the entry to the central Google Sheet ------------ */
 async function saveToGoogleSheet(data) {
-  if (!SCRIPT_URL || SCRIPT_URL.indexOf('PASTE_YOUR_WEB_APP_URL_HERE') !== -1) {
-    throw new Error('SCRIPT_URL not configured yet');
+  if (!TECHO_SCRIPT_URL || TECHO_SCRIPT_URL.indexOf('PASTE_YOUR_WEB_APP_URL_HERE') !== -1) {
+    throw new Error('TECHO_SCRIPT_URL not configured yet');
   }
-  await fetch(SCRIPT_URL, {
+  await fetch(TECHO_SCRIPT_URL, {
     method: 'POST',
     mode: 'no-cors',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -168,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function () {
         'We could not reach the server. Please check your internet connection and try again.',
         true
       );
-      if (saveNote) saveNote.textContent = 'Central save failed — check the SCRIPT_URL / your internet connection.';
+      if (saveNote) saveNote.textContent = 'Central save failed — check the TECHO_SCRIPT_URL / your internet connection.';
     }
 
     submitBtn.disabled = false;

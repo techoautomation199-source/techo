@@ -50,6 +50,16 @@
     <div id="sDetailWrap" class="detail-box"></div>
     <div id="sEditWrap" style="display:none;"></div>
 
+    <h3 class="sub-heading" data-i18n="attendance_heading">Today's Attendance</h3>
+    <div class="attendance-box" id="attendanceBox">
+      <p class="screen-sub" data-i18n="attendance_note">Mark your attendance for today.</p>
+      <div class="attendance-btn-row">
+        <button type="button" class="att-btn att-present" id="btnMarkPresent"><i class="fa-solid fa-circle-check"></i> <span data-i18n="present">Present</span></button>
+        <button type="button" class="att-btn att-absent" id="btnMarkAbsent"><i class="fa-solid fa-circle-xmark"></i> <span data-i18n="absent">Absent</span></button>
+      </div>
+      <p class="form-error" id="attendanceError"></p>
+    </div>
+
     <h3 class="sub-heading" data-i18n="fee_payment_history">Fee Payment History</h3>
     <div id="sFeeWrap" class="detail-box"></div>
 
@@ -68,7 +78,31 @@
   <div class="policies-footer-link"><a href="terms.html"><i class="fa-solid fa-file-shield"></i> Policies</a></div>
 </main>
 
+<!-- ===================== ABSENT REASON POPUP ===================== -->
+<div class="popup-overlay" id="absentReasonOverlay">
+  <div class="popup-box popup-box-form">
+    <i class="fa-solid fa-circle-xmark popup-icon popup-icon-red"></i>
+    <h3 data-i18n="absent_reason_title">Why will you be absent?</h3>
+    <textarea id="absentReasonInput" rows="4" data-i18n-ph="absent_reason_ph" placeholder="Please tell us the reason"></textarea>
+    <p class="form-error" id="absentReasonError"></p>
+    <div class="popup-btn-row">
+      <button type="button" class="fbtn-outline" id="btnCancelAbsent" data-i18n="cancel">Cancel</button>
+      <button type="button" class="fbtn-solid" id="btnSubmitAbsent" data-i18n="submit">Submit</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== ATTENDANCE CONFIRMATION POPUP ===================== -->
+<div class="popup-overlay" id="attendancePopupOverlay">
+  <div class="popup-box">
+    <i class="fa-solid fa-circle-check popup-icon" id="attendancePopupIcon"></i>
+    <h3 id="attendancePopupTitle" data-i18n="thank_you">Thank You!</h3>
+    <p id="attendancePopupMsg" data-i18n="attendance_present_msg">Your attendance at TECHO has been registered.</p>
+  </div>
+</div>
+
 <script src="i18n.js"></script>
+<script src="config.js"></script>
 <script src="photo.js"></script>
 <script src="student.js"></script>
 <script src="agreements.js"></script>

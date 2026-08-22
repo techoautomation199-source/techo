@@ -7,7 +7,6 @@
    shows live Trainee / Service / Total feedback counts.
    ========================================================================= */
 
-const RATING_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPM9vOuQ23GSCCLG-hIWE_3AszMFM2JoivGY-1ctIjLZn2f2_KJvVPHxNrAOQUOVcK/exec";
 
 /* ---------------- star rating widget ---------------- */
 function setupStarRating(wrapId, hiddenInputId) {
@@ -96,7 +95,7 @@ function renderRatingBars(ratingCounts) {
 
 async function loadFeedbackCounts() {
   try {
-    const res = await fetch(RATING_SCRIPT_URL + '?action=getFeedbackCounts');
+    const res = await fetch(TECHO_SCRIPT_URL + '?action=getFeedbackCounts');
     const data = await res.json();
     document.getElementById('rcStudent').textContent = data.student ?? 0;
     document.getElementById('rcService').textContent = data.service ?? 0;
@@ -114,7 +113,7 @@ async function loadFeedbackCounts() {
 
 /* ---------------- submit handling ---------------- */
 async function sendFeedback(payload) {
-  await fetch(RATING_SCRIPT_URL, {
+  await fetch(TECHO_SCRIPT_URL, {
     method: 'POST',
     mode: 'no-cors',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },

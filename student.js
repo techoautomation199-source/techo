@@ -1,8 +1,6 @@
-const ADMIN_SCRIPT_URL_S = "https://script.google.com/macros/s/AKfycbw3UmPIGbGPyVLkjcnPeAbTezSLP5ljYHyImD_VvUd5kS5OM6GP3IpOVu4gTIjqcZgWGQ/exec";
-
 async function apiS(action, payload) {
   const body = Object.assign({ action: action }, payload || {});
-  const res = await fetch(ADMIN_SCRIPT_URL_S, {
+  const res = await fetch(TECHO_SCRIPT_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(body)
@@ -133,6 +131,120 @@ document.addEventListener('DOMContentLoaded', function () {
       instWrap.innerHTML = '<p class="screen-sub" data-i18n="no_installment_agreement">No installment agreement on file.</p>';
     }
     if (window.techoApplyLang) techoApplyLang(localStorage.getItem('techoLang') || 'en');
+  }
+
+  /* ---------------- Trainee Attendance (Present / Absent) ---------------- */
+  function curLang() { return localStorage.getItem('techoLang') || 'en'; }
+  function tText(key, fallback) {
+    return (window.TECHO_I18N && TECHO_I18N[key] && TECHO_I18N[key][curLang()]) || fallback;
+  }
+
+  function showAttendancePopup(status) {
+    const overlay = document.getElementById('attendancePopupOverlay');
+    const icon = document.getElementById('attendancePopupIcon');
+    const title = document.getElementById('attendancePopupTitle');
+    const msg = document.getElementById('attendancePopupMsg');
+    if (!overlay) return;
+
+    if (status === 'Absent') {
+      icon.className = 'fa-solid fa-circle-check popup-icon';
+      title.setAttribute('data-i18n', 'thank_you');
+      msg.setAttribute('data-i18n', 'attendance_absent_msg');
+      title.textContent = tText('thank_you', 'Thank You!');
+      msg.textContent = tText('attendance_absent_msg', 'Your absence has been noted. Take care!');
+    } else {
+      icon.className = 'fa-solid fa-circle-check popup-icon';
+      title.setAttribute('data-i18n', 'thank_you');
+      msg.setAttribute('data-i18n', 'attendance_present_msg');
+      title.textContent = tText('thank_you', 'Thank You!');
+      msg.textContent = tText('attendance_present_msg', 'Your attendance at TECHO has been registered.');
+    }
+    overlay.classList.add('show');
+    setTimeout(function () { overlay.classList.remove('show'); }, 4000);
+  }
+
+  function disableAttendanceButtons() {
+    const p = document.getElementById('btnMarkPresent');
+    const a = document.getElementById('btnMarkAbsent');
+    if (p) p.disabled = true;
+    if (a) a.disabled = true;
+  }
+
+  const btnMarkPresent = document.getElementById('btnMarkPresent');
+  if (btnMarkPresent) {
+    btnMarkPresent.addEventListener('click', async function () {
+      if (!_currentStudent) return;
+      const errEl = document.getElementById('attendanceError');
+      errEl.textContent = '';
+      disableAttendanceButtons();
+
+      const result = await apiS('markTraineeAttendance', {
+        studentId: _currentStudent.StudentID,
+        studentName: _currentStudent.FullName,
+        status: 'Present'
+      });
+
+      if (result.error) {
+        errEl.textContent = result.error;
+        const p = document.getElementById('btnMarkPresent');
+        const a = document.getElementById('btnMarkAbsent');
+        if (p) p.disabled = false;
+        if (a) a.disabled = false;
+        return;
+      }
+      showAttendancePopup('Present');
+    });
+  }
+
+  const btnMarkAbsent = document.getElementById('btnMarkAbsent');
+  if (btnMarkAbsent) {
+    btnMarkAbsent.addEventListener('click', function () {
+      document.getElementById('absentReasonInput').value = '';
+      document.getElementById('absentReasonError').textContent = '';
+      document.getElementById('absentReasonOverlay').classList.add('show');
+    });
+  }
+
+  const btnCancelAbsent = document.getElementById('btnCancelAbsent');
+  if (btnCancelAbsent) {
+    btnCancelAbsent.addEventListener('click', function () {
+      document.getElementById('absentReasonOverlay').classList.remove('show');
+    });
+  }
+
+  const btnSubmitAbsent = document.getElementById('btnSubmitAbsent');
+  if (btnSubmitAbsent) {
+    btnSubmitAbsent.addEventListener('click', async function () {
+      if (!_currentStudent) return;
+      const reason = document.getElementById('absentReasonInput').value.trim();
+      const reasonErrEl = document.getElementById('absentReasonError');
+      if (!reason) {
+        reasonErrEl.textContent = tText('absent_reason_required', 'Please enter a reason before submitting.');
+        return;
+      }
+      reasonErrEl.textContent = '';
+      btnSubmitAbsent.disabled = true;
+
+      const result = await apiS('markTraineeAttendance', {
+        studentId: _currentStudent.StudentID,
+        studentName: _currentStudent.FullName,
+        status: 'Absent',
+        reason: reason
+      });
+
+      btnSubmitAbsent.disabled = false;
+
+      if (result.error) {
+        reasonErrEl.textContent = result.error;
+        return;
+      }
+
+      document.getElementById('absentReasonOverlay').classList.remove('show');
+      disableAttendanceButtons();
+      const errEl = document.getElementById('attendanceError');
+      if (errEl) errEl.textContent = '';
+      showAttendancePopup('Absent');
+    });
   }
 
   document.getElementById('btnStudentLogout').addEventListener('click', function () {

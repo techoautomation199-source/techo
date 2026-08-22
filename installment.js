@@ -1,8 +1,6 @@
-const ADMIN_SCRIPT_URL_INST = "https://script.google.com/macros/s/AKfycbw3UmPIGbGPyVLkjcnPeAbTezSLP5ljYHyImD_VvUd5kS5OM6GP3IpOVu4gTIjqcZgWGQ/exec";
-
 async function apiInst(action, payload) {
   const body = Object.assign({ action: action }, payload || {});
-  const res = await fetch(ADMIN_SCRIPT_URL_INST, {
+  const res = await fetch(TECHO_SCRIPT_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(body)
@@ -34,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
     try {
       result = await apiInst('listStudents', { query: id });
     } catch (err) {
-      errEl.textContent = 'Could not reach the server. Check that ADMIN_SCRIPT_URL_INST is set correctly in installment.js.';
+      errEl.textContent = 'Could not reach the server. Check that TECHO_SCRIPT_URL is set correctly in config.js.';
       console.error(err);
       return;
     }

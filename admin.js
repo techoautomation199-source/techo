@@ -1,15 +1,16 @@
 /* =========================================================================
    TECHO — ADMIN PORTAL LOGIC
    -------------------------------------------------------------------------
-   Talks to admin-backend.gs (a SEPARATE Apps Script from the enrollment
-   form's script). Paste your deployment URL below.
+   Talks to google-apps-script.gs — the ONE merged backend for the whole
+   site (Enrollment, Services, Rate Us, and the Admin/Student portal all
+   in one script now). The deployment URL lives in config.js (loaded
+   before this file) as TECHO_SCRIPT_URL — update it there, not here.
    ========================================================================= */
 
-const ADMIN_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw3UmPIGbGPyVLkjcnPeAbTezSLP5ljYHyImD_VvUd5kS5OM6GP3IpOVu4gTIjqcZgWGQ/exec";
 
 async function api(action, payload) {
   const body = Object.assign({ action: action }, payload || {});
-  const res = await fetch(ADMIN_SCRIPT_URL, {
+  const res = await fetch(TECHO_SCRIPT_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(body)
@@ -71,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
     try {
       status = await api('bossExists', {});
     } catch (err) {
-      alert('Could not reach the server. Check ADMIN_SCRIPT_URL in admin.js and that the Apps Script is deployed.');
+      alert('Could not reach the server. Check TECHO_SCRIPT_URL in admin.js and that the Apps Script is deployed.');
       console.error(err);
       return;
     }
@@ -124,7 +125,7 @@ async function loadAdminList() {
   try {
     result = await api('listAdmins', {});
   } catch (err) {
-    wrap.innerHTML = '<p class="loading-text" style="color:var(--red);">Could not reach the server. Check ADMIN_SCRIPT_URL in admin.js and that the Apps Script is deployed.</p>';
+    wrap.innerHTML = '<p class="loading-text" style="color:var(--red);">Could not reach the server. Check TECHO_SCRIPT_URL in admin.js and that the Apps Script is deployed.</p>';
     console.error(err);
     return;
   }
@@ -341,7 +342,7 @@ async function onCreateAdminSubmit(e) {
   try {
     result = await api('createAdmin', payload);
   } catch (err) {
-    errEl.textContent = 'Could not reach the server. Check that ADMIN_SCRIPT_URL is set correctly in admin.js, and that the Apps Script is deployed as "Anyone" access.';
+    errEl.textContent = 'Could not reach the server. Check that TECHO_SCRIPT_URL is set correctly in admin.js, and that the Apps Script is deployed as "Anyone" access.';
     console.error(err);
     return;
   }

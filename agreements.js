@@ -6,11 +6,11 @@
    signature + date once; after that the filled form is shown read-only.
    ========================================================================= */
 
-/* Reuses the same backend URL already set in student.js (ADMIN_SCRIPT_URL_S) —
+/* Reuses the shared backend URL from config.js (TECHO_SCRIPT_URL) —
    no need to paste the URL a second time. */
 async function apiAG(action, payload) {
   const body = Object.assign({ action: action }, payload || {});
-  const res = await fetch(ADMIN_SCRIPT_URL_S, {
+  const res = await fetch(TECHO_SCRIPT_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(body)

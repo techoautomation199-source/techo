@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ffffff">
+<title>Attendance Dashboard | TECHO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="common.css">
+<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="forms.css">
+<link rel="stylesheet" href="rating.css">
+<link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+<div class="admin-topbar">
+  <span class="logo-word" style="font-size:20px;"><span>T</span><span>E</span><span>C</span><span>H</span><span>O</span></span>
+  <span class="admin-topbar-tag">Attendance Dashboard</span>
+  <a href="portal.html" class="topbar-back"><i class="fa-solid fa-arrow-left"></i> Portal</a>
+</div>
+
+<main class="admin-main wide-main">
+
+  <div class="form-header-row dash-hero">
+    <div>
+      <h2 class="reg-title" data-i18n="dash_title">ATTENDANCE DASHBOARD</h2>
+      <p class="reg-sub" data-i18n="dash_sub">Live trainee attendance overview — updates automatically.</p>
+      <div class="lang-toggle-bar" id="langToggleBar">
+        <button type="button" class="lang-toggle-btn" data-lang="en">English</button>
+        <button type="button" class="lang-toggle-btn" data-lang="mr">मराठी</button>
+        <button type="button" class="lang-toggle-btn" data-lang="hi">हिंदी</button>
+      </div>
+    </div>
+    <button type="button" class="fbtn-outline" id="btnRefreshDash"><i class="fa-solid fa-rotate"></i> <span data-i18n="refresh">Refresh</span></button>
+  </div>
+
+  <!-- ===================== TOP SUMMARY CARDS ===================== -->
+  <div class="rating-counts dash-counts">
+    <div class="rc-box">
+      <span class="rc-num" id="dTotalStudents">—</span>
+      <p data-i18n="dash_total_trainees">Total Trainees</p>
+    </div>
+    <div class="rc-box">
+      <span class="rc-num" id="dTodayPresent">—</span>
+      <p data-i18n="dash_present_today">Present Today</p>
+    </div>
+    <div class="rc-box">
+      <span class="rc-num" id="dTodayAbsent">—</span>
+      <p data-i18n="dash_absent_today">Absent Today</p>
+    </div>
+  </div>
+  <p class="dash-date" id="dashTodayDate"></p>
+
+  <!-- ===================== TODAY PIE CHART ===================== -->
+  <div class="problem-chart-box">
+    <h3 data-i18n="dash_today_chart">Today's Attendance</h3>
+    <div class="pc-wrap">
+      <div class="pc-pie" id="todayPie"></div>
+      <div class="pc-legend">
+        <div class="pc-legend-item"><span class="pc-dot pc-dot-green"></span> <span data-i18n="present">Present</span>: <b id="legendTodayPresent">0</b></div>
+        <div class="pc-legend-item"><span class="pc-dot pc-dot-red"></span> <span data-i18n="absent">Absent</span>: <b id="legendTodayAbsent">0</b></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== YEAR SUMMARY + PIE ===================== -->
+  <div class="problem-chart-box">
+    <h3 id="yearChartTitle">This Year's Attendance</h3>
+    <div class="pc-wrap">
+      <div class="pc-pie" id="yearPie"></div>
+      <div class="pc-legend">
+        <div class="pc-legend-item"><span class="pc-dot pc-dot-green"></span> <span data-i18n="present">Present</span>: <b id="legendYearPresent">0</b></div>
+        <div class="pc-legend-item"><span class="pc-dot pc-dot-red"></span> <span data-i18n="absent">Absent</span>: <b id="legendYearAbsent">0</b></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== PER-TRAINEE ATTENDANCE LOOKUP (admin OR self) ===================== -->
+  <div class="reg-card">
+    <h3 class="sub-heading" style="margin-top:0;"><i class="fa-solid fa-user-magnifying-glass"></i> <span data-i18n="dash_lookup_heading">View a Trainee's Daily Attendance</span></h3>
+    <p class="screen-sub" data-i18n="dash_lookup_note">An Admin can view any trainee's attendance using Admin ID + Password. A trainee can also view their OWN attendance using their own Trainee ID + Password.</p>
+
+    <label><span data-i18n="trainee_id">Trainee ID</span> <input type="text" id="lkStudentId" placeholder="e.g. STU0001"></label>
+
+    <div class="lookup-mode-toggle" id="lookupModeToggle">
+      <button type="button" class="lmt-btn active" data-mode="admin" data-i18n="dash_admin_login">Admin Login</button>
+      <button type="button" class="lmt-btn" data-mode="self" data-i18n="dash_self_login">My Own Trainee Login</button>
+    </div>
+
+    <div class="form-grid-2" id="lkAdminFields">
+      <label><span data-i18n="admin_id">Admin ID</span> <input type="text" id="lkAdminId"></label>
+      <label><span data-i18n="admin_password">Admin Password</span> <input type="password" id="lkAdminPassword"></label>
+    </div>
+    <div class="form-grid-2" id="lkSelfFields" style="display:none;">
+      <label><span data-i18n="trainee_password">Trainee Password</span> <input type="password" id="lkStudentPassword"></label>
+    </div>
+
+    <button type="button" class="admin-submit" id="btnLookupAttendance"><i class="fa-solid fa-magnifying-glass"></i> <span data-i18n="dash_view_attendance">View Attendance</span></button>
+    <p class="form-error" id="lookupError"></p>
+    <div id="attendanceLogWrap"></div>
+  </div>
+
+  <!-- ===================== ADMIN: MARK OFFICIAL HOLIDAY ===================== -->
+  <div class="reg-card">
+    <h3 class="sub-heading" style="margin-top:0;"><i class="fa-solid fa-calendar-xmark"></i> <span data-i18n="dash_holiday_heading">Mark an Official Holiday</span></h3>
+    <p class="screen-sub" data-i18n="dash_holiday_note">Use this when there's no class on a date (holiday, institute closed, etc.). It will automatically show up as "Holiday" with this reason — and who declared it — in every trainee's attendance record. Only Admin (Boss / Supervisor) can do this.</p>
+    <div class="form-grid-2">
+      <label><span data-i18n="date">Date</span> <input type="date" id="holAdminDate"></label>
+      <label><span data-i18n="dash_holiday_reason">Reason</span> <input type="text" id="holAdminReason" placeholder="e.g. Republic Day / Institute Closed"></label>
+    </div>
+    <div class="form-grid-2">
+      <label><span data-i18n="admin_id">Admin ID</span> <input type="text" id="holAdminId"></label>
+      <label><span data-i18n="admin_password">Admin Password</span> <input type="password" id="holAdminPassword"></label>
+    </div>
+    <button type="button" class="admin-submit" id="btnAddHoliday"><i class="fa-solid fa-calendar-plus"></i> <span data-i18n="dash_mark_holiday">Mark Holiday</span></button>
+    <p class="form-error" id="holidayError"></p>
+    <p class="form-success" id="holidaySuccess"></p>
+  </div>
+
+  <!-- ===================== MONTHLY PIE CHART ===================== -->
+  <div class="problem-chart-box">
+    <h3 id="monthChartTitle">This Month's Attendance</h3>
+    <div class="pc-wrap">
+      <div class="pc-pie" id="monthPie"></div>
+      <div class="pc-legend">
+        <div class="pc-legend-item"><span class="pc-dot pc-dot-green"></span> <span data-i18n="present">Present</span>: <b id="legendMonthPresent">0</b></div>
+        <div class="pc-legend-item"><span class="pc-dot pc-dot-red"></span> <span data-i18n="absent">Absent</span>: <b id="legendMonthAbsent">0</b></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== YEARLY HOLIDAY CALENDAR ===================== -->
+  <div class="reg-card calendar-card">
+    <div class="cal-header">
+      <h3 class="sub-heading" style="margin:0;"><i class="fa-solid fa-calendar-days"></i> <span data-i18n="dash_calendar_heading">Yearly Holiday Calendar</span></h3>
+      <div class="cal-year-nav">
+        <button type="button" id="calPrevYear" class="cal-nav-btn"><i class="fa-solid fa-chevron-left"></i></button>
+        <span id="calYearLabel" class="cal-year-label"></span>
+        <button type="button" id="calNextYear" class="cal-nav-btn"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+    </div>
+    <p class="screen-sub" data-i18n="dash_calendar_note">Days marked orange are official holidays. Holidays added above will appear here automatically, for the right year.</p>
+    <div class="cal-months-grid" id="calMonthsGrid"></div>
+
+    <h4 class="cal-list-heading" data-i18n="dash_holiday_list_heading">Holidays This Year</h4>
+    <div id="calHolidayList" class="cal-holiday-list"></div>
+  </div>
+
+</main>
+
+<script src="i18n.js"></script>
+<script src="config.js"></script>
+<script src="dashboard.js"></script>
+</body>
+</html>

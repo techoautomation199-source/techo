@@ -1,8 +1,6 @@
-const ADMIN_SCRIPT_URL_D = "https://script.google.com/macros/s/AKfycbw3UmPIGbGPyVLkjcnPeAbTezSLP5ljYHyImD_VvUd5kS5OM6GP3IpOVu4gTIjqcZgWGQ/exec";
-
 async function apiD(action, payload) {
   const body = Object.assign({ action: action }, payload || {});
-  const res = await fetch(ADMIN_SCRIPT_URL_D, {
+  const res = await fetch(TECHO_SCRIPT_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(body)

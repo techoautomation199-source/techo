@@ -1,8 +1,6 @@
-const ADMIN_SCRIPT_URL_FR = "https://script.google.com/macros/s/AKfycbw3UmPIGbGPyVLkjcnPeAbTezSLP5ljYHyImD_VvUd5kS5OM6GP3IpOVu4gTIjqcZgWGQ/exec";
-
 async function apiFR(action, payload) {
   const body = Object.assign({ action: action }, payload || {});
-  const res = await fetch(ADMIN_SCRIPT_URL_FR, {
+  const res = await fetch(TECHO_SCRIPT_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(body)
@@ -100,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
     try {
       result = await apiFR('listStudents', { query: id });
     } catch (err) {
-      errEl.textContent = 'Could not reach the server. Check that ADMIN_SCRIPT_URL_FR is set correctly in fee-receipt.js.';
+      errEl.textContent = 'Could not reach the server. Check that TECHO_SCRIPT_URL is set correctly in config.js.';
       console.error(err);
       nameEl.placeholder = '';
       lookupBtn.disabled = false;

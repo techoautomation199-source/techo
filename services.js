@@ -4,14 +4,13 @@
    Sends the visitor's Name, Mobile Number and Message to the same Google
    Apps Script backend already used by the enrollment form (excel.js /
    google-apps-script.gs). The script emails the details straight to
-   ayareomkar199@gmail.com. No Google Sheet setup needed for this form —
+   techoautomation199@gmail.com. No Google Sheet setup needed for this form —
    it only sends an email, nothing is stored in a sheet.
    ========================================================================= */
 
-const SERVICE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPM9vOuQ23GSCCLG-hIWE_3AszMFM2JoivGY-1ctIjLZn2f2_KJvVPHxNrAOQUOVcK/exec";
 
 async function sendServiceRequest(data) {
-  await fetch(SERVICE_SCRIPT_URL, {
+  await fetch(TECHO_SCRIPT_URL, {
     method: 'POST',
     mode: 'no-cors',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
