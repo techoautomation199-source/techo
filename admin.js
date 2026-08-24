@@ -244,6 +244,8 @@ function renderProfile(a) {
   setStatusIndicator(a.Status);
   document.getElementById('statusError').textContent = '';
 
+  renderAdminSignature(a);
+
   const rows = [
     ['fa-id-badge', 'Admin ID', a.AdminID],
     ['fa-venus-mars', 'Gender', a.Gender],
@@ -260,6 +262,50 @@ function renderProfile(a) {
 
   document.getElementById('screen-profile').dataset.targetId = a.AdminID;
   showScreen('screen-profile');
+}
+
+/* Shows the Admin's saved signature (if any) and lets them tap to draw /
+   redraw it. Uses the same viewer credentials already entered at the
+   profile gate (_currentProfileViewer) to authorize the save. */
+function renderAdminSignature(a) {
+  const box = document.getElementById('adminSigBox');
+  const img = document.getElementById('adminSigPreview');
+  const placeholder = document.getElementById('adminSigPlaceholder');
+  const errEl = document.getElementById('adminSigError');
+  if (!box) return;
+  errEl.textContent = '';
+
+  if (a.Signature) {
+    img.src = a.Signature;
+    img.style.display = 'block';
+    placeholder.style.display = 'none';
+  } else {
+    img.style.display = 'none';
+    placeholder.style.display = 'flex';
+  }
+
+  box.onclick = async function () {
+    if (!_currentProfileViewer) return;
+    const dataUrl = await techoOpenSignaturePad();
+    if (!dataUrl) return;
+    const base64 = dataUrl.split(',')[1];
+    errEl.textContent = 'Saving signature...';
+    const uploadResult = await api('uploadPhoto', { base64: base64, mimeType: 'image/png' });
+    if (uploadResult.error) { errEl.textContent = uploadResult.error; return; }
+
+    const saveResult = await api('updateAdminSignature', {
+      targetAdminId: a.AdminID,
+      enteredId: _currentProfileViewer.id,
+      enteredPassword: _currentProfileViewer.password,
+      signatureUrl: uploadResult.url
+    });
+    if (saveResult.error) { errEl.textContent = saveResult.error; return; }
+
+    errEl.textContent = '';
+    img.src = uploadResult.url;
+    img.style.display = 'block';
+    placeholder.style.display = 'none';
+  };
 }
 
 function setStatusIndicator(status) {
@@ -351,6 +397,8 @@ async function onCreateAdminSubmit(e) {
   document.getElementById('createdId').textContent = result.id;
   document.getElementById('createdPassword').textContent = result.password;
   document.getElementById('createdRole').textContent = result.role;
+  const emailNote = document.getElementById('createdEmailNote');
+  if (emailNote) emailNote.style.display = payload.email ? '' : 'none';
   showScreen('screen-created');
   document.getElementById('formCreateAdmin').reset();
   if (_caPhotoCtl) _caPhotoCtl.reset();

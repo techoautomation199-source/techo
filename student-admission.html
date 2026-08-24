@@ -43,20 +43,94 @@
 
     <label class="reg-full"><span data-i18n="admission_date">Admission Date</span> *<input type="date" id="admDate" required></label>
 
-    <div class="form-grid-3">
-      <fieldset class="check-fieldset">
+    <fieldset class="check-fieldset course-fieldset reg-full">
         <legend><i class="fa-solid fa-graduation-cap"></i> <span data-i18n="course_name">कोर्सचे नाव (Specialization Name) *</span></legend>
-        <label><input type="checkbox" name="course" value="PLC Programming"> PLC Programming</label>
-        <label><input type="checkbox" name="course" value="SCADA"> SCADA</label>
-        <label><input type="checkbox" name="course" value="HMI Programming"> HMI Programming</label>
-        <label><input type="checkbox" name="course" value="VFD Programming"> VFD Programming</label>
-        <label><input type="checkbox" name="course" value="Servo Programming"> Servo Programming</label>
-        <label><input type="checkbox" name="course" value="Industrial Automation"> Industrial Automation</label>
-        <label><input type="checkbox" name="course" value="Panel Wiring"> Panel Wiring</label>
-        <label><input type="checkbox" name="course" value="Electrical Design"> Electrical Design</label>
-        <label><input type="checkbox" name="course" value="AutoCAD Electrical"> AutoCAD Electrical</label>
-      </fieldset>
+        <div class="course-main-list">
+          <label><input type="checkbox" class="course-toggle" name="course" value="PLC" data-course="PLC"> PLC</label>
+          <label><input type="checkbox" class="course-toggle" name="course" value="SCADA" data-course="SCADA"> SCADA</label>
+          <label><input type="checkbox" class="course-toggle" name="course" value="HMI" data-course="HMI"> HMI</label>
+          <label><input type="checkbox" class="course-toggle" name="course" value="VFD" data-course="VFD"> VFD</label>
+          <label><input type="checkbox" class="course-toggle" name="course" value="Servo" data-course="Servo"> Servo</label>
+          <label><input type="checkbox" class="course-toggle" name="course" value="AutoCAD" data-course="AutoCAD"> AutoCAD</label>
+          <label><input type="checkbox" class="course-toggle" name="course" value="Languages" data-course="Languages"> Languages</label>
+        </div>
 
+        <div class="course-sub-panel" data-course-panel="PLC" style="display:none;">
+          <div class="course-sub-title">PLC <span data-i18n="course_options">— select options</span></div>
+          <label class="select-all-label"><input type="checkbox" class="select-all-cb" data-target="PLC"> <span data-i18n="select_all">Select All</span></label>
+          <label><input type="checkbox" name="courseOpt_PLC" value="Delta"> Delta</label>
+          <label><input type="checkbox" name="courseOpt_PLC" value="Siemens"> Siemens</label>
+          <label><input type="checkbox" name="courseOpt_PLC" value="GX Developer"> GX Developer</label>
+          <label><input type="checkbox" name="courseOpt_PLC" value="Allen Bradley"> Allen Bradley</label>
+          <label><input type="checkbox" name="courseOpt_PLC" value="Schneider"> Schneider</label>
+          <label><input type="checkbox" name="courseOpt_PLC" value="Omron"> Omron</label>
+          <label><input type="checkbox" name="courseOpt_PLC" value="Coolmay"> Coolmay</label>
+        </div>
+
+        <div class="course-sub-panel" data-course-panel="SCADA" style="display:none;">
+          <div class="course-sub-title">SCADA <span data-i18n="course_options">— select options</span></div>
+          <label class="select-all-label"><input type="checkbox" class="select-all-cb" data-target="SCADA"> <span data-i18n="select_all">Select All</span></label>
+          <label><input type="checkbox" name="courseOpt_SCADA" value="Wonderware InTouch"> Wonderware InTouch</label>
+          <label><input type="checkbox" name="courseOpt_SCADA" value="Open SCADA"> Open SCADA</label>
+          <label><input type="checkbox" name="courseOpt_SCADA" value="WinCC"> WinCC</label>
+          <label><input type="checkbox" name="courseOpt_SCADA" value="FactoryTalk View"> FactoryTalk View</label>
+          <label><input type="checkbox" name="courseOpt_SCADA" value="VTScada"> VTScada</label>
+        </div>
+
+        <div class="course-sub-panel" data-course-panel="HMI" style="display:none;">
+          <div class="course-sub-title">HMI <span data-i18n="course_options">— select options</span></div>
+          <label class="select-all-label"><input type="checkbox" class="select-all-cb" data-target="HMI"> <span data-i18n="select_all">Select All</span></label>
+          <label><input type="checkbox" name="courseOpt_HMI" value="Delta"> Delta</label>
+          <label><input type="checkbox" name="courseOpt_HMI" value="Siemens"> Siemens</label>
+          <label><input type="checkbox" name="courseOpt_HMI" value="INVT"> INVT</label>
+          <label><input type="checkbox" name="courseOpt_HMI" value="Coolmay"> Coolmay</label>
+          <label><input type="checkbox" name="courseOpt_HMI" value="Weintek"> Weintek</label>
+          <label><input type="checkbox" name="courseOpt_HMI" value="Pro-face"> Pro-face</label>
+          <label><input type="checkbox" name="courseOpt_HMI" value="MView"> MView</label>
+          <label><input type="checkbox" name="courseOpt_HMI" value="TP Works"> TP Works</label>
+        </div>
+
+        <div class="course-sub-panel" data-course-panel="VFD" style="display:none;">
+          <div class="course-sub-title">VFD <span data-i18n="course_options">— select options</span></div>
+          <label class="select-all-label"><input type="checkbox" class="select-all-cb" data-target="VFD"> <span data-i18n="select_all">Select All</span></label>
+          <label><input type="checkbox" name="courseOpt_VFD" value="Delta"> Delta</label>
+          <label><input type="checkbox" name="courseOpt_VFD" value="Siemens"> Siemens</label>
+          <label><input type="checkbox" name="courseOpt_VFD" value="INVT"> INVT</label>
+          <label><input type="checkbox" name="courseOpt_VFD" value="Schneider"> Schneider</label>
+          <label><input type="checkbox" name="courseOpt_VFD" value="ABB"> ABB</label>
+          <label><input type="checkbox" name="courseOpt_VFD" value="Danfoss"> Danfoss</label>
+        </div>
+
+        <div class="course-sub-panel" data-course-panel="Servo" style="display:none;">
+          <div class="course-sub-title">Servo <span data-i18n="course_options">— select options</span></div>
+          <label class="select-all-label"><input type="checkbox" class="select-all-cb" data-target="Servo"> <span data-i18n="select_all">Select All</span></label>
+          <label><input type="checkbox" name="courseOpt_Servo" value="Delta"> Delta</label>
+          <label><input type="checkbox" name="courseOpt_Servo" value="Mitsubishi"> Mitsubishi</label>
+          <label><input type="checkbox" name="courseOpt_Servo" value="Siemens"> Siemens</label>
+          <label><input type="checkbox" name="courseOpt_Servo" value="Schneider"> Schneider</label>
+          <label><input type="checkbox" name="courseOpt_Servo" value="Panasonic"> Panasonic</label>
+          <label><input type="checkbox" name="courseOpt_Servo" value="INVT"> INVT</label>
+        </div>
+
+        <div class="course-sub-panel" data-course-panel="AutoCAD" style="display:none;">
+          <div class="course-sub-title">AutoCAD <span data-i18n="course_options">— select options</span></div>
+          <label class="select-all-label"><input type="checkbox" class="select-all-cb" data-target="AutoCAD"> <span data-i18n="select_all">Select All</span></label>
+          <label><input type="checkbox" name="courseOpt_AutoCAD" value="AutoCAD Electrical"> AutoCAD Electrical</label>
+          <label><input type="checkbox" name="courseOpt_AutoCAD" value="EPLAN"> EPLAN</label>
+        </div>
+
+        <div class="course-sub-panel" data-course-panel="Languages" style="display:none;">
+          <div class="course-sub-title">Languages <span data-i18n="course_options">— select options</span></div>
+          <label class="select-all-label"><input type="checkbox" class="select-all-cb" data-target="Languages"> <span data-i18n="select_all">Select All</span></label>
+          <label><input type="checkbox" name="courseOpt_Languages" value="HTML"> HTML</label>
+          <label><input type="checkbox" name="courseOpt_Languages" value="CSS"> CSS</label>
+          <label><input type="checkbox" name="courseOpt_Languages" value="JavaScript"> JavaScript</label>
+          <label><input type="checkbox" name="courseOpt_Languages" value="Java"> Java</label>
+          <label><input type="checkbox" name="courseOpt_Languages" value="Python"> Python</label>
+        </div>
+    </fieldset>
+
+    <div class="form-grid-2">
       <fieldset class="radio-fieldset">
         <legend><i class="fa-solid fa-laptop"></i> <span data-i18n="training_mode">प्रशिक्षण प्रकार (Training Mode) *</span></legend>
         <label><input type="radio" name="mode" value="Online" checked> Online</label>
@@ -94,6 +168,12 @@
           <label><span data-i18n="dob">Date of Birth</span> *<input type="date" id="stDob" required></label>
           <label><span data-i18n="age">Age</span> *<input type="number" id="stAge" placeholder="Enter age" required></label>
         </div>
+        <fieldset class="radio-fieldset-inline-block">
+          <legend><span data-i18n="gender">Gender</span> *</legend>
+          <label><input type="radio" name="gender" value="Male" checked> <span data-i18n="male">Male</span></label>
+          <label><input type="radio" name="gender" value="Female"> <span data-i18n="female">Female</span></label>
+          <label><input type="radio" name="gender" value="Other"> <span data-i18n="other">Other</span></label>
+        </fieldset>
         <div class="mini-grid">
           <label><span data-i18n="mobile">Mobile Number</span> *<input type="tel" id="stMobile" placeholder="Enter mobile number" required></label>
           <label><span data-i18n="whatsapp">WhatsApp Number</span> <input type="tel" id="stWhatsapp" placeholder="Enter WhatsApp number"></label>
@@ -150,6 +230,36 @@
         <label><input type="checkbox" name="documents" value="Photo"> <span data-i18n="passport_photo">Passport Size Photo</span></label>
         <label><input type="checkbox" name="documents" value="Educational Certificate"> <span data-i18n="educational_certificate">Educational Certificate</span></label>
         <label><input type="checkbox" name="documents" value="Resume"> Resume</label>
+
+        <div class="doc-photo-row">
+          <div class="photo-upload-box compact" id="docPhoto1Box">
+            <div class="photo-preview" id="docPhoto1Preview"><img id="docPhoto1Img" alt=""><i class="fa-solid fa-file-image"></i></div>
+            <div class="photo-upload-actions">
+              <span class="photo-upload-label" data-i18n="document_photo_1">Document Photo 1</span>
+              <div class="photo-upload-btn-row">
+                <label class="photo-upload-btn" for="docPhoto1File"><i class="fa-solid fa-images"></i> <span data-i18n="upload_photo">Upload Photo</span></label>
+                <input type="file" id="docPhoto1File" accept="image/*" hidden>
+                <button type="button" class="photo-remove-btn" id="docPhoto1Remove"><i class="fa-solid fa-trash"></i> <span data-i18n="remove">Remove</span></button>
+              </div>
+              <input type="hidden" id="docPhoto1">
+              <p class="form-error" id="docPhoto1Error"></p>
+            </div>
+          </div>
+
+          <div class="photo-upload-box compact" id="docPhoto2Box">
+            <div class="photo-preview" id="docPhoto2Preview"><img id="docPhoto2Img" alt=""><i class="fa-solid fa-file-image"></i></div>
+            <div class="photo-upload-actions">
+              <span class="photo-upload-label" data-i18n="document_photo_2">Document Photo 2</span>
+              <div class="photo-upload-btn-row">
+                <label class="photo-upload-btn" for="docPhoto2File"><i class="fa-solid fa-images"></i> <span data-i18n="upload_photo">Upload Photo</span></label>
+                <input type="file" id="docPhoto2File" accept="image/*" hidden>
+                <button type="button" class="photo-remove-btn" id="docPhoto2Remove"><i class="fa-solid fa-trash"></i> <span data-i18n="remove">Remove</span></button>
+              </div>
+              <input type="hidden" id="docPhoto2">
+              <p class="form-error" id="docPhoto2Error"></p>
+            </div>
+          </div>
+        </div>
       </fieldset>
     </div>
 
@@ -168,7 +278,8 @@
           <label><input type="radio" name="payMethod" value="Bank Transfer"> Bank Transfer</label>
           <label><input type="radio" name="payMethod" value="Card"> Card</label></span>
         </label>
-        <label><span data-i18n="transaction_id">Transaction ID</span> <input type="text" id="feeTxn" placeholder="Enter transaction ID"></label>
+        <label id="feeTxnWrap"><span data-i18n="transaction_id">Transaction ID</span> <input type="text" id="feeTxn" placeholder="Enter transaction ID"></label>
+        <p class="cash-note" id="feeCashNote" style="display:none;" data-i18n="cash_payment_note">Cash Payment — no Transaction ID required.</p>
       </fieldset>
 
       <fieldset class="section-fieldset">

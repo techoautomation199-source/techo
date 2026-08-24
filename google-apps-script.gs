@@ -24,21 +24,29 @@
       Timestamp | Full Name | Address | Email Address | Mobile Number |
       WhatsApp Number | College Name | Current Education / Qualification |
       Enrollment Date | Training
-   5. In "Admins" tab, Row 1 headers (A to O):
+   5. In "Admins" tab, Row 1 headers (A to P):
       AdminID | Password | FullName | PhotoURL | Gender | Phone | WhatsApp | Email |
-      Aadhaar | PAN | Address | Role | CreatedBy | Status | CreatedDate
+      Aadhaar | PAN | Address | Role | CreatedBy | Status | CreatedDate | Signature
+      (Signature is a NEW column — add it if you already have this tab,
+      otherwise the Admin's drawn signature silently won't be saved.)
    6. In "Students" tab, Row 1 headers (any order):
       StudentID | Password | FullName | FatherName | MotherName | PhotoURL |
-      DOB | Age | Mobile | WhatsApp | Email | Aadhaar | PAN | Address |
-      TrainingMode | Course | Batch | Qualification | QualBranch |
+      Gender | DOB | Age | Mobile | WhatsApp | Email | Aadhaar | PAN | Address |
+      TrainingMode | Course | CourseOptions | Batch | Qualification | QualBranch |
       QualCollege | QualYear | Employment | EmpCompany | EmpDesignation |
-      Documents | AdmissionDate | TotalFee | PaidFee | PendingFee |
-      PaymentMethod | TransactionID | CourseStatus | EmergencyName |
-      EmergencyRelation | EmergencyMobile | CreatedBy
+      Documents | DocumentPhoto1 | DocumentPhoto2 | AdmissionDate | TotalFee |
+      PaidFee | PendingFee | PaymentMethod | TransactionID | Remarks | CourseStatus |
+      EmergencyName | EmergencyRelation | EmergencyMobile | CreatedBy
+      (Gender, CourseOptions, DocumentPhoto1, DocumentPhoto2, and Remarks are
+      NEW columns — add them to your existing Students tab if you already
+      have one, otherwise this data silently won't be saved.)
    7. In "Attendance" tab, Row 1 headers (A to E):
       AdminID | Date | LoginTime | LogoutTime | Status
-   8. In "FeeHistory" tab, Row 1 headers (A to F):
-      ReceiptNo | StudentID | Amount | PaymentMethod | Date | CreatedBy
+   8. In "FeeHistory" tab, Row 1 headers (A to H):
+      ReceiptNo | StudentID | Amount | PaymentMethod | TransactionID | Remarks |
+      Date | CreatedBy
+      (TransactionID and Remarks are NEW columns here too — add them if you
+      already have this tab.)
    9. In "Installments" tab, Row 1 headers (A to L):
       StudentID | StudentName | Installment1Amount | Installment1Date |
       Installment2Amount | Installment2Date | Installment3Amount | Installment3Date |
@@ -229,7 +237,7 @@ function nextId(prefix, sheetName, idColumn) {
 
 /* ---------------- ROUTER ---------------- */
 const ADMIN_PORTAL_ACTIONS = [
-  'bossExists', 'createAdmin', 'adminLogin', 'listAdmins', 'viewAdminProfile',
+  'bossExists', 'createAdmin', 'adminLogin', 'listAdmins', 'viewAdminProfile', 'updateAdminSignature',
   'deleteAdmin', 'uploadPhoto', 'setAdminStatus', 'addStudent', 'listStudents',
   'studentLogin', 'verifyAdminGate', 'updateStudent', 'updateFee', 'setCourseStatus',
   'markPresent', 'markLogout', 'saveInstallment', 'getFeeHistory', 'getInstallment',
@@ -262,6 +270,7 @@ function doPost(e) {
         case 'adminLogin': result = adminLogin(data); break;
         case 'listAdmins': result = { admins: listAdmins() }; break;
         case 'viewAdminProfile': result = viewAdminProfile(data); break;
+        case 'updateAdminSignature': result = updateAdminSignature(data); break;
         case 'deleteAdmin': result = deleteAdmin(data); break;
         case 'uploadPhoto': result = uploadPhoto(data); break;
         case 'setAdminStatus': result = setAdminStatus(data); break;
@@ -377,12 +386,31 @@ function handleServiceRequest(data) {
         'A new service request has been submitted on the TECHO website (Services page).\n\n' +
         'Name: ' + data.name + '\n' +
         'Mobile Number: ' + data.mobile + '\n' +
+        (data.email ? ('Email: ' + data.email + '\n') : '') +
         'Message: ' + data.message + '\n\n' +
         'Submitted on: ' + data.timestamp
     });
   } catch (mailErr) {
     Logger.log('Service request email failed: ' + mailErr);
   }
+
+  try {
+    if (data.email) {
+      MailApp.sendEmail({
+        to: data.email,
+        subject: 'Thank You for Contacting TECHO Institute',
+        body:
+          'Hi ' + data.name + ',\n\n' +
+          'Thank you for reaching out to TECHO Institute. We have received your service ' +
+          'request and our team will contact you shortly on your mobile number (' + data.mobile + ').\n\n' +
+          'Your message: "' + data.message + '"\n\n' +
+          'Regards,\nTECHO Institute Team\n7841814377 / techoautomation199@gmail.com'
+      });
+    }
+  } catch (mailErr) {
+    Logger.log('Service request thank-you email failed: ' + mailErr);
+  }
+
   return ContentService
     .createTextOutput(JSON.stringify({ result: 'success' }))
     .setMimeType(ContentService.MimeType.JSON);
@@ -551,6 +579,26 @@ function createAdmin(data) {
     CreatedBy: data.createdBy || 'SELF', Status: data.status || 'Active', CreatedDate: createdDate
   });
 
+  try {
+    if (data.email) {
+      MailApp.sendEmail({
+        to: data.email,
+        subject: 'Your TECHO Admin Portal Login Details',
+        body:
+          'Hi ' + data.fullName + ',\n\n' +
+          'An account has been created for you on the TECHO Admin Portal.\n\n' +
+          'Admin ID: ' + id + '\n' +
+          'Password: ' + password + '\n' +
+          'Role: ' + data.role + '\n\n' +
+          'Please keep these details safe and do not share them with anyone.\n' +
+          'You can log in at the TECHO Admin Portal using this ID and Password.\n\n' +
+          'Regards,\nTECHO Institute Team\n7841814377 / techoautomation199@gmail.com'
+      });
+    }
+  } catch (mailErr) {
+    Logger.log('Admin creation email failed: ' + mailErr);
+  }
+
   return { id: id, password: password, role: data.role };
 }
 
@@ -584,8 +632,37 @@ function viewAdminProfile(data) {
     AdminID: target.AdminID, FullName: target.FullName, PhotoURL: target.PhotoURL, Gender: target.Gender,
     Phone: target.Phone, WhatsApp: target.WhatsApp, Email: target.Email, Address: target.Address,
     Role: target.Role, Status: target.Status, CreatedBy: target.CreatedBy, CreatedDate: target.CreatedDate,
+    Signature: target.Signature || '',
     viewerId: entered.AdminID, viewerPassword: entered.Password, viewerIsBoss: isBoss
   };
+}
+
+/* Saves an Admin's own drawn signature (data: PNG URL, same technique as
+   uploadPhoto) onto their row in the Admins sheet. Requires that same
+   Admin's own ID + Password (or Boss) — same gate as viewing a profile. */
+function updateAdminSignature(data) {
+  const rows = sheetRows(SHEET_NAMES.ADMINS);
+  const entered = rows.find(function (r) {
+    return String(r.AdminID) === String(data.enteredId) && String(r.Password) === String(data.enteredPassword);
+  });
+  if (!entered) return { error: 'Invalid ID or Password' };
+  const isBoss = entered.Role === 'Boss';
+  const isSelf = String(entered.AdminID) === String(data.targetAdminId);
+  if (!isBoss && !isSelf) return { error: 'You can only update your own signature' };
+
+  const sheet = getSheet(SHEET_NAMES.ADMINS);
+  const values = sheet.getDataRange().getValues();
+  const headers = values[0];
+  const idCol = headers.indexOf('AdminID');
+  const sigCol = headers.indexOf('Signature');
+  if (sigCol === -1) return { error: 'Add a "Signature" column to the Admins tab first.' };
+  for (let i = 1; i < values.length; i++) {
+    if (String(values[i][idCol]) === String(data.targetAdminId)) {
+      sheet.getRange(i + 1, sigCol + 1).setValue(data.signatureUrl || '');
+      return { success: true };
+    }
+  }
+  return { error: 'Admin not found' };
 }
 
 /* ---------------- PHOTO UPLOAD (gallery photo -> stored directly on the sheet) ----------------
@@ -692,15 +769,17 @@ function addStudent(data) {
 
   appendRowByHeaders(SHEET_NAMES.STUDENTS, {
     StudentID: id, Password: password, FullName: data.fullName, FatherName: data.fatherName || '',
-    MotherName: data.motherName || '', PhotoURL: data.photoUrl || '', DOB: data.dob || '', Age: data.age || '',
+    MotherName: data.motherName || '', PhotoURL: data.photoUrl || '', Gender: data.gender || '',
+    DOB: data.dob || '', Age: data.age || '',
     Mobile: data.mobile, WhatsApp: data.whatsapp || '', Email: data.email, Aadhaar: data.aadhaar || '',
     PAN: data.pan || '', Address: data.address || '', TrainingMode: data.mode || '',
-    Course: data.course, Batch: data.batch, Qualification: data.qualification || '',
+    Course: data.course, CourseOptions: data.courseOptions || '', Batch: data.batch, Qualification: data.qualification || '',
     QualBranch: data.qualBranch || '', QualCollege: data.qualCollege || '', QualYear: data.qualYear || '',
     Employment: data.employment || '', EmpCompany: data.empCompany || '', EmpDesignation: data.empDesignation || '',
-    Documents: data.documents || '', AdmissionDate: data.admissionDate, TotalFee: totalFee, PaidFee: paidFee,
+    Documents: data.documents || '', DocumentPhoto1: data.documentPhoto1Url || '', DocumentPhoto2: data.documentPhoto2Url || '',
+    AdmissionDate: data.admissionDate, TotalFee: totalFee, PaidFee: paidFee,
     PendingFee: totalFee - paidFee, PaymentMethod: data.paymentMethod || '', TransactionID: data.transactionId || '',
-    CourseStatus: 'Ongoing', EmergencyName: data.emName || '', EmergencyRelation: data.emRelation || '',
+    CourseStatus: 'Pending', Remarks: '', EmergencyName: data.emName || '', EmergencyRelation: data.emRelation || '',
     EmergencyMobile: data.emMobile || '', CreatedBy: data.createdBy || ''
   });
 
@@ -809,29 +888,71 @@ function updateFee(data) {
   const values = sheet.getDataRange().getValues();
   const headers = values[0];
   const idCol = headers.indexOf('StudentID');
+  const nameCol = headers.indexOf('FullName');
+  const emailCol = headers.indexOf('Email');
   const paidCol = headers.indexOf('PaidFee');
   const pendingCol = headers.indexOf('PendingFee');
   const totalCol = headers.indexOf('TotalFee');
+  const txnCol = headers.indexOf('TransactionID');
+  const methodCol = headers.indexOf('PaymentMethod');
+  const remarksCol = headers.indexOf('Remarks');
 
   for (let i = 1; i < values.length; i++) {
     if (String(values[i][idCol]) === String(data.studentId)) {
       const newPaid = Number(values[i][paidCol]) + Number(data.amount);
       const total = Number(values[i][totalCol]);
+      const newPending = total - newPaid;
       sheet.getRange(i + 1, paidCol + 1).setValue(newPaid);
-      sheet.getRange(i + 1, pendingCol + 1).setValue(total - newPaid);
+      sheet.getRange(i + 1, pendingCol + 1).setValue(newPending);
+
+      // Keep the Trainee Profile showing the LATEST payment's method /
+      // Transaction ID / remarks — Transaction ID is blank for Cash.
+      if (methodCol !== -1) sheet.getRange(i + 1, methodCol + 1).setValue(data.method || '');
+      if (txnCol !== -1) sheet.getRange(i + 1, txnCol + 1).setValue(data.method === 'Cash' ? '' : (data.transactionId || ''));
+      if (remarksCol !== -1) sheet.getRange(i + 1, remarksCol + 1).setValue(data.remarks || '');
 
       const receiptNo = 'RCPT' + new Date().getTime();
       appendRowByHeaders(SHEET_NAMES.FEE, {
         ReceiptNo: receiptNo, StudentID: data.studentId, Amount: data.amount,
-        PaymentMethod: data.method, Date: new Date().toLocaleString(), CreatedBy: data.createdBy || ''
+        PaymentMethod: data.method, TransactionID: data.method === 'Cash' ? '' : (data.transactionId || ''),
+        Remarks: data.remarks || '', Date: new Date().toLocaleString(), CreatedBy: data.createdBy || ''
       });
-      return { success: true, receiptNo: receiptNo, newPaid: newPaid, newPending: total - newPaid };
+
+      const studentEmail = emailCol !== -1 ? values[i][emailCol] : '';
+      const studentName = nameCol !== -1 ? values[i][nameCol] : '';
+      try {
+        if (studentEmail) {
+          MailApp.sendEmail({
+            to: studentEmail,
+            subject: 'Fee Receipt — TECHO Institute (' + receiptNo + ')',
+            body:
+              'Hi ' + studentName + ',\n\n' +
+              'We have received your payment. Here are your receipt details:\n\n' +
+              'Receipt No: ' + receiptNo + '\n' +
+              'Amount Paid: ₹' + data.amount + '\n' +
+              'Payment Method: ' + (data.method === 'Cash' ? 'Cash Payment' : data.method) + '\n' +
+              (data.method !== 'Cash' && data.transactionId ? ('Transaction ID: ' + data.transactionId + '\n') : '') +
+              'Total Fee: ₹' + total + '\n' +
+              'Total Paid Till Date: ₹' + newPaid + '\n' +
+              'Pending Fee: ₹' + newPending + '\n\n' +
+              'Thank you for your payment.\n\n' +
+              'Regards,\nTECHO Institute Team\n7841814377 / techoautomation199@gmail.com'
+          });
+        }
+      } catch (mailErr) {
+        Logger.log('Fee receipt email failed: ' + mailErr);
+      }
+
+      return { success: true, receiptNo: receiptNo, newPaid: newPaid, newPending: newPending };
     }
   }
   return { error: 'Student not found' };
 }
 
 function setCourseStatus(data) {
+  if (!verifyAnyActiveAdmin(data.adminId, data.adminPassword)) {
+    return { error: 'Invalid Admin ID or Password' };
+  }
   const sheet = getSheet(SHEET_NAMES.STUDENTS);
   const values = sheet.getDataRange().getValues();
   const headers = values[0];
@@ -919,8 +1040,8 @@ function getAgreementForm(studentId, formType) {
 }
 
 function deleteStudent(data) {
-  if (!verifyBoss(data.bossId, data.bossPassword)) {
-    return { error: 'Invalid Boss ID or Password' };
+  if (!verifyAnyActiveAdmin(data.adminId, data.adminPassword)) {
+    return { error: 'Invalid Admin ID or Password' };
   }
   const sheet = getSheet(SHEET_NAMES.STUDENTS);
   const values = sheet.getDataRange().getValues();

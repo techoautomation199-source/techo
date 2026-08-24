@@ -22,6 +22,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
   document.getElementById('btnLookupInst').addEventListener('click', fetchInstStudent);
 
+  // Auto-fetch as soon as the Trainee ID is entered — no need to click Fetch.
+  const instIdInput = document.getElementById('instStudentId');
+  let _lastFetchedInstId = '';
+  instIdInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') { e.preventDefault(); fetchInstStudent(); }
+  });
+  instIdInput.addEventListener('blur', function () {
+    const id = instIdInput.value.trim();
+    if (id && id !== _lastFetchedInstId) fetchInstStudent();
+  });
+
   async function fetchInstStudent() {
     const errEl = document.getElementById('instError');
     errEl.textContent = '';
@@ -40,6 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!found) { errEl.textContent = 'Trainee ID not found.'; return; }
 
     _lookedUpInstStudent = found;
+    _lastFetchedInstId = id;
     document.getElementById('instName').value = found.FullName;
     document.getElementById('instCourse').value = found.Course;
     document.getElementById('instMobile').value = found.Mobile;

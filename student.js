@@ -17,6 +17,25 @@ function studentAvatarUrl(name) {
   return 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + seed + '&backgroundColor=eef2fb';
 }
 
+/* Shows the two admission-time document photos (if any were uploaded)
+   as small thumbnails at the bottom of the profile. */
+function documentPhotosBlock(result) {
+  const photos = [
+    { url: result.DocumentPhoto1, label: 'Document Photo 1' },
+    { url: result.DocumentPhoto2, label: 'Document Photo 2' }
+  ].filter(function (p) { return !!p.url; });
+
+  if (!photos.length) return '';
+
+  return '<div class="doc-photos-block"><h4 class="sub-heading" style="margin-top:18px;">Uploaded Document Photos</h4>' +
+    '<div class="doc-photos-row">' +
+    photos.map(function (p) {
+      return '<a href="' + p.url + '" target="_blank" rel="noopener" class="doc-photo-thumb">' +
+        '<img src="' + p.url + '" alt="' + p.label + '"><span>' + p.label + '</span></a>';
+    }).join('') +
+    '</div></div>';
+}
+
 function renderStudentAvatar(result) {
   const wrap = document.getElementById('sPhotoWrap');
   if (!wrap) return;
@@ -36,6 +55,7 @@ function renderStudentAvatar(result) {
 const STUDENT_FIELDS = [
   ['DOB', 'dob', 'Date of Birth', 'dob', 'date'],
   ['Age', 'age', 'Age', 'age', 'number'],
+  ['Gender', 'gender', 'Gender', 'gender', 'text'],
   ['Mobile', 'mobile', 'Mobile Number', 'mobile', 'tel'],
   ['WhatsApp', 'whatsapp', 'WhatsApp Number', 'whatsapp', 'tel'],
   ['Email', 'email', 'Email', 'email', 'email'],
@@ -44,6 +64,7 @@ const STUDENT_FIELDS = [
   ['Address', 'address', 'Permanent Address', 'permanent_address', 'text'],
   ['TrainingMode', 'mode', 'Training Mode', 'training_mode', 'text'],
   ['Course', 'course', 'Course', 'course_name', 'text'],
+  ['CourseOptions', 'courseOptions', 'Course Options', 'course_options_label', 'text'],
   ['Batch', 'batch', 'Batch', 'batch', 'text'],
   ['Qualification', 'qualification', 'Qualification', 'qualification', 'text'],
   ['QualBranch', 'qualBranch', 'Branch', 'branch', 'text'],
@@ -58,12 +79,13 @@ const STUDENT_FIELDS = [
   ['PaidFee', 'paidFee', 'Paid Fee (₹)', 'paid_fee', 'number'],
   ['PaymentMethod', 'paymentMethod', 'Payment Method', 'payment_method', 'text'],
   ['TransactionID', 'transactionId', 'Transaction ID', 'transaction_id', 'text'],
+  ['Remarks', 'remarks', 'Remarks', 'remarks', 'text'],
   ['CourseStatus', 'courseStatus', 'Course Status', 'course_status', 'select'],
   ['EmergencyName', 'emName', 'Emergency Contact Name', 'contact_name', 'text'],
   ['EmergencyRelation', 'emRelation', 'Emergency Relation', 'relation', 'text'],
   ['EmergencyMobile', 'emMobile', 'Emergency Mobile', 'mobile', 'tel']
 ];
-const COURSE_STATUS_OPTIONS = ['Ongoing', 'Completed', 'On Hold', 'Dropped'];
+const COURSE_STATUS_OPTIONS = ['Pending', 'Complete', 'Stopped'];
 
 let _currentStudent = null;   // full record from studentLogin
 let _editAdminCreds = null;   // { adminId, adminPassword } once gate passes
@@ -99,12 +121,19 @@ document.addEventListener('DOMContentLoaded', function () {
     renderStudentAvatar(result);
     document.getElementById('sDetailWrap').innerHTML =
       row('Student ID', result.StudentID) +
-      STUDENT_FIELDS.map(function (f) {
+      STUDENT_FIELDS.filter(function (f) {
+        // Transaction ID only makes sense for online payments — hide the
+        // row entirely for Cash payments instead of showing it blank.
+        if (f[0] === 'TransactionID' && result.PaymentMethod === 'Cash') return false;
+        return true;
+      }).map(function (f) {
         const raw = result[f[0]];
-        const val = (f[0] === 'TotalFee' || f[0] === 'PaidFee') ? '₹' + raw : raw;
+        const val = (f[0] === 'TotalFee' || f[0] === 'PaidFee') ? '₹' + raw
+          : (f[0] === 'PaymentMethod' && raw === 'Cash') ? 'Cash Payment' : raw;
         return irow(f[3], f[2], val || '—');
       }).join('') +
-      irow('balance_fee', 'Pending Fee', '₹' + result.PendingFee);
+      irow('balance_fee', 'Pending Fee', '₹' + result.PendingFee) +
+      documentPhotosBlock(result);
     if (window.techoApplyLang) techoApplyLang(localStorage.getItem('techoLang') || 'en');
   }
 

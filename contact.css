@@ -17,6 +17,8 @@
 .c-icon.insta{background:linear-gradient(45deg,#f58529,#dd2a7b,#8134af,#515bd4);}
 .c-card h3{font-size:14px;font-weight:700;color:var(--blue);margin-bottom:4px;}
 .c-card p{font-size:13px;color:var(--dark);}
+.c-card p a{color:var(--dark);text-decoration:none;}
+.c-card p a:hover{color:var(--blue);text-decoration:underline;}
 
 .get-in-touch{
   max-width:700px;margin:0 auto 60px;

@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
       timestamp: new Date().toLocaleString(),
       name: document.getElementById('srName').value.trim(),
       mobile: document.getElementById('srMobile').value.trim(),
+      email: document.getElementById('srEmail').value.trim(),
       message: document.getElementById('srMessage').value.trim()
     };
 

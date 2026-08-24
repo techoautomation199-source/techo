@@ -101,8 +101,23 @@
   </div>
 </div>
 
+<!-- ===================== SIGNATURE PAD (shared) ===================== -->
+<div class="popup-overlay" id="signaturePadOverlay">
+  <div class="popup-box popup-box-form sig-pad-box">
+    <h3 data-i18n="sign_here">Sign Here</h3>
+    <canvas id="sigPadCanvas" width="360" height="150"></canvas>
+    <p class="form-error" id="sigPadError"></p>
+    <div class="popup-btn-row">
+      <button type="button" class="fbtn-outline" id="sigPadClear" data-i18n="clear">Clear</button>
+      <button type="button" class="fbtn-outline" id="sigPadCancel" data-i18n="cancel">Cancel</button>
+      <button type="button" class="fbtn-solid" id="sigPadSave" data-i18n="save_signature">Save Signature</button>
+    </div>
+  </div>
+</div>
+
 <script src="i18n.js"></script>
 <script src="config.js"></script>
+<script src="signature.js"></script>
 <script src="photo.js"></script>
 <script src="student.js"></script>
 <script src="agreements.js"></script>

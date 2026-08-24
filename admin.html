@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="common.css">
 <link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="forms.css">
 </head>
 <body>
 
@@ -120,6 +121,7 @@
       <div class="cred-line"><span>Password</span><strong id="createdPassword"></strong></div>
       <div class="cred-line"><span>Role</span><strong id="createdRole"></strong></div>
     </div>
+    <p class="form-success" id="createdEmailNote" style="display:none;"><i class="fa-solid fa-envelope-circle-check"></i> These details have also been emailed to the new admin.</p>
     <button class="admin-submit" data-back="screen-adminlist" id="btnCreatedDone">Done</button>
   </section>
 
@@ -169,6 +171,15 @@
       </div>
       <p class="form-error" id="statusError"></p>
 
+      <div class="pd-signature-block">
+        <span class="pd-label"><i class="fa-solid fa-signature"></i> Admin Signature</span>
+        <div class="sig-field" id="adminSigBox">
+          <img id="adminSigPreview" class="sig-preview-img" style="display:none;" alt="Signature">
+          <span class="sig-field-placeholder" id="adminSigPlaceholder"><i class="fa-solid fa-signature"></i> Tap to Sign</span>
+        </div>
+        <p class="form-error" id="adminSigError"></p>
+      </div>
+
       <div class="pd-rows" id="pdRows"></div>
     </div>
 
@@ -204,7 +215,22 @@
   <div class="policies-footer-link"><a href="terms.html"><i class="fa-solid fa-file-shield"></i> Policies</a></div>
 </main>
 
+<!-- ===================== SIGNATURE PAD (shared) ===================== -->
+<div class="popup-overlay" id="signaturePadOverlay">
+  <div class="popup-box popup-box-form sig-pad-box">
+    <h3 data-i18n="sign_here">Sign Here</h3>
+    <canvas id="sigPadCanvas" width="360" height="150"></canvas>
+    <p class="form-error" id="sigPadError"></p>
+    <div class="popup-btn-row">
+      <button type="button" class="fbtn-outline" id="sigPadClear" data-i18n="clear">Clear</button>
+      <button type="button" class="fbtn-outline" id="sigPadCancel" data-i18n="cancel">Cancel</button>
+      <button type="button" class="fbtn-solid" id="sigPadSave" data-i18n="save_signature">Save Signature</button>
+    </div>
+  </div>
+</div>
+
 <script src="config.js"></script>
+<script src="signature.js"></script>
 <script src="photo.js"></script>
 <script src="admin.js"></script>
 </body>

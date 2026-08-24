@@ -11,6 +11,14 @@ async function apiD(action, payload) {
 function row(label, value) {
   return '<div class="doc-row"><span class="lbl">' + label + '</span><span class="val">' + (value || '&nbsp;') + '</span></div>';
 }
+/* Transaction ID only makes sense for online payments — shows "Cash
+   Payment" instead whenever the payment method was Cash. */
+function paymentRow(paymentMethod, transactionId) {
+  if (paymentMethod === 'Cash') {
+    return row('Payment Method', 'Cash Payment');
+  }
+  return row('Payment Method', paymentMethod || '') + row('Transaction ID', transactionId || '');
+}
 function today() {
   return new Date().toLocaleDateString();
 }
@@ -31,6 +39,7 @@ function renderAdmission(s) {
     row('Specialization Name', s.Course) + row('Batch', s.Batch) + row('Admission Date', s.AdmissionDate) + row('Training Mode', 'Online') +
     '<h3>Fee Details</h3>' +
     row('Total Fee', '₹' + s.TotalFee) + row('Paid Fee', '₹' + s.PaidFee) + row('Pending Fee', '₹' + s.PendingFee) +
+    paymentRow(s.PaymentMethod, s.TransactionID) +
     signBlock('Office Use Only — Authorized Signature');
 }
 

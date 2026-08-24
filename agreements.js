@@ -194,7 +194,10 @@ function renderAgreementView(type, form) {
   html += renderAgreementPoints(type);
   html += '<p class="ag-final">' + (t.final[techoAgLang] || t.final.en) + '</p>';
   html += '<div class="ag-sign-row">';
-  html += '<div><span class="ag-k" data-i18n="student_signature">Trainee Digital Signature</span><span class="ag-v">' + (form.Signature || '') + '</span></div>';
+  const sigHtml = form.Signature
+    ? '<img class="sig-preview-img sig-preview-img-small" src="' + form.Signature + '" alt="Signature">'
+    : '';
+  html += '<div><span class="ag-k" data-i18n="student_signature">Trainee Digital Signature</span><span class="ag-v">' + sigHtml + '</span></div>';
   if (form.ParentName) {
     html += '<div><span class="ag-k">' + agT(TECHO_AGREEMENT_LABELS, 'parent_optional') + '</span><span class="ag-v">' + form.ParentName + (form.ParentSignature ? ' — ' + form.ParentSignature : '') + '</span></div>';
   }
@@ -223,7 +226,12 @@ function renderAgreementForm(type) {
   } else {
     html += '<label>' + agT(TECHO_AGREEMENT_LABELS, 'place_label') + ' *<input type="text" id="ag_' + type + '_place" required></label>';
   }
-  html += '<label>' + agT(TECHO_AGREEMENT_LABELS, 'student_signature_short') + ' *<input type="text" id="ag_' + type + '_sign" required></label>';
+  html += '<label>' + agT(TECHO_AGREEMENT_LABELS, 'student_signature_short') + ' *</label>';
+  html += '<div class="sig-field" id="ag_' + type + '_sign_box">' +
+    '<img id="ag_' + type + '_sign_preview" class="sig-preview-img" style="display:none;" alt="Signature">' +
+    '<span class="sig-field-placeholder" id="ag_' + type + '_sign_placeholder"><i class="fa-solid fa-signature"></i> Tap to Sign</span>' +
+    '</div>' +
+    '<input type="hidden" id="ag_' + type + '_sign">';
   html += '</div>';
 
   html += '<p class="ag-parent-title">' + agT(TECHO_AGREEMENT_LABELS, 'parent_optional') + '</p>';
@@ -247,12 +255,28 @@ async function loadAgreementBlock(type, wrapId) {
   } else {
     wrap.innerHTML = renderAgreementForm(type);
     const btn = document.getElementById('ag_' + type + '_submit');
+    const signBox = document.getElementById('ag_' + type + '_sign_box');
+    if (signBox) {
+      signBox.addEventListener('click', async function () {
+        const dataUrl = await techoOpenSignaturePad();
+        if (!dataUrl) return;
+        const base64 = dataUrl.split(',')[1];
+        const result = await apiAG('uploadPhoto', { base64: base64, mimeType: 'image/png' });
+        if (result.url) {
+          document.getElementById('ag_' + type + '_sign').value = result.url;
+          const img = document.getElementById('ag_' + type + '_sign_preview');
+          img.src = result.url;
+          img.style.display = 'block';
+          document.getElementById('ag_' + type + '_sign_placeholder').style.display = 'none';
+        }
+      });
+    }
     if (btn) {
       btn.addEventListener('click', async function () {
         const errEl = document.getElementById('ag_' + type + '_err');
         errEl.textContent = '';
         const sign = document.getElementById('ag_' + type + '_sign').value.trim();
-        if (!sign) { errEl.textContent = 'Please type your name to sign.'; return; }
+        if (!sign) { errEl.textContent = 'Please tap the signature box and sign before submitting.'; return; }
         const addressEl = document.getElementById('ag_' + type + '_address');
         const placeEl = document.getElementById('ag_' + type + '_place');
         const payload = {

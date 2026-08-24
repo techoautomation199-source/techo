@@ -81,7 +81,8 @@
         <label><input type="radio" name="rcptMethod" value="UPI"> <span data-i18n="upi">UPI</span></label>
         <label><input type="radio" name="rcptMethod" value="Bank Transfer"> <span data-i18n="bank_transfer">Bank Transfer</span></label>
         <label><input type="radio" name="rcptMethod" value="Card"> <span data-i18n="debit_credit_card">Debit/Credit Card</span></label>
-        <label class="branch-field"><span data-i18n="transaction_utr_ref">Transaction / UTR / Reference No.</span><input type="text" id="rcptTxn" placeholder="Enter reference number"></label>
+        <label class="branch-field" id="rcptTxnWrap"><span data-i18n="transaction_utr_ref">Transaction / UTR / Reference No.</span><input type="text" id="rcptTxn" placeholder="Enter reference number"></label>
+        <p class="cash-note" id="rcptCashNote" style="display:none;" data-i18n="cash_payment_note">Cash Payment — no Transaction ID required.</p>
       </fieldset>
     </div>
 
@@ -107,6 +108,22 @@
       <h3 data-i18n="receipt_generated_title">Fee Receipt Generated!</h3>
       <p id="popupMsg"></p>
       <p class="popup-next" data-i18n="opening_installment_next">Opening Installment Form next...</p>
+    </div>
+  </div>
+
+  <!-- ===================== DELETE TRAINEE — ADMIN AUTH POPUP ===================== -->
+  <div class="popup-overlay" id="deleteAuthOverlay">
+    <div class="popup-box popup-box-form">
+      <i class="fa-solid fa-triangle-exclamation popup-icon popup-icon-red"></i>
+      <h3 data-i18n="delete_trainee_title">Delete this Trainee?</h3>
+      <p class="screen-sub" data-i18n="delete_trainee_note">This cannot be undone. Enter a Boss / Admin / Supervisor ID and Password to confirm.</p>
+      <label><span data-i18n="admin_id">Admin ID</span> <input type="text" id="delAdminId"></label>
+      <label><span data-i18n="admin_password">Admin Password</span> <input type="password" id="delAdminPassword"></label>
+      <p class="form-error" id="deleteAuthError"></p>
+      <div class="popup-btn-row">
+        <button type="button" class="fbtn-outline" id="btnCancelDelete" data-i18n="cancel">Cancel</button>
+        <button type="button" class="fbtn-solid" id="btnConfirmDelete" style="background:var(--red);" data-i18n="delete_trainee_confirm">Delete Trainee</button>
+      </div>
     </div>
   </div>
 

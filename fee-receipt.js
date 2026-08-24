@@ -23,6 +23,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
   document.getElementById('btnLookup').addEventListener('click', fetchStudent);
 
+  /* Transaction/UTR field only makes sense for online payments — hide it
+     (and show a "Cash Payment" note instead) whenever "Cash" is selected. */
+  const rcptTxnWrap = document.getElementById('rcptTxnWrap');
+  const rcptCashNote = document.getElementById('rcptCashNote');
+  function toggleRcptPayMethodUI() {
+    const method = document.querySelector('input[name="rcptMethod"]:checked').value;
+    const isCash = method === 'Cash';
+    rcptTxnWrap.style.display = isCash ? 'none' : '';
+    rcptCashNote.style.display = isCash ? '' : 'none';
+    if (isCash) document.getElementById('rcptTxn').value = '';
+  }
+  document.querySelectorAll('input[name="rcptMethod"]').forEach(function (r) {
+    r.addEventListener('change', toggleRcptPayMethodUI);
+  });
+  toggleRcptPayMethodUI();
+
   // Auto-fetch as soon as the Student ID is entered — no need to wait/click separately.
   const rcptIdInput = document.getElementById('rcptStudentId');
   let _lastFetchedId = '';
@@ -58,25 +74,42 @@ document.addEventListener('DOMContentLoaded', function () {
       : '<p>No receipts yet for this trainee.</p>';
   });
 
-  document.getElementById('btnDeleteStudent').addEventListener('click', async function () {
+  document.getElementById('btnDeleteStudent').addEventListener('click', function () {
     if (!_lookedUpStudent) { document.getElementById('rcptError').textContent = 'Fetch a trainee first.'; return; }
-    const bossId = prompt('Enter Boss Admin ID to delete this trainee:');
-    if (bossId === null) return;
-    const bossPassword = prompt('Enter Boss Password:');
-    if (bossPassword === null) return;
+    document.getElementById('delAdminId').value = '';
+    document.getElementById('delAdminPassword').value = '';
+    document.getElementById('deleteAuthError').textContent = '';
+    document.getElementById('deleteAuthOverlay').classList.add('show');
+  });
+
+  document.getElementById('btnCancelDelete').addEventListener('click', function () {
+    document.getElementById('deleteAuthOverlay').classList.remove('show');
+  });
+
+  document.getElementById('btnConfirmDelete').addEventListener('click', async function () {
+    const adminId = document.getElementById('delAdminId').value.trim();
+    const adminPassword = document.getElementById('delAdminPassword').value;
+    const errEl = document.getElementById('deleteAuthError');
+    if (!adminId || !adminPassword) {
+      errEl.textContent = 'Please enter Admin ID and Password.';
+      return;
+    }
 
     let result;
     try {
-      result = await apiFR('deleteStudent', { bossId: bossId, bossPassword: bossPassword, studentId: _lookedUpStudent.StudentID });
+      result = await apiFR('deleteStudent', { adminId: adminId, adminPassword: adminPassword, studentId: _lookedUpStudent.StudentID });
     } catch (err) {
-      alert('Could not reach the server.');
+      errEl.textContent = 'Could not reach the server.';
       return;
     }
-    if (result.error) { alert(result.error); return; }
-    alert('Trainee deleted.');
+    if (result.error) { errEl.textContent = result.error; return; }
+
+    document.getElementById('deleteAuthOverlay').classList.remove('show');
     document.getElementById('formReceipt').reset();
     document.getElementById('pastReceiptsWrap').style.display = 'none';
     _lookedUpStudent = null;
+    document.getElementById('rcptError').textContent = '';
+    alert('Trainee deleted.');
   });
 
   let _fetchInFlight = false;
@@ -147,11 +180,14 @@ document.addEventListener('DOMContentLoaded', function () {
       studentId: _lookedUpStudent.StudentID,
       amount: document.getElementById('rcptAmount').value,
       method: method,
+      transactionId: method === 'Cash' ? '' : document.getElementById('rcptTxn').value.trim(),
+      remarks: document.getElementById('rcptRemarks').value.trim(),
       createdBy: 'Admin'
     });
     if (result.error) { errEl.textContent = result.error; return; }
 
-    document.getElementById('popupMsg').textContent = 'Receipt: ' + result.receiptNo + ' | Paid: ₹' + result.newPaid + ' | Pending: ₹' + result.newPending;
+    document.getElementById('popupMsg').textContent = 'Receipt: ' + result.receiptNo + ' | Paid: ₹' + result.newPaid + ' | Pending: ₹' + result.newPending +
+      (_lookedUpStudent.Email ? ' — emailed to ' + _lookedUpStudent.Email : '');
     document.getElementById('popupOverlay').classList.add('show');
     const studentId = _lookedUpStudent.StudentID;
     document.getElementById('formReceipt').reset();

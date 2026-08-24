@@ -42,6 +42,64 @@
 .radio-fieldset-inline{display:flex;flex-direction:column;gap:8px;font-size:12.5px;font-weight:700;margin-top:6px;}
 .radio-fieldset-inline span{display:flex;gap:14px;flex-wrap:wrap;font-weight:500;}
 .radio-fieldset-inline span label{margin-bottom:0;}
+.radio-fieldset-inline-block{border:none;padding:0;margin:2px 0 6px;}
+.radio-fieldset-inline-block legend{font-size:12.5px;font-weight:700;padding:0;margin-bottom:6px;}
+.radio-fieldset-inline-block{display:flex;flex-direction:column;}
+.radio-fieldset-inline-block > label{display:inline-flex;align-items:center;gap:6px;margin-right:16px;margin-bottom:0;font-weight:500;font-size:13px;}
+.radio-fieldset-inline-block{flex-direction:row;flex-wrap:wrap;align-items:center;}
+.radio-fieldset-inline-block legend{width:100%;}
+
+/* ---------------- course selection with expanding sub-options ---------------- */
+.course-main-list{display:flex;flex-wrap:wrap;gap:6px 20px;}
+.course-sub-panel{
+  margin-top:14px;padding:14px 16px;border:1.5px dashed var(--border);
+  border-radius:10px;background:#fbfcff;display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;
+}
+.course-sub-title{
+  width:100%;font-weight:800;font-size:12.5px;color:var(--blue);margin-bottom:4px;
+}
+.select-all-label{font-weight:700;color:var(--purple);}
+.select-all-label input{accent-color:var(--purple);}
+
+.cash-note{
+  font-size:12px;font-weight:700;color:var(--green);background:#e7f7ec;
+  border-radius:8px;padding:9px 12px;margin-top:4px;
+}
+.form-success{
+  font-size:12.5px;color:var(--green);font-weight:700;margin-top:8px;
+}
+.doc-photo-row{
+  width:100%;display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;
+  padding-top:12px;border-top:1px dashed var(--border);
+}
+.doc-photo-row .photo-upload-box{flex:1;min-width:200px;}
+
+.doc-photos-block{margin-top:6px;}
+.doc-photos-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;}
+.doc-photo-thumb{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  text-decoration:none;color:var(--gray-text);font-size:11px;font-weight:700;
+}
+.doc-photo-thumb img{
+  width:110px;height:110px;object-fit:cover;border-radius:10px;border:1.5px solid var(--border);
+}
+
+/* ---------------- signature field + pad ---------------- */
+.sig-field{
+  border:1.5px dashed var(--border);border-radius:10px;background:#fff;
+  min-height:70px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;padding:8px;margin-top:4px;
+}
+.sig-field:hover{border-color:var(--blue);background:#f7f9ff;}
+.sig-field-placeholder{color:var(--gray-text);font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;}
+.sig-preview-img{max-height:60px;max-width:100%;}
+.sig-preview-img-small{max-height:44px;max-width:160px;}
+
+.sig-pad-box{max-width:420px;}
+#sigPadCanvas{
+  width:100%;height:150px;background:#fff;border:1.5px solid var(--border);
+  border-radius:10px;touch-action:none;cursor:crosshair;margin-top:8px;
+}
 
 /* ---------------- Installment schedule table ---------------- */
 .inst-table{width:100%;border-collapse:collapse;margin-bottom:18px;}
