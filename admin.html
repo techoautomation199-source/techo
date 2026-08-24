@@ -33,6 +33,35 @@
     </div>
   </section>
 
+  <!-- ============ SCREEN: Home Page Live Stats ============ -->
+  <section id="screen-sitestats" class="admin-screen">
+    <div class="list-header-row">
+      <h2 class="screen-title">Home Page Stats</h2>
+      <button class="fbtn-outline" data-back="screen-entry"><i class="fa-solid fa-arrow-left"></i> Back</button>
+    </div>
+    <p class="screen-sub">These 5 numbers show as the live counter on the public Home page. Update them here any time — no code changes needed.</p>
+
+    <div class="reg-card">
+      <div class="form-grid-2">
+        <label>Happy Customers <input type="number" id="ssHappyCustomers" min="0"></label>
+        <label>Industries <input type="number" id="ssIndustries" min="0"></label>
+      </div>
+      <div class="form-grid-2">
+        <label>Total Projects <input type="number" id="ssTotalProjects" min="0"></label>
+        <label>Completed Projects <input type="number" id="ssCompletedProjects" min="0"></label>
+      </div>
+      <label>Trained Students <input type="number" id="ssTrainedStudents" min="0"></label>
+
+      <div class="form-grid-2" style="margin-top:14px;">
+        <label>Admin ID <input type="text" id="ssAdminId"></label>
+        <label>Admin Password <input type="password" id="ssAdminPassword"></label>
+      </div>
+      <button type="button" class="admin-submit" id="btnSaveSiteStats"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+      <p class="form-error" id="ssError"></p>
+      <p class="form-success" id="ssSuccess"></p>
+    </div>
+  </section>
+
   <!-- ============ SCREEN 2: New Admin registration form ============ -->
   <section id="screen-createadmin" class="admin-screen">
     <h2 class="reg-title">Admin Registration Form</h2>

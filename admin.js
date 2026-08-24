@@ -97,7 +97,6 @@ document.addEventListener('DOMContentLoaded', function () {
     showScreen('screen-adminlist');
     loadAdminList();
   });
-
   document.querySelectorAll('[data-back]').forEach(function (btn) {
     btn.addEventListener('click', function () {
       const target = btn.getAttribute('data-back');
@@ -403,3 +402,50 @@ async function onCreateAdminSubmit(e) {
   document.getElementById('formCreateAdmin').reset();
   if (_caPhotoCtl) _caPhotoCtl.reset();
 }
+
+/* ---------------- HOME PAGE LIVE STATS ---------------- */
+async function loadSiteStats() {
+  const errEl = document.getElementById('ssError');
+  const successEl = document.getElementById('ssSuccess');
+  errEl.textContent = '';
+  successEl.textContent = '';
+  try {
+    const res = await fetch(TECHO_SCRIPT_URL + '?action=getSiteStats');
+    const stats = await res.json();
+    document.getElementById('ssHappyCustomers').value = stats.happyCustomers ?? 0;
+    document.getElementById('ssIndustries').value = stats.industries ?? 0;
+    document.getElementById('ssTotalProjects').value = stats.totalProjects ?? 0;
+    document.getElementById('ssCompletedProjects').value = stats.completedProjects ?? 0;
+    document.getElementById('ssTrainedStudents').value = stats.trainedStudents ?? 0;
+  } catch (err) {
+    errEl.textContent = 'Could not load current stats.';
+    console.error(err);
+  }
+}
+
+document.getElementById('btnSaveSiteStats').addEventListener('click', async function () {
+  const errEl = document.getElementById('ssError');
+  const successEl = document.getElementById('ssSuccess');
+  errEl.textContent = '';
+  successEl.textContent = '';
+
+  const adminId = document.getElementById('ssAdminId').value.trim();
+  const adminPassword = document.getElementById('ssAdminPassword').value;
+  if (!adminId || !adminPassword) {
+    errEl.textContent = 'Please enter Admin ID and Password.';
+    return;
+  }
+
+  const result = await api('setSiteStats', {
+    adminId: adminId,
+    adminPassword: adminPassword,
+    happyCustomers: document.getElementById('ssHappyCustomers').value,
+    industries: document.getElementById('ssIndustries').value,
+    totalProjects: document.getElementById('ssTotalProjects').value,
+    completedProjects: document.getElementById('ssCompletedProjects').value,
+    trainedStudents: document.getElementById('ssTrainedStudents').value
+  });
+
+  if (result.error) { errEl.textContent = result.error; return; }
+  successEl.textContent = 'Saved! The Home page counter will show these numbers now.';
+});

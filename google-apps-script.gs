@@ -61,11 +61,15 @@
   13. In "Feedback" tab, Row 1 headers (A to G):
       Timestamp | Type | Name | Rating | Service | Upgrade Suggestion |
       Problem Faced
-  14. In the Sheet menu bar click: Extensions -> Apps Script.
-  15. DELETE everything in Code.gs and PASTE this entire file's code instead.
-  16. Deploy -> New deployment -> Web app -> Execute as: Me,
+  14. "SiteStats" tab is created automatically the first time the Home
+      page loads, with 5 default rows (Metric | Value) — you don't need
+      to make this one yourself, but you CAN edit the numbers directly in
+      this tab too, not just from the Admin panel.
+  15. In the Sheet menu bar click: Extensions -> Apps Script.
+  16. DELETE everything in Code.gs and PASTE this entire file's code instead.
+  17. Deploy -> New deployment -> Web app -> Execute as: Me,
       Who has access: Anyone -> Deploy -> copy the "Web app URL".
-  17. Paste that ONE URL into config.js as ADMIN_SCRIPT_URL, AND into
+  18. Paste that ONE URL into config.js as ADMIN_SCRIPT_URL, AND into
       excel.js / services.js / rating.js as SCRIPT_URL / SERVICE_SCRIPT_URL /
       RATING_SCRIPT_URL — every one of those must now be this SAME URL,
       since it's all one script now.
@@ -85,7 +89,8 @@ const SHEET_NAMES = {
   AGREEMENTS: 'Agreements',
   TRAINEE_ATTENDANCE: 'TraineeAttendance',
   HOLIDAYS: 'Holidays',
-  FEEDBACK: 'Feedback'
+  FEEDBACK: 'Feedback',
+  SITE_STATS: 'SiteStats'
 };
 
 function getSheet(name) {
@@ -243,7 +248,7 @@ const ADMIN_PORTAL_ACTIONS = [
   'markPresent', 'markLogout', 'saveInstallment', 'getFeeHistory', 'getInstallment',
   'deleteStudent', 'saveAgreementForm', 'getAgreementForm', 'markTraineeAttendance',
   'getAttendanceSummary', 'getStudentAttendanceLog', 'addHoliday', 'listHolidays',
-  'listHolidaysPublic'
+  'listHolidaysPublic', 'setSiteStats'
 ];
 
 function doPost(e) {
@@ -295,6 +300,7 @@ function doPost(e) {
         case 'addHoliday': result = addHoliday(data); break;
         case 'listHolidays': result = { holidays: listHolidays() }; break;
         case 'listHolidaysPublic': result = { holidays: listHolidays() }; break;
+        case 'setSiteStats': result = setSiteStats(data); break;
         default: result = { error: 'Unknown action' };
       }
     } catch (err) {
@@ -317,6 +323,9 @@ function doPost(e) {
 function doGet(e) {
   if (e && e.parameter && e.parameter.action === 'getFeedbackCounts') {
     return getFeedbackCounts();
+  }
+  if (e && e.parameter && e.parameter.action === 'getSiteStats') {
+    return getSiteStats();
   }
   return ContentService
     .createTextOutput('TECHO backend is running.')
@@ -463,6 +472,64 @@ function handleFeedbackSubmit(data) {
   return ContentService
     .createTextOutput(JSON.stringify({ result: 'success' }))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+/* ---- HOME PAGE LIVE STATS COUNTER ----
+   5 numbers shown on index.html (Happy Customers, Industries, Total
+   Projects, Completed Projects, Trained Students). Stored in a
+   "SiteStats" tab as simple Metric/Value rows so the Boss can update the
+   Sheet directly too, if ever needed — the Admin panel is just a
+   friendlier way to edit the same rows. */
+function getSiteStatsSheet() {
+  const sheet = getOrCreateSheet_(SHEET_NAMES.SITE_STATS, ['Metric', 'Value']);
+  if (sheet.getLastRow() < 2) {
+    sheet.getRange(2, 1, 5, 2).setValues([
+      ['HappyCustomers', 100],
+      ['Industries', 20],
+      ['TotalProjects', 0],
+      ['CompletedProjects', 0],
+      ['TrainedStudents', 0]
+    ]);
+  }
+  return sheet;
+}
+
+function getSiteStats() {
+  const sheet = getSiteStatsSheet();
+  const values = sheet.getDataRange().getValues();
+  const stats = { happyCustomers: 0, industries: 0, totalProjects: 0, completedProjects: 0, trainedStudents: 0 };
+  const keyMap = {
+    HappyCustomers: 'happyCustomers', Industries: 'industries', TotalProjects: 'totalProjects',
+    CompletedProjects: 'completedProjects', TrainedStudents: 'trainedStudents'
+  };
+  for (let i = 1; i < values.length; i++) {
+    const key = keyMap[values[i][0]];
+    if (key) stats[key] = Number(values[i][1]) || 0;
+  }
+  return ContentService
+    .createTextOutput(JSON.stringify(stats))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+/* Admin-only: update the 5 home-page numbers. Requires Admin ID + Password
+   (any active Admin/Boss/Supervisor). */
+function setSiteStats(data) {
+  if (!verifyAnyActiveAdmin(data.adminId, data.adminPassword)) {
+    return { error: 'Invalid Admin ID or Password' };
+  }
+  const sheet = getSiteStatsSheet();
+  const values = sheet.getDataRange().getValues();
+  const updates = {
+    HappyCustomers: data.happyCustomers, Industries: data.industries, TotalProjects: data.totalProjects,
+    CompletedProjects: data.completedProjects, TrainedStudents: data.trainedStudents
+  };
+  for (let i = 1; i < values.length; i++) {
+    const metric = values[i][0];
+    if (Object.prototype.hasOwnProperty.call(updates, metric) && updates[metric] !== undefined) {
+      sheet.getRange(i + 1, 2).setValue(Number(updates[metric]) || 0);
+    }
+  }
+  return { success: true };
 }
 
 function getFeedbackCounts() {

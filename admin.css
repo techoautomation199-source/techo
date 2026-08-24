@@ -200,6 +200,7 @@ html,body{
 
 /* ---------------- LANDING extras ---------------- */
 .green-btn{background:linear-gradient(135deg, #1fa24a, #34c46a) !important;box-shadow:0 8px 24px rgba(31,162,74,0.3) !important;}
+.purple-btn{background:linear-gradient(135deg, #8e3fc4, #b06fe0) !important;box-shadow:0 8px 24px rgba(142,63,196,0.3) !important;}
 .full-btn{width:100%;margin-bottom:26px;}
 
 /* ---------------- ADMIN LIST ---------------- */
