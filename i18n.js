@@ -36,6 +36,8 @@ const TECHO_I18N = {
   sign_here: { en: 'Sign Here', mr: 'इथे सही करा', hi: 'यहाँ हस्ताक्षर करें' },
   clear: { en: 'Clear', mr: 'साफ करा', hi: 'साफ़ करें' },
   save_signature: { en: 'Save Signature', mr: 'सही Save करा', hi: 'हस्ताक्षर सेव करें' },
+  sign_pad_label: { en: 'Signature', mr: 'सही', hi: 'हस्ताक्षर' },
+  tap_to_sign: { en: 'Tap to Sign', mr: 'सही करण्यासाठी टॅप करा', hi: 'हस्ताक्षर के लिए टैप करें' },
   gender: { en: 'Gender', mr: 'लिंग', hi: 'लिंग' },
   trainee_photo: { en: 'Trainee Photo', mr: 'विद्यार्थ्याचा फोटो', hi: 'छात्र की फोटो' },
   upload_photo: { en: 'Upload Photo', mr: 'फोटो अपलोड करा', hi: 'फोटो अपलोड करें' },

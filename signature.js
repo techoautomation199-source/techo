@@ -26,10 +26,21 @@ function techoInitSignaturePad() {
   _sigCtx.lineCap = 'round';
   _sigCtx.lineJoin = 'round';
 
+  // The canvas has a fixed internal drawing resolution (width/height
+  // attributes) but is displayed at whatever CSS size the layout gives it
+  // (e.g. width:100% inside the popup). On phones that displayed size is
+  // usually smaller/different than the internal resolution, so touch
+  // coordinates (which come back in CSS pixels) must be scaled into the
+  // canvas's own coordinate space — otherwise strokes land in the wrong
+  // place or effectively never register, which is why it looked "blank"
+  // on mobile while working fine on a laptop.
   function pos(e) {
     const rect = _sigCanvas.getBoundingClientRect();
-    const t = e.touches && e.touches.length ? e.touches[0] : e;
-    return { x: t.clientX - rect.left, y: t.clientY - rect.top };
+    const t = (e.touches && e.touches.length) ? e.touches[0]
+      : (e.changedTouches && e.changedTouches.length) ? e.changedTouches[0] : e;
+    const scaleX = _sigCanvas.width / rect.width;
+    const scaleY = _sigCanvas.height / rect.height;
+    return { x: (t.clientX - rect.left) * scaleX, y: (t.clientY - rect.top) * scaleY };
   }
   function start(e) {
     _sigDrawing = true;
@@ -45,14 +56,15 @@ function techoInitSignaturePad() {
     _sigCtx.stroke();
     e.preventDefault();
   }
-  function end() { _sigDrawing = false; }
+  function end(e) { _sigDrawing = false; if (e && e.preventDefault) e.preventDefault(); }
 
   _sigCanvas.addEventListener('mousedown', start);
   _sigCanvas.addEventListener('mousemove', move);
   window.addEventListener('mouseup', end);
   _sigCanvas.addEventListener('touchstart', start, { passive: false });
   _sigCanvas.addEventListener('touchmove', move, { passive: false });
-  _sigCanvas.addEventListener('touchend', end);
+  _sigCanvas.addEventListener('touchend', end, { passive: false });
+  _sigCanvas.addEventListener('touchcancel', end, { passive: false });
 
   const clearBtn = document.getElementById('sigPadClear');
   const cancelBtn = document.getElementById('sigPadCancel');

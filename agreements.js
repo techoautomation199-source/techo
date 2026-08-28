@@ -159,7 +159,10 @@ const TECHO_AGREEMENT_LABELS = {
   student_signature_short: { en: 'Digital Signature — Type Full Name to Sign', mr: 'डिजिटल स्वाक्षरी — स्वाक्षरीसाठी पूर्ण नाव टाइप करा', hi: 'डिजिटल हस्ताक्षर — हस्ताक्षर हेतु पूरा नाम टाइप करें' },
   parent_optional: { en: 'Parent / Guardian (if trainee is below 18 years)', mr: 'पालक / संरक्षक (18 वर्षांखालील विद्यार्थ्यांसाठी)', hi: 'अभिभावक (यदि छात्र 18 वर्ष से कम आयु का है)' },
   submit_form: { en: 'Submit', mr: 'सबमिट करा', hi: 'सबमिट करें' },
-  address_label: { en: 'Your Address', mr: 'तुमचा पत्ता', hi: 'आपका पता' }
+  address_label: { en: 'Your Address', mr: 'तुमचा पत्ता', hi: 'आपका पता' },
+  pending_sign_title: { en: 'Submitted — Signature Pending', mr: 'सबमिट झाले — सही बाकी आहे', hi: 'सबमिट हो गया — हस्ताक्षर बाकी है' },
+  pending_sign_msg: { en: 'Your details have been saved. Please sign below to complete this form.', mr: 'तुमची माहिती Save झाली आहे. हा फॉर्म पूर्ण करण्यासाठी खाली सही करा.', hi: 'आपकी जानकारी सेव हो गई है। इस फॉर्म को पूरा करने के लिए नीचे हस्ताक्षर करें.' },
+  sign_now: { en: 'Sign Now', mr: 'आता सही करा', hi: 'अभी हस्ताक्षर करें' }
 };
 
 let techoAgLang = localStorage.getItem('techoLang') || 'en';
@@ -208,6 +211,25 @@ function renderAgreementView(type, form) {
   return html;
 }
 
+/* -------- Pending-signature mode (details saved, signature not yet added) -------- */
+function renderAgreementPendingSign(type, form) {
+  const t = TECHO_AGREEMENT_TEXT[type];
+  let html = '<div class="ag-doc">';
+  html += '<h4>' + (t.heading[techoAgLang] || t.heading.en) + '</h4>';
+  html += '<p class="ag-intro">' + agIntro(type, form.FullName, form.Address || form.Place) + '</p>';
+  html += '<p class="ag-list-label">' + (t.listLabel[techoAgLang] || t.listLabel.en) + '</p>';
+  html += renderAgreementPoints(type);
+  html += '<p class="ag-final">' + (t.final[techoAgLang] || t.final.en) + '</p>';
+  html += '<p class="ag-status"><i class="fa-solid fa-circle-exclamation" style="color:var(--orange);"></i> ' + agT(TECHO_AGREEMENT_LABELS, 'pending_sign_title') + '</p>';
+  html += '<p style="font-size:12.5px;color:var(--gray-text);margin-bottom:10px;">' + agT(TECHO_AGREEMENT_LABELS, 'pending_sign_msg') + '</p>';
+  html += '<div class="sig-field" id="ag_' + type + '_pending_sign_box">' +
+    '<span class="sig-field-placeholder"><i class="fa-solid fa-signature"></i> ' + agT(TECHO_AGREEMENT_LABELS, 'sign_now') + '</span>' +
+    '</div>';
+  html += '<p class="form-error" id="ag_' + type + '_pending_err"></p>';
+  html += '</div>';
+  return html;
+}
+
 /* -------- Fill mode (not yet submitted) -------- */
 function renderAgreementForm(type) {
   const t = TECHO_AGREEMENT_TEXT[type];
@@ -250,8 +272,40 @@ async function loadAgreementBlock(type, wrapId) {
   const wrap = document.getElementById(wrapId);
   if (!wrap || !techoAgStudent) return;
   const result = await apiAG('getAgreementForm', { studentId: techoAgStudent.StudentID, formType: type });
-  if (result.form) {
+  if (result.form && result.form.Signature) {
     wrap.innerHTML = renderAgreementView(type, result.form);
+  } else if (result.form) {
+    // Details were already submitted, but no signature yet — show a
+    // read-only recap with a "Sign Now" box. Signing here re-saves the
+    // same details plus the new signature.
+    const form = result.form;
+    wrap.innerHTML = renderAgreementPendingSign(type, form);
+    const pendingBox = document.getElementById('ag_' + type + '_pending_sign_box');
+    if (pendingBox) {
+      pendingBox.addEventListener('click', async function () {
+        const errEl = document.getElementById('ag_' + type + '_pending_err');
+        if (errEl) errEl.textContent = '';
+        const dataUrl = await techoOpenSignaturePad();
+        if (!dataUrl) return;
+        const base64 = dataUrl.split(',')[1];
+        const uploadResult = await apiAG('uploadPhoto', { base64: base64, mimeType: 'image/png' });
+        if (!uploadResult.url) return;
+        const payload = {
+          studentId: techoAgStudent.StudentID,
+          formType: type,
+          fullName: form.FullName,
+          course: form.Course,
+          address: form.Address || '',
+          place: form.Place || '',
+          signature: uploadResult.url,
+          parentName: form.ParentName || '',
+          parentSignature: form.ParentSignature || ''
+        };
+        const res = await apiAG('saveAgreementForm', payload);
+        if (res.error) { if (errEl) errEl.textContent = res.error; return; }
+        loadAgreementBlock(type, wrapId);
+      });
+    }
   } else {
     wrap.innerHTML = renderAgreementForm(type);
     const btn = document.getElementById('ag_' + type + '_submit');
@@ -275,8 +329,10 @@ async function loadAgreementBlock(type, wrapId) {
       btn.addEventListener('click', async function () {
         const errEl = document.getElementById('ag_' + type + '_err');
         errEl.textContent = '';
+        // Signature is optional at submit time — the trainee can fill and
+        // submit now, then come back and sign later (see the
+        // pending-signature view below).
         const sign = document.getElementById('ag_' + type + '_sign').value.trim();
-        if (!sign) { errEl.textContent = 'Please tap the signature box and sign before submitting.'; return; }
         const addressEl = document.getElementById('ag_' + type + '_address');
         const placeEl = document.getElementById('ag_' + type + '_place');
         const payload = {

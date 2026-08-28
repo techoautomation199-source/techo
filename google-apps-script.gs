@@ -47,10 +47,14 @@
       Date | CreatedBy
       (TransactionID and Remarks are NEW columns here too — add them if you
       already have this tab.)
-   9. In "Installments" tab, Row 1 headers (A to L):
+   9. In "Installments" tab, Row 1 headers (A to N):
       StudentID | StudentName | Installment1Amount | Installment1Date |
       Installment2Amount | Installment2Date | Installment3Amount | Installment3Date |
-      Installment4Amount | Installment4Date | AuthorizedBy | Date
+      Installment4Amount | Installment4Date | AuthorizedBy | Date |
+      StudentSignature | RepSignature
+      (StudentSignature and RepSignature are NEW columns — add them if you
+      already have this tab, so the drawn signatures from the Installment
+      Agreement page get saved.)
   10. In "Agreements" tab, Row 1 headers (A to I):
       StudentID | FormType | FullName | Course | Address | Place |
       Signature | ParentName | ParentSignature | Date
@@ -1070,7 +1074,8 @@ function saveInstallment(data) {
     Installment2Amount: data.i2amt, Installment2Date: data.i2date,
     Installment3Amount: data.i3amt, Installment3Date: data.i3date,
     Installment4Amount: data.i4amt, Installment4Date: data.i4date,
-    AuthorizedBy: data.authorizedBy, Date: new Date().toLocaleString()
+    AuthorizedBy: data.authorizedBy, Date: new Date().toLocaleString(),
+    StudentSignature: data.studentSignature || '', RepSignature: data.repSignature || ''
   });
   return { success: true };
 }

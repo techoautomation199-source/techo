@@ -87,10 +87,14 @@
     <div class="form-grid-3">
       <fieldset class="sign-fieldset">
         <legend><span data-i18n="student_signature">Trainee Digital Signature</span></legend>
-        <label><span data-i18n="digital_signature_label">Digital Signature — Type Full Name to Sign</span> *<input type="text" id="signStudentDigital" placeholder="Type your full name to sign"></label>
         <label><span data-i18n="contact_name">Name</span> *<input type="text" id="signStudentName" placeholder="Enter trainee name"></label>
         <label><span data-i18n="date">Date</span> *<input type="date" id="signDate"></label>
-        <div class="sign-pad"><i class="fa-solid fa-signature"></i> <span data-i18n="sign_note_student">This typed name is your official digital signature</span></div>
+        <label style="text-align:left;"><span data-i18n="sign_pad_label">Signature</span> *</label>
+        <div class="sig-field" id="signStudentSignBox">
+          <img id="signStudentSignPreview" class="sig-preview-img" style="display:none;" alt="Signature">
+          <span class="sig-field-placeholder" id="signStudentSignPlaceholder"><i class="fa-solid fa-signature"></i> <span data-i18n="tap_to_sign">Tap to Sign</span></span>
+        </div>
+        <input type="hidden" id="signStudentSign">
       </fieldset>
 
       <fieldset class="sign-fieldset">
@@ -102,8 +106,12 @@
       <fieldset class="sign-fieldset">
         <legend><span data-i18n="institute_signature">Institute Digital Signature</span></legend>
         <label><span data-i18n="sign_rep">Authorized Representative</span> *<input type="text" id="signRep" placeholder="Enter authorized representative name"></label>
-        <label><span data-i18n="digital_signature_label_short">Digital Signature — Type Name to Sign</span> *<input type="text" id="signRepDigital" placeholder="Type name to sign & seal"></label>
-        <div class="sign-pad"><i class="fa-solid fa-stamp"></i> <span data-i18n="sign_note_institute">This typed name acts as the official digital signature &amp; seal</span></div>
+        <label style="text-align:left;"><span data-i18n="sign_pad_label">Signature</span> *</label>
+        <div class="sig-field" id="signRepSignBox">
+          <img id="signRepSignPreview" class="sig-preview-img" style="display:none;" alt="Signature">
+          <span class="sig-field-placeholder" id="signRepSignPlaceholder"><i class="fa-solid fa-stamp"></i> <span data-i18n="tap_to_sign">Tap to Sign</span></span>
+        </div>
+        <input type="hidden" id="signRepSign">
       </fieldset>
     </div>
 
@@ -120,11 +128,26 @@
     </div>
   </div>
 
+  <!-- ===================== SIGNATURE PAD (shared) ===================== -->
+  <div class="popup-overlay" id="signaturePadOverlay">
+    <div class="popup-box popup-box-form sig-pad-box">
+      <h3 data-i18n="sign_here">Sign Here</h3>
+      <canvas id="sigPadCanvas" width="360" height="150"></canvas>
+      <p class="form-error" id="sigPadError"></p>
+      <div class="popup-btn-row">
+        <button type="button" class="fbtn-outline" id="sigPadClear" data-i18n="clear">Clear</button>
+        <button type="button" class="fbtn-outline" id="sigPadCancel" data-i18n="cancel">Cancel</button>
+        <button type="button" class="fbtn-solid" id="sigPadSave" data-i18n="save_signature">Save Signature</button>
+      </div>
+    </div>
+  </div>
+
   <div class="policies-footer-link"><a href="terms.html"><i class="fa-solid fa-file-shield"></i> Policies</a></div>
 </main>
 
 <script src="i18n.js"></script>
 <script src="config.js"></script>
+<script src="signature.js"></script>
 <script src="installment.js"></script>
 </body>
 </html>

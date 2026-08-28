@@ -10,8 +10,32 @@ async function apiInst(action, payload) {
 
 let _lookedUpInstStudent = null;
 
+// Wires a sig-field box (click to open the shared signature pad, upload the
+// drawn PNG, and show a preview) — used for both the trainee's and the
+// institute representative's signature on this form.
+function wireSignBox(boxId, hiddenId, previewId, placeholderId) {
+  const box = document.getElementById(boxId);
+  if (!box) return;
+  box.addEventListener('click', async function () {
+    const dataUrl = await techoOpenSignaturePad();
+    if (!dataUrl) return;
+    const base64 = dataUrl.split(',')[1];
+    const result = await apiInst('uploadPhoto', { base64: base64, mimeType: 'image/png' });
+    if (result.url) {
+      document.getElementById(hiddenId).value = result.url;
+      const img = document.getElementById(previewId);
+      img.src = result.url;
+      img.style.display = 'block';
+      document.getElementById(placeholderId).style.display = 'none';
+    }
+  });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('signDate').value = new Date().toISOString().split('T')[0];
+
+  wireSignBox('signStudentSignBox', 'signStudentSign', 'signStudentSignPreview', 'signStudentSignPlaceholder');
+  wireSignBox('signRepSignBox', 'signRepSign', 'signRepSignPreview', 'signRepSignPlaceholder');
 
   const params = new URLSearchParams(window.location.search);
   const preId = params.get('studentId');
@@ -80,7 +104,9 @@ document.addEventListener('DOMContentLoaded', function () {
       i2amt: document.getElementById('i2amt').value, i2date: document.getElementById('i2date').value,
       i3amt: document.getElementById('i3amt').value, i3date: document.getElementById('i3date').value,
       i4amt: document.getElementById('i4amt').value, i4date: document.getElementById('i4date').value,
-      authorizedBy: document.getElementById('signRep').value.trim()
+      authorizedBy: document.getElementById('signRep').value.trim(),
+      studentSignature: document.getElementById('signStudentSign').value,
+      repSignature: document.getElementById('signRepSign').value
     });
     if (result.error) { errEl.textContent = result.error; return; }
 
