@@ -18,4 +18,4 @@
    Only change this line if you deploy to a brand new URL instead.
    ========================================================================= */
 
-const TECHO_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPM9vOuQ23GSCCLG-hIWE_3AszMFM2JoivGY-1ctIjLZn2f2_KJvVPHxNrAOQUOVcK/exec";
+const TECHO_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyT1ej4_HpNkZ6SHlZh5zjAzgA8cPlbgyVs36hAiXdphSG87szbNiGwUIDlOw1V6znn/exec";
