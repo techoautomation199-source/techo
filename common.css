@@ -24,6 +24,46 @@
 
 html{scroll-behavior:smooth;background:#ffffff;}
 
+/* ---------------- FULL-PAGE AUTOMATION VIDEO BACKGROUND ---------------- */
+/* Shared by every page that opts in via <body class="page-video-bg">.
+   Uses dvh (falls back to vh) so mobile browsers' address bar doesn't
+   cause the video to jump/resize while scrolling. On narrow phone
+   screens the clip is shown with object-fit:contain (whole frame visible,
+   letterboxed) instead of cover, because cover on a landscape clip inside
+   a tall portrait screen crops in hard and blows the footage up far
+   beyond its real resolution — that's the "video motha/zoomed" look on
+   phones. Contain keeps the frame at its natural, correctly-scaled size
+   on any device. */
+body.page-video-bg{background:transparent !important; color:#eef1fa;}
+.page-bg-wrap{
+  position:fixed;
+  inset:0;
+  width:100vw;
+  height:100vh;
+  height:100dvh;
+  overflow:hidden;
+  z-index:-2;
+  background:#05070f; /* letterbox colour behind the video on narrow screens */
+}
+.page-bg-video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+}
+.page-bg-overlay{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  background:rgba(0,0,0,0.65); /* dark overlay over the video so text stays readable */
+}
+@media (max-width:768px){
+  .page-bg-video{
+    object-fit:contain; /* show the full frame, correctly sized, instead of a zoomed-in crop */
+  }
+}
+
+
 body{
   font-family:'Poppins',Arial,sans-serif;
   color:var(--dark);

@@ -2,28 +2,6 @@
 .c-purple{color:var(--purple);}
 .c-green{color:var(--green);}
 
-/* ---------- FULL-PAGE AUTOMATION VIDEO BACKGROUND ---------- */
-body.page-video-bg{background:transparent !important; color:#eef1fa;}
-.page-bg-wrap{
-  position:fixed;
-  inset:0;
-  width:100vw;
-  height:100vh;
-  overflow:hidden;
-  z-index:-2;
-}
-.page-bg-video{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-.page-bg-overlay{
-  position:fixed;
-  inset:0;
-  z-index:-1;
-  background:rgba(0,0,0,0.65); /* dark overlay over the video so text stays readable */
-}
-
 /* ---------- HERO ---------- */
 /* Sits on top of the full-page video background (see .page-bg-video below).
    Text goes on a semi-transparent dark panel so it stays readable over moving footage. */

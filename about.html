@@ -12,7 +12,45 @@
 <link rel="stylesheet" href="common.css">
 <link rel="stylesheet" href="about.css">
 </head>
-<body>
+<body class="page-video-bg">
+
+<!-- ===================== FULL-PAGE AUTOMATION VIDEO BACKGROUND ===================== -->
+<!-- Fixed behind the entire page so every white area shows it. Clips play one after another in a
+     story order — robotic arm picks up a box → box travels on conveyor → close-up machinery/panel →
+     electrical/wiring shot → bottle conveyor line — then the whole sequence loops.
+     A dark overlay keeps text/cards readable. If a clip fails to load, it just skips to the next one. -->
+<div class="page-bg-wrap" aria-hidden="true">
+  <video id="pageBgVideo" class="page-bg-video" autoplay muted playsinline>
+    <source src="https://assets.mixkit.co/videos/20970/20970-720.mp4" type="video/mp4">
+  </video>
+</div>
+<div class="page-bg-overlay"></div>
+<script>
+(function(){
+  var clips=[
+    "https://assets.mixkit.co/videos/20970/20970-720.mp4",  // 1. robotic arm in a factory (picks up / places box)
+    "https://assets.mixkit.co/videos/20770/20770-360.mp4",  // 2. parcels/box moving on a conveyor belt
+    "https://assets.mixkit.co/videos/17675/17675-360.mp4",  // 3. mechanical machinery close-up (panel/controls feel)
+    "https://assets.mixkit.co/videos/23696/23696-360.mp4",  // 4. electrical workers / wiring corridor in a factory
+    "https://assets.mixkit.co/videos/34612/34612-360.mp4"   // 5. bottling / conveyor line (loops back to 1)
+  ];
+  var i=0;
+  var v=document.getElementById('pageBgVideo');
+  if(!v) return;
+  function playCurrent(){
+    v.querySelector('source').src=clips[i];
+    v.load();
+    v.play().catch(function(){});
+  }
+  function nextClip(){
+    i=(i+1)%clips.length;
+    playCurrent();
+  }
+  v.addEventListener('ended', nextClip);
+  v.addEventListener('error', nextClip, true); // if one clip fails, skip to the next instead of stopping
+})();
+</script>
+
 
 <header class="site-header">
   <div class="header-inner">

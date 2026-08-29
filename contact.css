@@ -1,34 +1,38 @@
 .c-blue{color:var(--blue);}
 
 .contact-hero{text-align:center;padding:50px 24px 20px;}
-.contact-hero h1{font-size:38px;font-weight:800;}
-.contact-hero p{max-width:480px;margin:16px auto 0;color:var(--gray-text);font-size:14px;}
+.contact-hero h1{font-size:38px;font-weight:800;color:#fff;}
+.contact-hero p{max-width:480px;margin:16px auto 0;color:#d7dcec;font-size:14px;}
 
 .contact-cards{display:flex;flex-direction:column;gap:16px;margin:36px auto;max-width:700px;}
 .c-card{
   display:flex;align-items:center;gap:20px;
-  border:1px solid var(--border);border-radius:var(--radius);
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.18);border-radius:var(--radius);
   padding:20px 26px;box-shadow:var(--shadow);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
 }
 .c-icon{
   width:50px;height:50px;border-radius:50%;flex-shrink:0;
   display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;
 }
 .c-icon.insta{background:linear-gradient(45deg,#f58529,#dd2a7b,#8134af,#515bd4);}
-.c-card h3{font-size:14px;font-weight:700;color:var(--blue);margin-bottom:4px;}
-.c-card p{font-size:13px;color:var(--dark);}
-.c-card p a{color:var(--dark);text-decoration:none;}
-.c-card p a:hover{color:var(--blue);text-decoration:underline;}
+.c-card h3{font-size:14px;font-weight:700;color:#8fb0ff;margin-bottom:4px;}
+.c-card p{font-size:13px;color:#fff;}
+.c-card p a{color:#fff;text-decoration:none;}
+.c-card p a:hover{color:#8fb0ff;text-decoration:underline;}
 
 .get-in-touch{
   max-width:700px;margin:0 auto 60px;
-  background:var(--light-bg);border-radius:var(--radius);
+  background:rgba(255,255,255,0.09);border-radius:var(--radius);
   padding:40px 24px;text-align:center;
+  border:1px solid rgba(255,255,255,0.18);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
 }
-.paper-icon{font-size:34px;color:var(--blue);margin-bottom:14px;}
-.get-in-touch h2{font-size:22px;font-weight:800;margin-bottom:12px;}
-.get-in-touch p{font-size:13.5px;color:var(--gray-text);}
-.get-in-touch .bold-line{font-weight:700;color:var(--dark);margin-top:4px;}
+.paper-icon{font-size:34px;color:#8fb0ff;margin-bottom:14px;}
+.get-in-touch h2{font-size:22px;font-weight:800;margin-bottom:12px;color:#fff;}
+.get-in-touch p{font-size:13.5px;color:#d7dcec;}
+.get-in-touch .bold-line{font-weight:700;color:#fff;margin-top:4px;}
 
 @media (max-width:640px){
   .contact-hero h1{font-size:28px;}
