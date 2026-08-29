@@ -15,14 +15,26 @@
 <body class="page-video-bg">
 
 <!-- ===================== FULL-PAGE AUTOMATION VIDEO BACKGROUND ===================== -->
-<!-- Fixed behind the entire page so every white area shows it. Clips play one after another in a
-     story order — robotic arm picks up a box → box travels on conveyor → close-up machinery/panel →
-     electrical/wiring shot → bottle conveyor line — then the whole sequence loops.
-     A dark overlay keeps text/cards readable. If a clip fails to load, it just skips to the next one. -->
+<!-- Desktop/laptop: one video fills the whole screen (cover).
+     Mobile (<=768px): 3 videos stacked top/middle/bottom, each filling its own band edge-to-edge
+     (cover) — no black letterbox bars, and each band cycles a different clip for variety.
+     Clip order: robotic arm picks up a box → box travels on conveyor → machinery/panel close-up →
+     electrical/wiring shot → bottle conveyor line — then loops. If a clip fails, it skips to the next. -->
 <div class="page-bg-wrap" aria-hidden="true">
   <video id="pageBgVideo" class="page-bg-video" autoplay muted playsinline>
     <source src="https://assets.mixkit.co/videos/20970/20970-720.mp4" type="video/mp4">
   </video>
+  <div class="page-bg-mobile-stack">
+    <video id="pageBgVideoM1" class="page-bg-video-band" autoplay muted playsinline>
+      <source src="https://assets.mixkit.co/videos/20970/20970-720.mp4" type="video/mp4">
+    </video>
+    <video id="pageBgVideoM2" class="page-bg-video-band" autoplay muted playsinline>
+      <source src="https://assets.mixkit.co/videos/17675/17675-360.mp4" type="video/mp4">
+    </video>
+    <video id="pageBgVideoM3" class="page-bg-video-band" autoplay muted playsinline>
+      <source src="https://assets.mixkit.co/videos/34612/34612-360.mp4" type="video/mp4">
+    </video>
+  </div>
 </div>
 <div class="page-bg-overlay"></div>
 <script>
@@ -34,20 +46,25 @@
     "https://assets.mixkit.co/videos/23696/23696-360.mp4",  // 4. electrical workers / wiring corridor in a factory
     "https://assets.mixkit.co/videos/34612/34612-360.mp4"   // 5. bottling / conveyor line (loops back to 1)
   ];
-  var i=0;
-  var v=document.getElementById('pageBgVideo');
-  if(!v) return;
-  function playCurrent(){
-    v.querySelector('source').src=clips[i];
-    v.load();
-    v.play().catch(function(){});
+  function attachCycler(video, startIndex){
+    if(!video) return;
+    var i=startIndex%clips.length;
+    function playCurrent(){
+      video.querySelector('source').src=clips[i];
+      video.load();
+      video.play().catch(function(){});
+    }
+    function nextClip(){
+      i=(i+1)%clips.length;
+      playCurrent();
+    }
+    video.addEventListener('ended', nextClip);
+    video.addEventListener('error', nextClip, true);
   }
-  function nextClip(){
-    i=(i+1)%clips.length;
-    playCurrent();
-  }
-  v.addEventListener('ended', nextClip);
-  v.addEventListener('error', nextClip, true); // if one clip fails, skip to the next instead of stopping
+  attachCycler(document.getElementById('pageBgVideo'), 0);
+  attachCycler(document.getElementById('pageBgVideoM1'), 0);
+  attachCycler(document.getElementById('pageBgVideoM2'), 2);
+  attachCycler(document.getElementById('pageBgVideoM3'), 4);
 })();
 </script>
 
@@ -85,15 +102,15 @@
 <section class="container contact-cards">
   <div class="c-card">
     <div class="c-icon" style="background:var(--blue)"><i class="fa-solid fa-envelope"></i></div>
-    <div><h3>EMAIL US</h3><p><a href="mailto:techoautomation199@gmail.com">techoautomation199@gmail.com</a></p></div>
+    <div><h3>EMAIL US</h3><p><a href="mailto:techo@1234gmail.com">techo@1234gmail.com</a></p><p><a href="mailto:techoautomation199@gmail.com">techoautomation199@gmail.com</a></p></div>
   </div>
   <div class="c-card">
     <div class="c-icon" style="background:var(--green)"><i class="fa-solid fa-phone"></i></div>
-    <div><h3>CALL US</h3><p><a href="tel:+917841814377">7841814377</a></p></div>
+    <div><h3>CALL US</h3><p><a href="tel:+917841814377">7841814377</a></p><p><a href="tel:+918909784567">8909784567</a></p></div>
   </div>
   <div class="c-card">
     <div class="c-icon" style="background:var(--green)"><i class="fa-brands fa-whatsapp"></i></div>
-    <div><h3>WHATSAPP</h3><p><a href="https://wa.me/7841814377" target="_blank" rel="noopener">7841814377</a></p></div>
+    <div><h3>WHATSAPP</h3><p><a href="https://wa.me/918909784567" target="_blank" rel="noopener">8909784567</a></p></div>
   </div>
   <div class="c-card">
     <div class="c-icon insta"><i class="fa-brands fa-instagram"></i></div>

@@ -27,13 +27,13 @@ html{scroll-behavior:smooth;background:#ffffff;}
 /* ---------------- FULL-PAGE AUTOMATION VIDEO BACKGROUND ---------------- */
 /* Shared by every page that opts in via <body class="page-video-bg">.
    Uses dvh (falls back to vh) so mobile browsers' address bar doesn't
-   cause the video to jump/resize while scrolling. On narrow phone
-   screens the clip is shown with object-fit:contain (whole frame visible,
-   letterboxed) instead of cover, because cover on a landscape clip inside
-   a tall portrait screen crops in hard and blows the footage up far
-   beyond its real resolution — that's the "video motha/zoomed" look on
-   phones. Contain keeps the frame at its natural, correctly-scaled size
-   on any device. */
+   cause the video to jump/resize while scrolling.
+   Desktop/laptop: a single video fills the whole screen (cover).
+   Mobile (<=768px): a landscape clip stretched to cover a tall portrait
+   screen crops in hard and looks blown-up/zoomed, and "contain" instead
+   leaves black bars — so on phones we swap to 3 videos stacked in equal
+   bands, each covering its own band edge-to-edge with no cropping issue
+   and no black gaps. */
 body.page-video-bg{background:transparent !important; color:#eef1fa;}
 .page-bg-wrap{
   position:fixed;
@@ -43,7 +43,7 @@ body.page-video-bg{background:transparent !important; color:#eef1fa;}
   height:100dvh;
   overflow:hidden;
   z-index:-2;
-  background:#05070f; /* letterbox colour behind the video on narrow screens */
+  background:#05070f;
 }
 .page-bg-video{
   width:100%;
@@ -51,15 +51,30 @@ body.page-video-bg{background:transparent !important; color:#eef1fa;}
   object-fit:cover;
   object-position:center;
 }
+.page-bg-mobile-stack{
+  display:none;
+}
 .page-bg-overlay{
   position:fixed;
   inset:0;
   z-index:-1;
   background:rgba(0,0,0,0.65); /* dark overlay over the video so text stays readable */
 }
-@media (max-width:768px){
-  .page-bg-video{
-    object-fit:contain; /* show the full frame, correctly sized, instead of a zoomed-in crop */
+@media (max-width:900px), (orientation:portrait){
+  .page-bg-video{display:none !important;}
+  .page-bg-mobile-stack{
+    display:flex !important;
+    flex-direction:column;
+    width:100%;
+    height:100%;
+  }
+  .page-bg-video-band{
+    width:100%;
+    flex:1 1 0;
+    min-height:0;
+    object-fit:cover;
+    object-position:center;
+    display:block;
   }
 }
 
