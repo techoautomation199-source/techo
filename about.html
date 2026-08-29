@@ -16,23 +16,24 @@
 
 <!-- ===================== FULL-PAGE AUTOMATION VIDEO BACKGROUND ===================== -->
 <!-- Desktop/laptop: one video fills the whole screen (cover).
-     Mobile (<=768px): 3 videos stacked top/middle/bottom, each filling its own band edge-to-edge
-     (cover) — no black letterbox bars, and each band cycles a different clip for variety.
-     Clip order: robotic arm picks up a box → box travels on conveyor → machinery/panel close-up →
-     electrical/wiring shot → bottle conveyor line — then loops. If a clip fails, it skips to the next. -->
+     Phone (portrait, narrow screen): 3 videos stacked top→middle→bottom like a collage —
+     band 1 = clip 1 (robotic arm), band 2 = clip 2 (conveyor/box), band 3 = clip 3 (machinery/panel),
+     each filling its own third of the screen edge-to-edge (cover) — no black bars anywhere.
+     A JS check (not just a CSS media query) decides phone vs desktop, and re-checks on resize/rotate,
+     so it works reliably across phone browsers. -->
 <div class="page-bg-wrap" aria-hidden="true">
   <video id="pageBgVideo" class="page-bg-video" autoplay muted playsinline>
     <source src="https://assets.mixkit.co/videos/20970/20970-720.mp4" type="video/mp4">
   </video>
-  <div class="page-bg-mobile-stack">
+  <div class="page-bg-mobile-stack" id="pageBgMobileStack">
     <video id="pageBgVideoM1" class="page-bg-video-band" autoplay muted playsinline>
       <source src="https://assets.mixkit.co/videos/20970/20970-720.mp4" type="video/mp4">
     </video>
     <video id="pageBgVideoM2" class="page-bg-video-band" autoplay muted playsinline>
-      <source src="https://assets.mixkit.co/videos/17675/17675-360.mp4" type="video/mp4">
+      <source src="https://assets.mixkit.co/videos/20770/20770-360.mp4" type="video/mp4">
     </video>
     <video id="pageBgVideoM3" class="page-bg-video-band" autoplay muted playsinline>
-      <source src="https://assets.mixkit.co/videos/34612/34612-360.mp4" type="video/mp4">
+      <source src="https://assets.mixkit.co/videos/17675/17675-360.mp4" type="video/mp4">
     </video>
   </div>
 </div>
@@ -46,9 +47,11 @@
     "https://assets.mixkit.co/videos/23696/23696-360.mp4",  // 4. electrical workers / wiring corridor in a factory
     "https://assets.mixkit.co/videos/34612/34612-360.mp4"   // 5. bottling / conveyor line (loops back to 1)
   ];
+
   function attachCycler(video, startIndex){
     if(!video) return;
     var i=startIndex%clips.length;
+    var started=false;
     function playCurrent(){
       video.querySelector('source').src=clips[i];
       video.load();
@@ -60,11 +63,44 @@
     }
     video.addEventListener('ended', nextClip);
     video.addEventListener('error', nextClip, true);
+    video.attachedStart = function(){ if(!started){ started=true; playCurrent(); } };
   }
-  attachCycler(document.getElementById('pageBgVideo'), 0);
-  attachCycler(document.getElementById('pageBgVideoM1'), 0);
-  attachCycler(document.getElementById('pageBgVideoM2'), 2);
-  attachCycler(document.getElementById('pageBgVideoM3'), 4);
+
+  var vDesktop=document.getElementById('pageBgVideo');
+  var vM1=document.getElementById('pageBgVideoM1');
+  var vM2=document.getElementById('pageBgVideoM2');
+  var vM3=document.getElementById('pageBgVideoM3');
+  attachCycler(vDesktop, 0);
+  attachCycler(vM1, 0); // band 1 -> clip 1
+  attachCycler(vM2, 1); // band 2 -> clip 2
+  attachCycler(vM3, 2); // band 3 -> clip 3
+
+  // Reliable phone-vs-desktop check: portrait AND narrow, re-checked live (not just CSS).
+  function isPhoneLayout(){
+    return window.innerWidth <= 900 && window.innerHeight > window.innerWidth;
+  }
+  var currentlyPhone=null;
+  function applyLayout(){
+    var phone=isPhoneLayout();
+    if(phone===currentlyPhone) return;
+    currentlyPhone=phone;
+    if(phone){
+      vDesktop.style.display='none';
+      vDesktop.pause();
+      document.getElementById('pageBgMobileStack').style.display='flex';
+      if(vM1.attachedStart) vM1.attachedStart();
+      if(vM2.attachedStart) vM2.attachedStart();
+      if(vM3.attachedStart) vM3.attachedStart();
+    } else {
+      document.getElementById('pageBgMobileStack').style.display='none';
+      vM1.pause(); vM2.pause(); vM3.pause();
+      vDesktop.style.display='block';
+      if(vDesktop.attachedStart) vDesktop.attachedStart();
+    }
+  }
+  applyLayout();
+  window.addEventListener('resize', applyLayout);
+  window.addEventListener('orientationchange', applyLayout);
 })();
 </script>
 
